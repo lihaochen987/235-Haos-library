@@ -23,10 +23,17 @@ class MemoryRepository(AbstractRepository):
             self._current += 1
             return self._books[self._current - 1]
 
+    def add_book(self, book: Book):
+        self._books.append(book)
+
     def get_book_by_id(self, id: int):
         for book in self._books:
             if book.book_id == id:
                 return book
 
-    def add_book(self, book: Book):
-        self._books.append(book)
+    def get_book_by_title(self, title:str):
+        title_list = []
+        for book in self._books:
+            if book.title == title:
+                title_list.append(book)
+        return title_list

@@ -33,7 +33,12 @@ class AbstractRepository(abc.ABC):
 
     @abc.abstractmethod
     def get_book_by_id(self, id: int):
-        """" Gets a book by specified id """
+        """" Gets a book by specified id (UNIQUE) """
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def get_book_by_title(self, title:str):
+        """ Gets a book by specified title (NOT UNIQUE) """
         raise NotImplementedError
 
 
