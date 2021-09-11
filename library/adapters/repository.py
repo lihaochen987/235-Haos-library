@@ -26,6 +26,7 @@ class AbstractRepository(abc.ABC):
         """ Gets next book object from repository """
         raise NotImplementedError
 
+    # Book functions
     @abc.abstractmethod
     def add_book(self, book: Book):
         """ Adds a book object to our library """
@@ -56,6 +57,10 @@ class AbstractRepository(abc.ABC):
         """ Gets book/s by specified release year (NOT UNIQUE) """
         raise NotImplementedError
 
+    @abc.abstractmethod
+    def get_book_by_ebook_status(self, e_book_status:bool):
+        """ Gets book/s by specified e_book status (NOT UNIQUE) """
+        raise NotImplementedError
 
 
 

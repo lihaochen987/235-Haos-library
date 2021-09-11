@@ -23,6 +23,7 @@ class MemoryRepository(AbstractRepository):
             self._current += 1
             return self._books[self._current - 1]
 
+    # Book functions
     def add_book(self, book: Book):
         self._books.append(book)
 
@@ -57,5 +58,12 @@ class MemoryRepository(AbstractRepository):
         books_list = []
         for book in self._books:
             if book.release_year == year:
+                books_list.append(book)
+        return books_list
+
+    def get_book_by_ebook_status(self, e_book_status:bool):
+        books_list = []
+        for book in self._books:
+            if book.ebook == e_book_status:
                 books_list.append(book)
         return books_list

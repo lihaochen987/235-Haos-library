@@ -18,6 +18,7 @@ def book():
                          warning from a strange impish creature who says that if Harry returns to Hogwarts, \
                          disaster will strike."
     some_book.release_year = 1999
+    some_book.ebook = True
 
     some_book.add_author(some_author)
     some_book.publisher = some_publisher
@@ -99,3 +100,25 @@ def test_repository_can_get_multiple_books_by_release_year(in_memory_repo, book)
     assert in_memory_repo.get_book_by_release_year(1999)[0] is book
     assert in_memory_repo.get_book_by_release_year(1999)[1] is another_book
     assert len(in_memory_repo.get_book_by_release_year(1999)) == 2
+
+def test_repository_can_get_book_by_e_book_status(in_memory_repo, book):
+    in_memory_repo.add_book(book)
+
+    assert in_memory_repo.get_book_by_ebook_status(True)[0] is book
+
+def test_repository_can_get_multiple_books_by_e_book_status(in_memory_repo, book):
+    in_memory_repo.add_book(book)
+
+    another_book = Book(23, "The Reptile Room")
+    another_book.ebook = True
+    in_memory_repo.add_book(another_book)
+
+    some_book = Book(32, "Harry Potter and the Philosopher's Stone")
+    some_book.ebook = False
+    in_memory_repo.add_book(some_book)
+
+    assert in_memory_repo.get_book_by_ebook_status(True)[0] is book
+    assert in_memory_repo.get_book_by_ebook_status(True)[1] is another_book
+    assert len(in_memory_repo.get_book_by_ebook_status(True)) == 2
+    assert in_memory_repo.get_book_by_ebook_status(False)[0] is some_book
+    assert len(in_memory_repo.get_book_by_ebook_status(False)) == 1
