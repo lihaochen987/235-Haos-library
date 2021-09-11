@@ -1,8 +1,10 @@
+import csv
 from library.adapters.repository import AbstractRepository
 from library.adapters.jsondatareader import BooksJSONReader
 from typing import List
 from library.domain.model import Book, User, Review, Author
 from pathlib import Path
+from werkzeug.security import generate_password_hash
 
 
 class MemoryRepository(AbstractRepository):
@@ -96,15 +98,41 @@ class MemoryRepository(AbstractRepository):
 
 
 # Populate repo
+def read_csv_file(filename: str):
+    with open(filename, encoding='utf-8-sig') as infile:
+        reader = csv.reader(infile)
+
+        # Read first line of the the CSV file.
+        headers = next(reader)
+
+        # Read remaining rows from the CSV file.
+        for row in reader:
+            # Strip any leading/trailing white space from data read.
+            row = [item.strip() for item in row]
+            yield row
 
 def load_books(data_path: Path, repo: MemoryRepository):
     books_filename = str(data_path / "comic_books_excerpt.json")
     authors_filename = str(data_path / "book_authors_excerpt.json")
     reader = BooksJSONReader(books_filename, authors_filename)
     reader.read_json_files()
-    return reader.dataset_of_books
+    for book in reader.dataset_of_books:
+        repo.add_book(book)
+
+
+def load_users(data_path:Path, repo:MemoryRepository):
+    users = dict()
+
+    users_filename = str(Path(data_path) / "users.csv")
+    for data_row in read_csv_file(users_filename):
+        user = User(
+            user_name=data_row[1],
+            password=generate_password_hash(data_row[2])
+        )
+        repo.add_user(user)
+        users[data_row[0]] = user
+    return users
 
 def populate(data_path: Path, repo: MemoryRepository):
-    books = load_books(data_path, repo)
-    for book in books:
-        repo.add_book(book)
+    load_books(data_path, repo)
+    users = load_users(data_path, repo)
