@@ -117,4 +117,7 @@ class AbstractRepository(abc.ABC):
     #     User must be logged in to leave a review
     #     User must leave a rating of between 1 to 5, the comment is optional
     #     """
-    #     if review.
+    #     if review.user is None or review not in review.user.comments:
+    #         raise RepositoryException('Review not correctly attached to a User')
+    #     if review.book is None or review not in review.book.reviews:
+    #         raise RepositoryException('Review not correctly attached to a Book')

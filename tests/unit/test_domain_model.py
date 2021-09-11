@@ -7,6 +7,12 @@ from library.domain.model import Publisher, Author, Book, Review, User, BooksInv
 from library.adapters.jsondatareader import BooksJSONReader
 
 
+@pytest.fixture()
+def user():
+    user = User('hli779', 'Samplepassword123')
+    return user
+
+
 class TestPublisher:
 
     def test_construction(self):
@@ -262,7 +268,7 @@ class TestBook:
         assert book1 != book3
         assert book3 == book4
 
-    def test_remove_author(self):
+    def test_remove_author(self, user):
         book = Book(89576, "Harry Potter")
 
         author1 = Author(1, "J.R.R. Tolkien")
@@ -289,9 +295,9 @@ class TestBook:
 
     def test_add_and_view_reviews(self):
         book = Book(89576, "Harry Potter")
-        review1 = Review(book, "Nice book!", 3)
-        review2 = Review(book, "Ok book", 2)
-        review3 = Review(book, "LOVED IT!", 5)
+        review1 = Review(user, book, "Nice book!", 3)
+        review2 = Review(user, book, "Ok book", 2)
+        review3 = Review(user, book, "LOVED IT!", 5)
         book.add_review(review1)
         book.add_review(review2)
         book.add_review(review3)
@@ -304,46 +310,47 @@ class TestBook:
 
 class TestReview:
 
-    def test_construction(self):
+    def test_construction(self, user):
         book = Book(2675376, "Harry Potter")
         review_text = "  This book was very enjoyable.   "
         rating = 4
-        review = Review(book, review_text, rating)
+        review = Review(user, book, review_text, rating)
 
         assert str(review.book) == "<Book Harry Potter, book id = 2675376>"
         assert str(review.review_text) == "This book was very enjoyable."
         assert review.rating == 4
 
-    def test_attributes_access(self):
+    def test_attributes_access(self, user):
         book = Book(2675376, "Harry Potter")
-        review = Review(book, 42, 3)
+        review = Review(user, book, 42, 3)
         assert str(review.book) == "<Book Harry Potter, book id = 2675376>"
         assert str(review.review_text) == "N/A"
+        assert str(review.user) == "<User hli779>"
         assert review.rating == 3
 
-    def test_invalid_parameters(self):
+    def test_invalid_parameters(self, user):
         book = Book(2675376, "Harry Potter")
         review_text = "This book was very enjoyable."
 
         with pytest.raises(ValueError):
-            review = Review(book, review_text, -1)
+            review = Review(user, book, review_text, -1)
 
         with pytest.raises(ValueError):
-            review = Review(book, review_text, 6)
+            review = Review(user, book, review_text, 6)
 
-    def test_set_of_reviews(self):
+    def test_set_of_reviews(self, user):
         book1 = Book(2675376, "Harry Potter")
         book2 = Book(874658, "Lord of the Rings")
-        review1 = Review(book1, "I liked this book", 4)
-        review2 = Review(book2, "This book was ok", 3)
-        review3 = Review(book1, "This book was exceptional", 5)
+        review1 = Review(user, book1, "I liked this book", 4)
+        review2 = Review(user, book2, "This book was ok", 3)
+        review3 = Review(user, book1, "This book was exceptional", 5)
         assert review1 != review2
         assert review1 != review3
         assert review3 != review2
 
-    def test_wrong_book_object(self):
+    def test_wrong_book_object(self, user):
         publisher = Publisher("DC Comics")
-        review = Review(publisher, "I liked this book", 4)
+        review = Review(user, publisher, "I liked this book", 4)
         assert review.book is None
 
 
@@ -400,8 +407,8 @@ class TestUser:
         books = [Book(874658, "Harry Potter"), Book(89576, "Lord of the Rings")]
         user = User("Martin", "pw12345")
         assert user.reviews == []
-        review1 = Review(books[0], "I liked this book", 4)
-        review2 = Review(books[1], "This book was ok", 2)
+        review1 = Review(user, books[0], "I liked this book", 4)
+        review2 = Review(user, books[1], "This book was ok", 2)
         user.add_review(review1)
         user.add_review(review2)
         assert str(user.reviews[0].review_text) == "I liked this book"

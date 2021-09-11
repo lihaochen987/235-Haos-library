@@ -302,7 +302,8 @@ class User:
 
 class Review:
 
-    def __init__(self, book: Book, review_text: str, rating: int):
+    def __init__(self, user: User, book: Book, review_text: str, rating: int):
+        self.__user: User = user
         if isinstance(book, Book):
             self.__book = book
         else:
@@ -319,6 +320,10 @@ class Review:
             raise ValueError
 
         self.__timestamp = datetime.now()
+
+    @property
+    def user(self) -> User:
+        return self.__user
 
     @property
     def book(self) -> Book:
