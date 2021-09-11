@@ -3,10 +3,10 @@ from typing import List
 
 import pytest
 
-from library.domain.model import Book, Author, Publisher
+from library.domain.model import Book, Author, Publisher, User
 from library.adapters.repository import RepositoryException
 
-
+# Testing for the book class
 @pytest.fixture()
 def book():
     some_book = Book(1, "Harry Potter and the Chamber of Secrets")
@@ -145,3 +145,20 @@ def test_repository_can_get_multiple_books_by_number_of_pages(in_memory_repo, bo
     assert in_memory_repo.get_book_by_number_of_pages(350)[0] is some_book
     assert len(in_memory_repo.get_book_by_number_of_pages(500)) == 2
     assert len(in_memory_repo.get_book_by_number_of_pages(350)) == 1
+
+# Testing for the User class
+
+def test_repository_can_add_a_user(in_memory_repo):
+    user = User('dave', '123456789')
+    in_memory_repo.add_user(user)
+
+    assert in_memory_repo.get_user('dave') is user
+
+def test_repository_can_retrieve_a_user(in_memory_repo):
+    in_memory_repo.add_user(User('fmercury', '8734gfe2058v'))
+    user = in_memory_repo.get_user('fmercury')
+    assert user == User('fmercury', '8734gfe2058v')
+
+def test_repository_does_not_retrieve_a_non_existent_user(in_memory_repo):
+    user = in_memory_repo.get_user('prince')
+    assert user is None

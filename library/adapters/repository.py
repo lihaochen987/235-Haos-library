@@ -2,8 +2,7 @@ import abc
 from typing import List
 from datetime import date
 
-from library.domain.model import Book, Author
-
+from library.domain.model import Book, Author, User
 
 repo_instance = None
 
@@ -26,7 +25,7 @@ class AbstractRepository(abc.ABC):
         """ Gets next book object from repository """
         raise NotImplementedError
 
-    # Book functions
+    # Book methods
     @abc.abstractmethod
     def add_book(self, book: Book):
         """ Adds a book object to our library """
@@ -38,33 +37,44 @@ class AbstractRepository(abc.ABC):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def get_book_by_title(self, title:str):
+    def get_book_by_title(self, title: str):
         """ Gets book/s by specified title (NOT UNIQUE) """
         raise NotImplementedError
 
     @abc.abstractmethod
-    def get_book_by_author(self, author_name:str):
+    def get_book_by_author(self, author_name: str):
         """ Gets book/s by specified author (NOT UNIQUE) """
         raise NotImplementedError
 
     @abc.abstractmethod
-    def get_book_by_publisher(self, publisher_name:str):
+    def get_book_by_publisher(self, publisher_name: str):
         """ Gets book/s by specified author (NOT UNIQUE) """
         raise NotImplementedError
 
     @abc.abstractmethod
-    def get_book_by_release_year(self, year:int):
+    def get_book_by_release_year(self, year: int):
         """ Gets book/s by specified release year (NOT UNIQUE) """
         raise NotImplementedError
 
     @abc.abstractmethod
-    def get_book_by_ebook_status(self, e_book_status:bool):
+    def get_book_by_ebook_status(self, e_book_status: bool):
         """ Gets book/s by specified e_book status (NOT UNIQUE) """
         raise NotImplementedError
 
     @abc.abstractmethod
-    def get_book_by_number_of_pages(self, pages:int):
+    def get_book_by_number_of_pages(self, pages: int):
         """ Gets book/s by specified number of pages (NOT UNIQUE) """
         raise NotImplementedError
 
+    # User methods
+    @abc.abstractmethod
+    def add_user(self, user: User):
+        """ Adds a User to the repository"""
+        raise NotImplementedError
 
+    @abc.abstractmethod
+    def get_user(self, user_name) -> User:
+        """ Returns the User named user_name from the repository.
+        If there is no User with the given user_name, this method returns None.
+        """
+        raise NotImplementedError
