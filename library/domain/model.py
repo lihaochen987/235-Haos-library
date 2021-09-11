@@ -393,7 +393,7 @@ class BooksInventory:
 
 # Association functions
 def leave_review(review_text: str, review_rating: int, user: User, book: Book):
-    review = Review(book, review_text, review_rating)
+    review = Review(user, book, review_text, review_rating)
     user.add_review(review)
     book.add_review(review)
     return review

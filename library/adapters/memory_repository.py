@@ -1,7 +1,7 @@
 from library.adapters.repository import AbstractRepository
 from library.adapters.jsondatareader import BooksJSONReader
 from typing import List
-from library.domain.model import Book, BooksInventory, Author, User
+from library.domain.model import Book, User, Review
 from pathlib import Path
 
 
@@ -13,6 +13,7 @@ class MemoryRepository(AbstractRepository):
             self._books.append(book)
 
         self.__users = list()
+        self.__reviews = list()
 
     def __iter__(self):
         self._current = 0
@@ -78,3 +79,10 @@ class MemoryRepository(AbstractRepository):
 
     def get_user(self, user_name) -> User:
         return next((user for user in self.__users if user.user_name == user_name), None)
+
+    def get_reviews(self):
+        return self.__reviews
+
+    def add_review(self, review:Review):
+        super().add_review(review)
+        self.__reviews.append(review)

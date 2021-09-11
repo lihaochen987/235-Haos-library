@@ -4,6 +4,7 @@ from typing import List
 import pytest
 
 from library.domain.model import Book, Author, Publisher, User
+from library.domain.model import leave_review
 from library.adapters.repository import RepositoryException
 
 # Testing for the book class
@@ -175,6 +176,11 @@ def test_repository_does_not_retrieve_a_non_existent_number_of_pages(in_memory_r
 
 # Testing for the User class
 
+@pytest.fixture()
+def user():
+    user = User('hli779', 'Somepassword123')
+    return user
+
 def test_repository_can_add_a_user(in_memory_repo):
     user = User('dave', '123456789')
     in_memory_repo.add_user(user)
@@ -189,3 +195,13 @@ def test_repository_can_retrieve_a_user(in_memory_repo):
 def test_repository_does_not_retrieve_a_non_existent_user(in_memory_repo):
     user = in_memory_repo.get_user('prince')
     assert user is None
+
+def test_repository_can_add_and_retrieve_reviews(in_memory_repo, user, book):
+    in_memory_repo.add_user(user)
+    in_memory_repo.add_book(book)
+
+    review = leave_review("Trump's onto it!", 5, user, book)
+    in_memory_repo.add_review(review)
+
+    assert review in in_memory_repo.get_reviews()
+    assert len(in_memory_repo.get_reviews()) == 1

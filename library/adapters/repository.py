@@ -110,14 +110,22 @@ class AbstractRepository(abc.ABC):
         raise NotImplementedError
 
     # Review methods
-    # @abc.abstractmethod
-    # def add_review(self, review:Review):
-    #     """
-    #     Adds a review to a book
-    #     User must be logged in to leave a review
-    #     User must leave a rating of between 1 to 5, the comment is optional
-    #     """
-    #     if review.user is None or review not in review.user.comments:
-    #         raise RepositoryException('Review not correctly attached to a User')
-    #     if review.book is None or review not in review.book.reviews:
-    #         raise RepositoryException('Review not correctly attached to a Book')
+
+    @abc.abstractmethod
+    def get_reviews(self):
+        """
+        Returns all reviews stored in the repository
+        """
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def add_review(self, review:Review):
+        """
+        Adds a review to a book
+        User must be logged in to leave a review
+        User must leave a rating of between 1 to 5, the comment is optional
+        """
+        if review.user is None or review not in review.user.reviews:
+            raise RepositoryException('Review not correctly attached to a User')
+        if review.book is None or review not in review.book.reviews:
+            raise RepositoryException('Review not correctly attached to a Book')
