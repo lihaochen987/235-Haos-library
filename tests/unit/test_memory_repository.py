@@ -7,6 +7,7 @@ from library.domain.model import Book, Author, Publisher, User
 from library.domain.model import leave_review
 from library.adapters.repository import RepositoryException
 
+
 # Testing for the book class
 @pytest.fixture()
 def book():
@@ -32,18 +33,22 @@ def test_repository_can_get_book_by_id(in_memory_repo, book):
 
     assert in_memory_repo.get_book_by_id(1) is book
 
+
 def test_repository_does_not_retrieve_a_non_existent_id(in_memory_repo):
     book = in_memory_repo.get_book_by_id(378434)
     assert book is None
+
 
 def test_repository_can_get_book_by_title(in_memory_repo, book):
     in_memory_repo.add_book(book)
 
     assert in_memory_repo.get_book_by_title("Harry Potter and the Chamber of Secrets")[0] is book
 
+
 def test_repository_does_not_retrieve_a_non_existent_title(in_memory_repo):
     book = in_memory_repo.get_book_by_title("uiasydiuasyuidsahiodsa")
     assert book is None
+
 
 def test_repository_can_get_books_with_same_title(in_memory_repo, book):
     in_memory_repo.add_book(book)
@@ -72,14 +77,17 @@ def test_repository_can_get_multiple_books_by_same_author(in_memory_repo, book):
     assert in_memory_repo.get_book_by_author("J. K. Rowling")[1] is another_book
     assert len(in_memory_repo.get_book_by_author("J. K. Rowling")) == 2
 
+
 def test_repository_does_not_retrieve_a_non_existent_author(in_memory_repo):
     book = in_memory_repo.get_book_by_author("uiasydiuasyuidsahiodsa")
     assert book is None
+
 
 def test_repository_can_get_book_by_publisher(in_memory_repo, book):
     in_memory_repo.add_book(book)
 
     assert in_memory_repo.get_book_by_publisher("Bloomsbury Publishing")[0] is book
+
 
 def test_repository_can_get_multiple_books_by_same_publisher(in_memory_repo, book):
     in_memory_repo.add_book(book)
@@ -93,6 +101,7 @@ def test_repository_can_get_multiple_books_by_same_publisher(in_memory_repo, boo
     assert in_memory_repo.get_book_by_publisher("Bloomsbury Publishing")[1] is another_book
     assert len(in_memory_repo.get_book_by_publisher("Bloomsbury Publishing")) == 2
 
+
 def test_repository_does_not_retrieve_a_non_existent_publisher(in_memory_repo):
     book = in_memory_repo.get_book_by_publisher("uiasydiuasyuidsahiodsa")
     assert book is None
@@ -102,6 +111,7 @@ def test_repository_can_get_book_by_release_year(in_memory_repo, book):
     in_memory_repo.add_book(book)
 
     assert in_memory_repo.get_book_by_release_year(1999)[0] is book
+
 
 def test_repository_can_get_multiple_books_by_release_year(in_memory_repo, book):
     in_memory_repo.add_book(book)
@@ -118,14 +128,17 @@ def test_repository_can_get_multiple_books_by_release_year(in_memory_repo, book)
     assert in_memory_repo.get_book_by_release_year(1999)[1] is another_book
     assert len(in_memory_repo.get_book_by_release_year(1999)) == 2
 
+
 def test_repository_does_not_retrieve_a_non_existent_release_year(in_memory_repo):
     book = in_memory_repo.get_book_by_author(4857949)
     assert book is None
+
 
 def test_repository_can_get_book_by_e_book_status(in_memory_repo, book):
     in_memory_repo.add_book(book)
 
     assert in_memory_repo.get_book_by_ebook_status(True)[0] is book
+
 
 def test_repository_can_get_multiple_books_by_e_book_status(in_memory_repo, book):
     in_memory_repo.add_book(book)
@@ -144,14 +157,17 @@ def test_repository_can_get_multiple_books_by_e_book_status(in_memory_repo, book
     assert in_memory_repo.get_book_by_ebook_status(False)[0] is some_book
     assert len(in_memory_repo.get_book_by_ebook_status(False)) == 1
 
+
 def test_repository_does_not_retrieve_a_non_existent_e_book_status(in_memory_repo):
     book = in_memory_repo.get_book_by_ebook_status(False)
     assert book is None
+
 
 def test_repository_can_get_book_by_number_of_pages(in_memory_repo, book):
     in_memory_repo.add_book(book)
 
     assert in_memory_repo.get_book_by_number_of_pages(500)[0] is book
+
 
 def test_repository_can_get_multiple_books_by_number_of_pages(in_memory_repo, book):
     in_memory_repo.add_book(book)
@@ -170,16 +186,18 @@ def test_repository_can_get_multiple_books_by_number_of_pages(in_memory_repo, bo
     assert len(in_memory_repo.get_book_by_number_of_pages(500)) == 2
     assert len(in_memory_repo.get_book_by_number_of_pages(350)) == 1
 
+
 def test_repository_does_not_retrieve_a_non_existent_number_of_pages(in_memory_repo):
     book = in_memory_repo.get_book_by_number_of_pages(28937498723984)
     assert book is None
 
-# Testing for the User class
 
+# Testing for the User class
 @pytest.fixture()
 def user():
     user = User('hli779', 'Somepassword123')
     return user
+
 
 def test_repository_can_add_a_user(in_memory_repo):
     user = User('dave', '123456789')
@@ -187,14 +205,17 @@ def test_repository_can_add_a_user(in_memory_repo):
 
     assert in_memory_repo.get_user('dave') is user
 
+
 def test_repository_can_retrieve_a_user(in_memory_repo):
     in_memory_repo.add_user(User('fmercury', '8734gfe2058v'))
     user = in_memory_repo.get_user('fmercury')
     assert user == User('fmercury', '8734gfe2058v')
 
+
 def test_repository_does_not_retrieve_a_non_existent_user(in_memory_repo):
     user = in_memory_repo.get_user('prince')
     assert user is None
+
 
 def test_repository_can_add_and_retrieve_reviews(in_memory_repo, user, book):
     in_memory_repo.add_user(user)
