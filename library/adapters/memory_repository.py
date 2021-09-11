@@ -45,3 +45,10 @@ class MemoryRepository(AbstractRepository):
                 if author.full_name == author_name:
                     books_list.append(book)
         return books_list
+
+    def get_book_by_publisher(self, publisher_name:str):
+        books_list = []
+        for book in self._books:
+                if book.publisher.name == publisher_name:
+                    books_list.append(book)
+        return books_list

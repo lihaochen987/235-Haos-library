@@ -3,7 +3,7 @@ from typing import List
 
 import pytest
 
-from library.domain.model import Book, Author
+from library.domain.model import Book, Author, Publisher
 from library.adapters.repository import RepositoryException
 
 
@@ -11,13 +11,16 @@ from library.adapters.repository import RepositoryException
 def book():
     some_book = Book(1, "Harry Potter and the Chamber of Secrets")
     some_author = Author(52, "J. K. Rowling")
+    some_publisher = Publisher("Bloomsbury Publishing")
     some_book.description = "Ever since Harry Potter had come home for the summer, the Dursleys had been so mean \
                          and hideous that all Harry wanted was to get back to the Hogwarts School for \
                          Witchcraft and Wizardry. But just as he’s packing his bags, Harry receives a \
                          warning from a strange impish creature who says that if Harry returns to Hogwarts, \
                          disaster will strike."
     some_book.release_year = 1999
+
     some_book.add_author(some_author)
+    some_book.publisher = some_publisher
     return some_book
 
 
@@ -59,3 +62,20 @@ def test_repository_can_get_multiple_books_by_same_author(in_memory_repo, book):
     assert in_memory_repo.get_book_by_author("J. K. Rowling")[0] is book
     assert in_memory_repo.get_book_by_author("J. K. Rowling")[1] is another_book
     assert len(in_memory_repo.get_book_by_author("J. K. Rowling")) == 2
+
+def test_repository_can_get_book_by_publisher(in_memory_repo, book):
+    in_memory_repo.add_book(book)
+
+    assert in_memory_repo.get_book_by_publisher("Bloomsbury Publishing")[0] is book
+
+def test_repository_can_get_multiple_books_by_same_publisher(in_memory_repo, book):
+    in_memory_repo.add_book(book)
+
+    another_book = Book(32, "Harry Potter and the Philosopher's Stone")
+    another_publisher = Publisher("Bloomsbury Publishing")
+    another_book.publisher = another_publisher
+    in_memory_repo.add_book(another_book)
+
+    assert in_memory_repo.get_book_by_publisher("Bloomsbury Publishing")[0] is book
+    assert in_memory_repo.get_book_by_publisher("Bloomsbury Publishing")[1] is another_book
+    assert len(in_memory_repo.get_book_by_publisher("Bloomsbury Publishing")) == 2

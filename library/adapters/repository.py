@@ -46,6 +46,10 @@ class AbstractRepository(abc.ABC):
         """ Gets book/s by specified author (NOT UNIQUE) """
         raise NotImplementedError
 
+    @abc.abstractmethod
+    def get_book_by_publisher(self, publisher_name:str):
+        """ Gets book/s by specified author (NOT UNIQUE) """
+        raise NotImplementedError
 
 
 
