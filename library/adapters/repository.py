@@ -2,7 +2,7 @@ import abc
 from typing import List
 from datetime import date
 
-from library.domain.model import Book, Author, User
+from library.domain.model import Book, User, Review
 
 repo_instance = None
 
@@ -108,3 +108,13 @@ class AbstractRepository(abc.ABC):
         If there is no User with the given user_name, this method returns None.
         """
         raise NotImplementedError
+
+    # Review methods
+    # @abc.abstractmethod
+    # def add_review(self, review:Review):
+    #     """
+    #     Adds a review to a book
+    #     User must be logged in to leave a review
+    #     User must leave a rating of between 1 to 5, the comment is optional
+    #     """
+    #     if review.
