@@ -1,6 +1,9 @@
 """Initialize Flask app."""
 
 from flask import Flask, render_template
+from pathlib import Path
+import library.adapters.repository as repo
+from library.adapters.memory_repository import MemoryRepository, populate
 
 # TODO: Access to the books should be implemented via the repository pattern and using blueprints, so this can not stay here!
 from library.domain.model import Book
@@ -25,5 +28,9 @@ def create_app():
         some_book = create_some_book()
         # Use Jinja to customize a predefined html page rendering the layout for showing a single book.
         return render_template('simple_book.html', book=some_book)
+
+    data_path = Path('Library') / 'adapters'/ 'data'
+    repo.repo_instance = MemoryRepository()
+    populate(data_path, repo.repo_instance)
 
     return app

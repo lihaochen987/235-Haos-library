@@ -26,6 +26,10 @@ class MemoryRepository(AbstractRepository):
             self._current += 1
             return self._books[self._current - 1]
 
+    # Function for testing purposes
+    def get_books(self):
+        return self._books
+
     # Book functions
     def add_book(self, book: Book):
         self._books.append(book)
@@ -83,6 +87,21 @@ class MemoryRepository(AbstractRepository):
     def get_reviews(self):
         return self.__reviews
 
-    def add_review(self, review:Review):
+    def add_review(self, review: Review):
         super().add_review(review)
         self.__reviews.append(review)
+
+
+# Populate repo
+
+def load_books(data_path: Path, repo: MemoryRepository):
+    books_filename = str(data_path / "comic_books_excerpt.json")
+    authors_filename = str(data_path / "book_authors_excerpt.json")
+    reader = BooksJSONReader(books_filename, authors_filename)
+    reader.read_json_files()
+    return reader.dataset_of_books
+
+def populate(data_path: Path, repo: MemoryRepository):
+    books = load_books(data_path, repo)
+    for book in books:
+        repo.add_book(book)

@@ -5,6 +5,7 @@ import pytest
 
 from library.domain.model import Book, Author, Publisher, User
 from library.domain.model import leave_review
+
 from library.adapters.repository import RepositoryException
 
 
@@ -137,30 +138,24 @@ def test_repository_does_not_retrieve_a_non_existent_release_year(in_memory_repo
 def test_repository_can_get_book_by_e_book_status(in_memory_repo, book):
     in_memory_repo.add_book(book)
 
-    assert in_memory_repo.get_book_by_ebook_status(True)[0] is book
+    assert in_memory_repo.get_book_by_ebook_status(True)[-1] is book
 
 
 def test_repository_can_get_multiple_books_by_e_book_status(in_memory_repo, book):
     in_memory_repo.add_book(book)
+    assert in_memory_repo.get_book_by_ebook_status(True)[-1] is book
 
     another_book = Book(23, "The Reptile Room")
     another_book.ebook = True
     in_memory_repo.add_book(another_book)
 
+    assert in_memory_repo.get_book_by_ebook_status(True)[-1] is another_book
+
     some_book = Book(32, "Harry Potter and the Philosopher's Stone")
     some_book.ebook = False
     in_memory_repo.add_book(some_book)
 
-    assert in_memory_repo.get_book_by_ebook_status(True)[0] is book
-    assert in_memory_repo.get_book_by_ebook_status(True)[1] is another_book
-    assert len(in_memory_repo.get_book_by_ebook_status(True)) == 2
-    assert in_memory_repo.get_book_by_ebook_status(False)[0] is some_book
-    assert len(in_memory_repo.get_book_by_ebook_status(False)) == 1
-
-
-def test_repository_does_not_retrieve_a_non_existent_e_book_status(in_memory_repo):
-    book = in_memory_repo.get_book_by_ebook_status(False)
-    assert book is None
+    assert in_memory_repo.get_book_by_ebook_status(False)[-1] is some_book
 
 
 def test_repository_can_get_book_by_number_of_pages(in_memory_repo, book):
@@ -226,3 +221,7 @@ def test_repository_can_add_and_retrieve_reviews(in_memory_repo, user, book):
 
     assert review in in_memory_repo.get_reviews()
     assert len(in_memory_repo.get_reviews()) == 1
+
+
+def test_repository_can_populate(in_memory_repo):
+    print(in_memory_repo.get_books())

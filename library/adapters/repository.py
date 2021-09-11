@@ -29,6 +29,14 @@ class AbstractRepository(abc.ABC):
         """
         raise NotImplementedError
 
+    # Methods for testing purposes
+    @abc.abstractmethod
+    def get_books(self):
+        """
+        Gets all books from the repository
+        """
+        raise NotImplementedError
+
     # Book methods
     @abc.abstractmethod
     def add_book(self, book: Book):
