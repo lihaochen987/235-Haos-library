@@ -79,3 +79,23 @@ def test_repository_can_get_multiple_books_by_same_publisher(in_memory_repo, boo
     assert in_memory_repo.get_book_by_publisher("Bloomsbury Publishing")[0] is book
     assert in_memory_repo.get_book_by_publisher("Bloomsbury Publishing")[1] is another_book
     assert len(in_memory_repo.get_book_by_publisher("Bloomsbury Publishing")) == 2
+
+def test_repository_can_get_book_by_release_year(in_memory_repo, book):
+    in_memory_repo.add_book(book)
+
+    assert in_memory_repo.get_book_by_release_year(1999)[0] is book
+
+def test_repository_can_get_multiple_books_by_release_year(in_memory_repo, book):
+    in_memory_repo.add_book(book)
+
+    another_book = Book(23, "The Reptile Room")
+    another_book.release_year = 1999
+    in_memory_repo.add_book(another_book)
+
+    some_book = Book(32, "Harry Potter and the Philosopher's Stone")
+    some_book.release_year = 1997
+    in_memory_repo.add_book(some_book)
+
+    assert in_memory_repo.get_book_by_release_year(1999)[0] is book
+    assert in_memory_repo.get_book_by_release_year(1999)[1] is another_book
+    assert len(in_memory_repo.get_book_by_release_year(1999)) == 2

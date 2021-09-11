@@ -52,3 +52,10 @@ class MemoryRepository(AbstractRepository):
                 if book.publisher.name == publisher_name:
                     books_list.append(book)
         return books_list
+
+    def get_book_by_release_year(self, year:int):
+        books_list = []
+        for book in self._books:
+            if book.release_year == year:
+                books_list.append(book)
+        return books_list

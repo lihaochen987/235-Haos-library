@@ -51,6 +51,10 @@ class AbstractRepository(abc.ABC):
         """ Gets book/s by specified author (NOT UNIQUE) """
         raise NotImplementedError
 
+    @abc.abstractmethod
+    def get_book_by_release_year(self, year:int):
+        """ Gets book/s by specified release year (NOT UNIQUE) """
+        raise NotImplementedError
 
 
 
