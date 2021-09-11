@@ -2,7 +2,7 @@ import abc
 from typing import List
 from datetime import date
 
-from library.domain.model import Book
+from library.domain.model import Book, Author
 
 
 repo_instance = None
@@ -38,7 +38,12 @@ class AbstractRepository(abc.ABC):
 
     @abc.abstractmethod
     def get_book_by_title(self, title:str):
-        """ Gets a book by specified title (NOT UNIQUE) """
+        """ Gets book/s by specified title (NOT UNIQUE) """
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def get_book_by_author(self, author_name:str):
+        """ Gets book/s by specified author (NOT UNIQUE) """
         raise NotImplementedError
 
 

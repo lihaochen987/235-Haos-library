@@ -32,8 +32,16 @@ class MemoryRepository(AbstractRepository):
                 return book
 
     def get_book_by_title(self, title:str):
-        title_list = []
+        books_list = []
         for book in self._books:
             if book.title == title:
-                title_list.append(book)
-        return title_list
+                books_list.append(book)
+        return books_list
+
+    def get_book_by_author(self, author_name:str):
+        books_list = []
+        for book in self._books:
+            for author in book.authors:
+                if author.full_name == author_name:
+                    books_list.append(book)
+        return books_list
