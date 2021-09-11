@@ -30,53 +30,49 @@ class MemoryRepository(AbstractRepository):
         self._books.append(book)
 
     def get_book_by_id(self, id: int):
-        for book in self._books:
-            if book.book_id == id:
-                return book
+        return next((book for book in self._books if book.book_id == id), None)
 
-    def get_book_by_title(self, title:str):
-        books_list = []
-        for book in self._books:
-            if book.title == title:
-                books_list.append(book)
+    def get_book_by_title(self, title: str):
+        books_list = [book for book in self._books if book.title == title]
+        if books_list == []:
+            return None
         return books_list
 
-    def get_book_by_author(self, author_name:str):
+    def get_book_by_author(self, author_name: str):
         books_list = []
         for book in self._books:
             for author in book.authors:
                 if author.full_name == author_name:
                     books_list.append(book)
+        if books_list == []:
+            return None
         return books_list
 
-    def get_book_by_publisher(self, publisher_name:str):
-        books_list = []
-        for book in self._books:
-                if book.publisher.name == publisher_name:
-                    books_list.append(book)
+    def get_book_by_publisher(self, publisher_name: str):
+        books_list = [book for book in self._books if book.publisher.name == publisher_name]
+        if books_list == []:
+            return None
         return books_list
 
-    def get_book_by_release_year(self, year:int):
-        books_list = []
-        for book in self._books:
-            if book.release_year == year:
-                books_list.append(book)
+    def get_book_by_release_year(self, year: int):
+        books_list = [book for book in self._books if book.release_year == year]
+        if books_list == []:
+            return None
         return books_list
 
-    def get_book_by_ebook_status(self, e_book_status:bool):
-        books_list = []
-        for book in self._books:
-            if book.ebook == e_book_status:
-                books_list.append(book)
+    def get_book_by_ebook_status(self, e_book_status: bool):
+        books_list = [book for book in self._books if book.ebook == e_book_status]
+        if books_list == []:
+            return None
         return books_list
 
-    def get_book_by_number_of_pages(self, pages:int):
-        books_list = []
-        for book in self._books:
-            if book.num_pages == pages:
-                books_list.append(book)
+    def get_book_by_number_of_pages(self, pages: int):
+        books_list = [book for book in self._books if book.num_pages == pages]
+        if books_list == []:
+            return None
         return books_list
 
+    # User functions
     def add_user(self, user: User):
         self.__users.append(user)
 
