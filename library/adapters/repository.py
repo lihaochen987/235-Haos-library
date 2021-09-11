@@ -62,5 +62,9 @@ class AbstractRepository(abc.ABC):
         """ Gets book/s by specified e_book status (NOT UNIQUE) """
         raise NotImplementedError
 
+    @abc.abstractmethod
+    def get_book_by_number_of_pages(self, pages:int):
+        """ Gets book/s by specified number of pages (NOT UNIQUE) """
+        raise NotImplementedError
 
 

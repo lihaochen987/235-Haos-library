@@ -67,3 +67,10 @@ class MemoryRepository(AbstractRepository):
             if book.ebook == e_book_status:
                 books_list.append(book)
         return books_list
+
+    def get_book_by_number_of_pages(self, pages:int):
+        books_list = []
+        for book in self._books:
+            if book.num_pages == pages:
+                books_list.append(book)
+        return books_list
