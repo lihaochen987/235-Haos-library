@@ -1,16 +1,19 @@
 from library.adapters.repository import AbstractRepository
 from library.adapters.jsondatareader import BooksJSONReader
 from typing import List
-from library.domain.model import Book, User, Review
+from library.domain.model import Book, User, Review, Author
 from pathlib import Path
 
 
 class MemoryRepository(AbstractRepository):
     def __init__(self, *args):
         self._books: List[Book] = list()
+        self._authors: List[Author] = list()
 
         for book in args:
             self._books.append(book)
+            for author in book.authors:
+                self._authors.append(author)
 
         self.__users = list()
         self.__reviews = list()
