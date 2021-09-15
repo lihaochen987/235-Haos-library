@@ -20,3 +20,6 @@ def test_can_add_review(in_memory_repo):
     assert next(
         (dictionary['review_text'] for dictionary in reviews_as_dict if dictionary['review_text'] == review_text),
         None) is not None
+
+def test_can_get_book_by_id(in_memory_repo):
+    assert str(book_services.get_book_by_id(11827783, in_memory_repo)) == '<Book Sherlock Holmes: Year One, book id = 11827783>'

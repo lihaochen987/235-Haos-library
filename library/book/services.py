@@ -11,6 +11,9 @@ class NonExistentBookException(Exception):
 class UnknownUserException(Exception):
     pass
 
+def get_book_by_id(book_id: int, repo: AbstractRepository):
+    book = repo.get_book_by_id(book_id)
+    return book
 
 def add_review(book_id: int, review_rating: int, comment_text: str, user_name: str, repo: AbstractRepository):
     # Check that Book exists.
