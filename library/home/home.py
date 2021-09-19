@@ -7,10 +7,11 @@ home_blueprint = Blueprint(
     'home_bp', __name__)
 
 
-@home_blueprint.route('/', methods=['GET'])
+@home_blueprint.route('/')
 def home():
     return render_template(
         'home/home.html',
-        selected_articles=utilities.get_selected_articles(),
-        tag_urls=utilities.get_tags_and_urls()
+        find_book_by_id_url=url_for('book_bp.find_book_by_id'),
+        find_book_by_author_url=url_for('book_bp.find_book_by_author'),
+        list_books_url=url_for('book_bp.list_books')
     )
