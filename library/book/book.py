@@ -4,7 +4,7 @@ from wtforms import IntegerField, SubmitField, StringField, SelectField
 from wtforms.validators import DataRequired
 
 import library.book.services as services
-import library.adapters.repository as repo
+import library.adapters.memory_repository as repo
 
 book_blueprint = Blueprint(
     'book_bp', __name__

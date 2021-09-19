@@ -1,2 +1,4 @@
 pytest
 Flask==1.1.4
+password-validator==1.0
+better-profanity==0.7.0

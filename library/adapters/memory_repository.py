@@ -112,8 +112,8 @@ def read_csv_file(filename: str):
             yield row
 
 def load_books(data_path: Path, repo: MemoryRepository):
-    books_filename = str(data_path / "comic_books_excerpt.json")
-    authors_filename = str(data_path / "book_authors_excerpt.json")
+    books_filename = str(Path(data_path) / "comic_books_excerpt.json")
+    authors_filename = str(Path(data_path) / "book_authors_excerpt.json")
     reader = BooksJSONReader(books_filename, authors_filename)
     reader.read_json_files()
     for book in reader.dataset_of_books:

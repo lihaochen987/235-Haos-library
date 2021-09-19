@@ -20,11 +20,21 @@ def create_some_book():
     return some_book
 
 
-def create_app():
+def create_app(test_config = None):
     app = Flask(__name__)
 
+    # Configure the app from configuration-file settings.
+    app.config.from_object('config.Config')
     data_path = Path('library') / 'adapters'/ 'data'
+
+    if test_config is not None:
+        # Load test configuration, and override any configuration settings.
+        app.config.from_mapping(test_config)
+        data_path = app.config['TEST_DATA_PATH']
+
+    # Create the MemoryRepository implementation for a memory-based repository.
     repo.repo_instance = MemoryRepository()
+    # fill the content of the repository from the provided csv files
     populate(data_path, repo.repo_instance)
 
     with app.app_context():
@@ -32,5 +42,7 @@ def create_app():
         app.register_blueprint(home.home_blueprint)
         from .book import book
         app.register_blueprint(book.book_blueprint)
+        from .authentication import authentication
+        app.register_blueprint(authentication.authentication_blueprint)
 
     return app
