@@ -1,0 +1,23 @@
+<header id="header">
+    <h1><a href="/">Our Books</a></h1>
+    <nav class="links">
+        <ul>
+            <li><a href="{{ find_book_by_id_url }}">Find book by ID</a></li>
+            <li><a href="{{ find_book_by_author_url}}">Find book by Author</a></li>
+            <li><a href="{{ list_books_url }}">List all books</a></li>
+        </ul>
+    </nav>
+    <nav class="main">
+        <ul>
+            <li class="search">
+                <a class="fa-search" href="#search">Search</a>
+                <form id="search" method="get" action="#">
+                    <input type="text" name="query" placeholder="Search"/>
+                </form>
+            </li>
+            <li class="menu">
+                <a class="fa-bars" href="#menu">Menu</a>
+            </li>
+        </ul>
+    </nav>
+</header>

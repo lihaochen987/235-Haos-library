@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+{% include 'header.html' %}
+<body>
+<div>
+    {% include 'navigation.html' %}
+</div>
+<div>
+    {% block content %}
+    {% endblock %}
+</div>
+
+<div>
+    {% include 'footer.html' %}
+</div>
+</body>
+</html>
