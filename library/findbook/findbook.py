@@ -17,8 +17,6 @@ def initialise_forms():
 def render_page(id_form, author_form, publisher_form, release_form):
     return render_template(
         'findbook/findbook.html',
-        register_url=url_for('authentication_bp.register'),
-        login_url=url_for('authentication_bp.login'),
         id_form=id_form,
         author_form=author_form,
         publisher_form = publisher_form,
@@ -45,8 +43,6 @@ def find_book_by_id():
             return render_template(
                 'findbook/displaybooks.html',
                 books=services.get_book_by_id(id_form.book_id.data, repo.repo_instance),
-                register_url=url_for('authentication_bp.register'),
-                login_url=url_for('authentication_bp.login'),
                 id_form=id_form,
                 publisher_form=publisher_form,
                 release_form=release_form,
@@ -67,8 +63,6 @@ def find_book_by_author():
             return render_template(
                 'findbook/displaybooks.html',
                 books=services.get_book_by_author(author_form.book_author.data, repo.repo_instance),
-                register_url=url_for('authentication_bp.register'),
-                login_url=url_for('authentication_bp.login'),
                 id_form=id_form,
                 publisher_form=publisher_form,
                 release_form=release_form,
@@ -88,8 +82,6 @@ def find_book_by_publisher():
             return render_template(
                 'findbook/displaybooks.html',
                 books=services.get_book_by_publisher(publisher_form.book_publisher.data, repo.repo_instance),
-                register_url=url_for('authentication_bp.register'),
-                login_url=url_for('authentication_bp.login'),
                 id_form=id_form,
                 publisher_form=publisher_form,
                 release_form=release_form,
@@ -109,8 +101,6 @@ def find_book_by_release_year():
             return render_template(
                 'findbook/displaybooks.html',
                 books=services.get_book_by_release_year(release_form.book_year.data, repo.repo_instance),
-                register_url=url_for('authentication_bp.register'),
-                login_url=url_for('authentication_bp.login'),
                 id_form=id_form,
                 publisher_form=publisher_form,
                 release_form = release_form,

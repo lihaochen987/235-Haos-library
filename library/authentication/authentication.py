@@ -42,7 +42,6 @@ def register():
         handler_url=url_for('authentication_bp.register'),
         register_url=url_for('authentication_bp.register'),
         login_url=url_for('authentication_bp.login'),
-        find_book_url=url_for('findbook_bp.find_book'),
     )
 
 
@@ -83,7 +82,6 @@ def login():
         form=form,
         register_url=url_for('authentication_bp.register'),
         login_url=url_for('authentication_bp.login'),
-        find_book_url=url_for('findbook_bp.find_book'),
     )
 
 
