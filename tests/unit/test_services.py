@@ -28,7 +28,7 @@ def test_can_add_review(in_memory_repo):
 def test_can_get_book_by_id(in_memory_repo):
     assert str(find_book_services.get_book_by_id(834987324897934759, in_memory_repo)) == 'None'
     assert str(find_book_services.get_book_by_id(11827783,
-                                            in_memory_repo)) == '<Book Sherlock Holmes: Year One, book id = 11827783>'
+                                            in_memory_repo)[0]) == '<Book Sherlock Holmes: Year One, book id = 11827783>'
 
 
 def test_can_get_book_by_author(in_memory_repo):
