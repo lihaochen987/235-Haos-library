@@ -26,12 +26,12 @@
     </div>
 
         <div>
-        <form method="POST" action="{{url_for('findbook_bp.find_book_by_publisher')}}">
-            {{publisher_form.csrf_token}}
+        <form method="POST" action="{{url_for('findbook_bp.find_book_by_release_year')}}">
+            {{release_form.csrf_token}}
             <div>
-                {{publisher_form.book_publisher.label}} {{publisher_form.book_publisher}}
+                {{release_form.book_year.label}} {{release_form.book_year}}
             </div>
-            {{publisher_form.submit}}
+            {{release_form.submit}}
         </form>
     </div>
 
