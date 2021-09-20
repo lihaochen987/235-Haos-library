@@ -16,7 +16,7 @@
     </div>
 
     <div>
-        <form method="POST" action="{{handler_url}}">
+        <form method="POST" action="{{url_for('findbook_bp.find_book_by_author')}}">
             {{author_form.csrf_token}}
             <div>
                 {{author_form.book_author.label}} {{author_form.book_author}}

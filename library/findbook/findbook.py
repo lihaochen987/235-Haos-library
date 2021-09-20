@@ -18,7 +18,7 @@ def find_book():
     return render_template('findbook/findbook.html', id_form=id_form, author_form=author_form)
 
 
-@findbook_blueprint.route('/find_book_by_id', methods=['GET', 'POST'] )
+@findbook_blueprint.route('/find_book_by_id', methods=['GET', 'POST'])
 def find_book_by_id():
     id_form = IdSearchForm()
     author_form = AuthorSearchForm()
@@ -28,28 +28,52 @@ def find_book_by_id():
             return render_template(
                 'findbook/findbook.html',
                 id_form=id_form,
-                author_form = author_form,
+                author_form=author_form,
+
                 find_book_url=url_for('findbook_bp.find_book'),
-                find_book_by_id_url=url_for('findbook_bp.find_book'),
-                handler_url=url_for('findbook_bp.find_book')
             )
         else:
             return render_template(
                 'findbook/displaybooks.html',
                 books=services.get_book_by_id(id_form.book_id.data, repo.repo_instance),
-                id_form = id_form,
-                author_form = author_form
+                id_form=id_form,
+                author_form=author_form
             )
     else:
         return render_template(
             'findbook/findbook.html',
             id_form=id_form,
-            author_form = author_form,
+            author_form=author_form,
             find_book_url=url_for('findbook_bp.find_book'),
-            find_book_by_id_url=url_for('findbook_bp.find_book'),
-            handler_url=url_for('findbook_bp.find_book')
         )
 
+@findbook_blueprint.route('/find_book_by_author', methods=['GET', 'POST'])
+def find_book_by_author():
+    id_form = IdSearchForm()
+    author_form = AuthorSearchForm()
+
+    if author_form.validate_on_submit():
+        if (services.get_book_by_author(author_form.book_author.data, repo.repo_instance) == None):
+            return render_template(
+                'findbook/findbook.html',
+                id_form=id_form,
+                author_form=author_form,
+                find_book_url=url_for('findbook_bp.find_book'),
+            )
+        else:
+            return render_template(
+                'findbook/displaybooks.html',
+                books=services.get_book_by_author(author_form.book_author.data, repo.repo_instance),
+                id_form=id_form,
+                author_form=author_form
+            )
+    else:
+        return render_template(
+            'findbook/findbook.html',
+            id_form=id_form,
+            author_form=author_form,
+            find_book_url=url_for('findbook_bp.find_book'),
+        )
 
 # @findbook_blueprint.route('/find_book', methods=['GET', 'POST'])
 # def find_book():
