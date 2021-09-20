@@ -14,7 +14,5 @@ def home():
         'home/home.html',
         register_url = url_for('authentication_bp.register'),
         login_url = url_for('authentication_bp.login'),
-        find_book_by_id_url=url_for('book_bp.find_book_by_id'),
-        find_book_by_author_url=url_for('book_bp.find_book_by_author'),
-        list_books_url=url_for('book_bp.list_books')
+        find_book_url=url_for('findbook_bp.find_book'),
     )
