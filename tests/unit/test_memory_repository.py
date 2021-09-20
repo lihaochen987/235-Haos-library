@@ -32,7 +32,7 @@ def book():
 def test_repository_can_get_book_by_id(in_memory_repo, book):
     in_memory_repo.add_book(book)
 
-    assert in_memory_repo.get_book_by_id(1) is book
+    assert in_memory_repo.get_book_by_id(1)[0] is book
 
 
 def test_repository_does_not_retrieve_a_non_existent_id(in_memory_repo):
@@ -227,5 +227,5 @@ def test_repository_can_populate(in_memory_repo):
     assert len(in_memory_repo.get_books()) == 20
 
 def test_repository_populate_books_are_linked_with_authors(in_memory_repo):
-    book = in_memory_repo.get_book_by_id(18955715)
+    book = in_memory_repo.get_book_by_id(18955715)[0]
     assert str(book.authors) == '[<Author Katsura Hoshino, author id = 311098>]'

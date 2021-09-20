@@ -3,7 +3,29 @@
 {% block content %}
 
 <main>
-<h1> Hello! </h1>
+
+
+    <div>
+        <form method="POST" action="{{url_for('findbook_bp.find_book_by_id')}}">
+            {{id_form.csrf_token}}
+            <div>
+                {{id_form.book_id.label}} {{id_form.book_id}}
+            </div>
+            {{id_form.submit}}
+        </form>
+    </div>
+
+    <div>
+        <form method="POST" action="{{handler_url}}">
+            {{author_form.csrf_token}}
+            <div>
+                {{author_form.book_author.label}} {{author_form.book_author}}
+            </div>
+            {{author_form.submit}}
+        </form>
+    </div>
+
+
 </main>
 
 {% endblock %}

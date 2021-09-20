@@ -40,7 +40,10 @@ class MemoryRepository(AbstractRepository):
         self._books.append(book)
 
     def get_book_by_id(self, id: int):
-        return next((book for book in self._books if book.book_id == id), None)
+        books_list = [book for book in self._books if book.book_id == id]
+        if books_list == []:
+            return None
+        return books_list
 
     def get_book_by_title(self, title: str):
         books_list = [book for book in self._books if book.title == title]

@@ -13,8 +13,10 @@ class UnknownUserException(Exception):
 
 
 def get_book_by_id(book_id: int, repo: AbstractRepository):
-    book = repo.get_book_by_id(book_id)
-    return book
+    books = repo.get_book_by_id(book_id)
+    if books == None:
+        return None
+    return books[0]
 
 
 def get_book_by_title(book_title: str, repo: AbstractRepository):

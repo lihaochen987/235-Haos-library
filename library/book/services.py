@@ -13,8 +13,8 @@ class UnknownUserException(Exception):
 
 def add_review(book_id: int, review_rating: int, comment_text: str, user_name: str, repo: AbstractRepository):
     # Check that Book exists.
-    book = repo.get_book_by_id(book_id)
-    if book is None:
+    books = repo.get_book_by_id(book_id)
+    if len(books) == 0:
         raise NonExistentBookException
 
     user = repo.get_user(user_name)
@@ -22,7 +22,7 @@ def add_review(book_id: int, review_rating: int, comment_text: str, user_name: s
         raise UnknownUserException
 
     # Create Review
-    review = leave_review(comment_text, review_rating, user, book)
+    review = leave_review(comment_text, review_rating, user, books[0])
 
     # Update the repository
     repo.add_review(review)
@@ -31,10 +31,10 @@ def add_review(book_id: int, review_rating: int, comment_text: str, user_name: s
 def get_reviews_for_book(book_id: int, repo: AbstractRepository):
     book = repo.get_book_by_id(book_id)
 
-    if book is None:
+    if len(book) == 0:
         raise NonExistentBookException
 
-    return reviews_to_dict(book.reviews)
+    return reviews_to_dict(book[0].reviews)
 
 
 # ============================================
