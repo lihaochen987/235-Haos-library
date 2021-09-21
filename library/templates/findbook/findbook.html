@@ -16,6 +16,16 @@
     </div>
 
     <div>
+        <form method="POST" action="{{url_for('findbook_bp.find_book_by_title')}}">
+            {{title_form.csrf_token}}
+            <div>
+                {{title_form.book_title.label}} {{title_form.book_title}}
+            </div>
+            {{title_form.submit}}
+        </form>
+    </div>
+
+    <div>
         <form method="POST" action="{{url_for('findbook_bp.find_book_by_author')}}">
             {{author_form.csrf_token}}
             <div>
