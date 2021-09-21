@@ -9,3 +9,4 @@ import library.adapters.repository as repo
 book_blueprint = Blueprint(
     'book_bp', __name__
 )
+

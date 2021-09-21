@@ -14,19 +14,23 @@
                         {{ author.full_name + "," }}
                         {% endfor %}
                     </p>
+                    <h4 style="font-weight:normal;">{{book.description}}</h4>
                 </div>
                 <div class="meta">
                     <time class="published" style="text-align:center;">Release year: {{ book.release_year }}</time>
-                    <a href="single.html" class="image featured" style="image-align:center;"><img src="{{book.image_url}}"
-                                                                                        alt=""/></a>
+                    <a href="single.html" class="image featured" style="image-align:center;"><img
+                            src="{{book.image_url}}"
+                            alt=""/></a>
                 </div>
             </header>
-            <p>{{book.description}}</p>
-            <footer>
-                <ul class="actions">
-                    <li><a href="single.html" class="button large">View Reviews</a></li>
-                </ul>
-            </footer>
+            <h1>Book Reviews:</h1>
+            {% for review in book.reviews %}
+            <p>{{ review }}</p>
+            {% endfor %}
+
+            <ul class="actions">
+                <li><a href="single.html" class="button large">Add a Review</a></li>
+            </ul>
         </article>
     </div>
     {% endfor %}
