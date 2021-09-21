@@ -1,10 +1,11 @@
-from flask import Blueprint, render_template, url_for, request
+from flask import Blueprint, render_template, url_for
 from flask_wtf import FlaskForm
-from wtforms import IntegerField, SubmitField, StringField, SelectField
-from wtforms.validators import DataRequired
+from wtforms import IntegerField, SubmitField, StringField, TextAreaField, HiddenField
+from wtforms.validators import DataRequired, Length
+from better_profanity import profanity
 
-import library.findbook.services as services
 import library.adapters.repository as repo
+import library.findbook.services as services
 
 findbook_blueprint = Blueprint(
     'findbook_bp', __name__
@@ -152,3 +153,23 @@ class EbookSearchForm(FlaskForm):
 class TitleSearchForm(FlaskForm):
     book_title = StringField("Book title", [DataRequired()])
     submit = SubmitField("Find by Book Title")
+
+
+class ProfanityFree:
+    def __init__(self, message=None):
+        if not message:
+            message = u'Field must not contain profanity'
+        self.message = message
+
+    def __call__(self, form, field):
+        if profanity.contains_profanity(field.data):
+            raise ValidationError(self.message)
+
+
+class ReviewForm(FlaskForm):
+    review = TextAreaField('Review', [
+        DataRequired(),
+        Length(min=4, message='Your comment is too short'),
+        ProfanityFree(message='Your comment must not contain profanity')])
+    book_id = HiddenField("Book ID")
+    submit = SubmitField('Submit Review')

@@ -14,10 +14,10 @@ def test_can_add_review(in_memory_repo):
     user_name = "fmercury"
 
     # Call the service layer to add the comment
-    book_services.add_review(book_id, review_rating, review_text, user_name, in_memory_repo)
+    find_book_services.add_review(book_id, review_rating, review_text, user_name, in_memory_repo)
 
     # Retrieve the comments for the book from the repository
-    reviews_as_dict = book_services.get_reviews_for_book(book_id, in_memory_repo)
+    reviews_as_dict = find_book_services.get_reviews_for_book(book_id, in_memory_repo)
 
     # Check that reviews include a review with the new review text
     assert next(

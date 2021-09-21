@@ -70,22 +70,3 @@ def add_book_review():
         selected_articles=utilities.get_selected_articles(),
         tag_urls=utilities.get_tags_and_urls()
     )
-
-class ProfanityFree:
-    def __init__(self, message=None):
-        if not message:
-            message = u'Field must not contain profanity'
-        self.message = message
-
-    def __call__(self, form, field):
-        if profanity.contains_profanity(field.data):
-            raise ValidationError(self.message)
-
-
-class ReviewForm(FlaskForm):
-    review = TextAreaField('Review', [
-        DataRequired(),
-        Length(min=4, message='Your comment is too short'),
-        ProfanityFree(message='Your comment must not contain profanity')])
-    book_id = HiddenField("Book ID")
-    submit = SubmitField('Submit Review')
