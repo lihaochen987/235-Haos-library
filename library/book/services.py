@@ -1,7 +1,7 @@
-from typing import List, Iterable
+from typing import Iterable
 
 from library.adapters.repository import AbstractRepository
-from library.domain.model import leave_review, Review, Book
+from library.domain.model import leave_review, Review, Book, Author
 
 
 class NonExistentBookException(Exception):
@@ -41,6 +41,18 @@ def get_reviews_for_book(book_id: int, repo: AbstractRepository):
 # Functions to convert model entities to dicts
 # ============================================
 
+def author_to_dict(author: Author):
+    author_dict = {
+        'unique_id': author.unique_id,
+        'full_name': author.full_name
+    }
+    return author_dict
+
+
+def authors_to_dict(authors: Iterable[Author]):
+    return [author_to_dict(author) for author in authors]
+
+
 def review_to_dict(review: Review):
     review_dict = {
         'user_name': review.user.user_name,
@@ -54,3 +66,23 @@ def review_to_dict(review: Review):
 
 def reviews_to_dict(reviews: Iterable[Review]):
     return [review_to_dict(review) for review in reviews]
+
+
+def book_to_dict(book: Book):
+    book_dict = {
+        'book_id': book.book_id,
+        'title': book.title,
+        'image_url': book.image_url,
+        'description': book.description,
+        'publisher': book.publisher,
+        'release_year': book.release_year,
+        'ebook': book.ebook,
+        'num_pages': book.num_pages,
+        'reviews': reviews_to_dict(book.reviews),
+        'tags': authors_to_dict(book.authors)
+    }
+    return book_dict
+
+
+def books_to_dict(articles: Iterable[Book]):
+    return [book_to_dict(article) for article in articles]
