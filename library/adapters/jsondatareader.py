@@ -31,7 +31,6 @@ class BooksJSONReader:
                 authors_json.append(author_entry)
         return authors_json
 
-
     def read_json_files(self):
         authors_json = self.read_authors_file()
         books_json = self.read_books_file()
@@ -47,8 +46,14 @@ class BooksJSONReader:
                 if book_json['is_ebook'].lower() == 'true':
                     book_instance.ebook = True
             book_instance.description = book_json['description']
+
             if book_json['num_pages'] != "":
                 book_instance.num_pages = int(book_json['num_pages'])
+
+            if book_json['image_url'] != "":
+                book_instance.image_url = book_json['image_url']
+            else:
+                book_instance.image_url = "https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png"
 
             # extract the author ids:
             list_of_authors_ids = book_json['authors']

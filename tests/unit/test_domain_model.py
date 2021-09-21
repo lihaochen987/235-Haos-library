@@ -474,6 +474,10 @@ class TestBooksJSONReader:
         dataset_of_books = read_books_and_authors
         assert dataset_of_books[17].title == "續．星守犬"
 
+    def test_read_image_url_from_books(self, read_books_and_authors):
+        dataset_of_books = read_books_and_authors
+        assert dataset_of_books[1].image_url == "https://images.gr-assets.com/books/1462644346m/30128855.jpg"
+        assert dataset_of_books[17].image_url == "https://images.gr-assets.com/books/1382506435m/18711343.jpg"
 
 class TestBooksInventory:
 

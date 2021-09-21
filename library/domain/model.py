@@ -115,6 +115,7 @@ class Book:
         # use the attribute setter
         self.title = book_title
 
+        self.__image_url = None
         self.__description = None
         self.__publisher = None
         self.__authors = []
@@ -161,6 +162,15 @@ class Book:
     def description(self, description: str):
         if isinstance(description, str):
             self.__description = description.strip()
+
+    @property
+    def image_url(self) -> str:
+        return self.__image_url
+
+    @image_url.setter
+    def image_url(self, image_url:str):
+        if isinstance(image_url, str):
+            self.__image_url = image_url.strip()
 
     @property
     def publisher(self) -> Publisher:
