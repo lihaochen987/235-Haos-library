@@ -99,7 +99,7 @@ class IdSearchForm(FlaskForm):
 
 class AuthorSearchForm(FlaskForm):
     book_author = StringField("Book author", [DataRequired()])
-    submit = SubmitField("Find by Author")
+    submit = SubmitField("Find by Author Name")
 
 class PublisherSearchForm(FlaskForm):
     book_publisher = StringField("Book publisher", [DataRequired()])
@@ -108,3 +108,7 @@ class PublisherSearchForm(FlaskForm):
 class ReleaseYearSearchForm(FlaskForm):
     book_year = IntegerField("Book release year", [DataRequired()])
     submit = SubmitField("Find by Release Year")
+
+class EbookSearchForm(FlaskForm):
+    book_ebook = IntegerField("Book ebook status", [DataRequired()])
+    submit = SubmitField("Find by ebook status")
