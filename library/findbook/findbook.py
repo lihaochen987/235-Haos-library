@@ -27,6 +27,14 @@ def render_page(id_form, author_form, publisher_form, release_form, title_form):
         find_book_url=url_for('findbook_bp.find_book'),
     )
 
+@findbook_blueprint.route('/list')
+def list_books():
+    return render_template(
+        'findbook/displaybooks.html',
+        find_book_url=url_for('findbook_bp.find_book'),
+        books=repo.repo_instance
+    )
+    pass
 
 @findbook_blueprint.route('/find_book', methods=['GET', 'POST'])
 def find_book():
