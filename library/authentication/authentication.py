@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, session, request
+from flask import Blueprint, render_template, redirect, url_for, session, request, flash
 
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
@@ -29,6 +29,7 @@ def register():
             services.add_user(form.user_name.data, form.password.data, repo.repo_instance)
 
             # All is well, redirect the user to the login page.
+            flash("You have successfully registered, please login")
             return redirect(url_for('authentication_bp.login'))
         except services.NameNotUniqueException:
             user_name_not_unique = 'Your user name is already taken - please supply another'
@@ -63,6 +64,7 @@ def login():
             # Initialise session and redirect the user to the home page.
             session.clear()
             session['user_name'] = user['user_name']
+            flash("You have successfully logged in")
             return redirect(url_for('home_bp.home'))
 
         except services.UnknownUserException:
