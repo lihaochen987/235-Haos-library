@@ -1,12 +1,10 @@
 from better_profanity import profanity
-from flask import Blueprint, render_template, url_for, request
+from flask import Blueprint, render_template, url_for, request, session, redirect
 from flask_paginate import Pagination, get_page_parameter
-from flask_wtf import FlaskForm
-from wtforms import IntegerField, SubmitField, StringField, TextAreaField, HiddenField
-from wtforms.validators import DataRequired, Length
 
 import library.adapters.repository as repo
 import library.findbook.services as services
+from library.authentication.authentication import login_required
 
 findbook_blueprint = Blueprint(
     'findbook_bp', __name__
@@ -15,6 +13,7 @@ findbook_blueprint = Blueprint(
 
 @findbook_blueprint.route('/list')
 def list_books():
+    form = ReviewForm()
     page = request.args.get(get_page_parameter(), type=int, default=1)
     books = repo.repo_instance
     pagination = Pagination(page=page, total=len(books))
@@ -22,29 +21,73 @@ def list_books():
         'findbook/displaybooks.html',
         find_book_url=url_for('findbook_bp.find_book'),
         books=repo.repo_instance,
-        pagination=pagination
+        pagination=pagination,
+        form=form
     )
     pass
 
-@findbook_blueprint.route('/find_book', methods=['GET', 'POST'])
+
+@findbook_blueprint.route('/find_book', methods=['GET'])
 def find_book():
     book_form = BookForm()
-    if request.method == 'GET':
-        return render_template('findbook/findbook.html', book_form=book_form)
+    return render_template('findbook/findbook.html', book_form=book_form, handler_url=url_for('findbook_bp.view_books'))
+
+
+@findbook_blueprint.route('/view_books', methods=['GET', 'POST'])
+def view_books():
+    book_repo = repo.repo_instance
+    book_form = BookForm()
+    form = ReviewForm()
+    print(book_form.errors)
+
+    if book_form.is_submitted():
+        print("submitted")
+
+    if book_form.validate():
+        print("valid")
+
+    print(book_form.errors)
     if request.method == 'POST':
-        books = []
-        for field in book_form:
-            if (field.data != "" or field.data != None or field.data != True):
-                temp_books = check_and_return(field.name, book_form)
-                if temp_books == None:
-                    pass
-                else:
-                    for book in temp_books:
-                        books.append(book)
-        books = list(set(books))
-        page = request.args.get(get_page_parameter(), type=int, default=1)
-        pagination = Pagination(page=page, total=len(books))
-        return render_template('findbook/displaybooks.html', books=books, pagination=pagination)
+        if book_form.validate_on_submit():
+            print(request.form)
+            books = []
+            for field in book_form:
+                if (field.data != "" or field.data != None or field.data != True):
+                    temp_books = check_and_return(field.name, book_form)
+                    if temp_books == None:
+                        pass
+                    else:
+                        for book in temp_books:
+                            books.append(book)
+            books = list(set(books))
+            page = request.args.get(get_page_parameter(), type=int, default=1)
+            pagination = Pagination(page=page, total=len(books))
+            return render_template('findbook/displaybooks.html', books=books, pagination=pagination,
+                                   book_form=book_form, form=form, handler_url=url_for('findbook_bp.add_review'))
+
+
+@findbook_blueprint.route('/add_review', methods=['GET', 'POST'])
+@login_required
+def add_review():
+    user_name = session['user_name']
+    book_form = BookForm()
+    form = ReviewForm()
+    print(form.errors)
+
+    if form.is_submitted():
+        print("submitted")
+
+    if form.validate():
+        print("valid")
+
+    print(form.errors)
+
+    if form.validate_on_submit():
+        book_id = int(form.book_id.data)
+        services.add_review(book_id, 5, form.review.data, user_name, repo.repo_instance)
+        return redirect('/view_books')
+
+    return redirect('/view_books')
 
 
 def check_and_return(field_name, book_form):
@@ -120,23 +163,19 @@ class ProfanityFree:
             raise ValidationError(self.message)
 
 
-class ReviewForm(FlaskForm):
+class BookForm(FlaskForm):
+    book_id = IntegerField("Book id", [validators.optional()])
+    book_author = StringField("Book author", [validators.optional()])
+    book_publisher = StringField("Book publisher", [validators.optional()])
+    book_year = IntegerField("Book release year", [validators.optional()])
+    book_title = StringField("Book title", [validators.optional()])
+    submit = SubmitField("Find Books", [validators.optional()])
+
+
+class ReviewForm(BookForm):
     review = TextAreaField('Review', [
         DataRequired(),
         Length(min=4, message='Your comment is too short'),
         ProfanityFree(message='Your comment must not contain profanity')])
-    book_id = HiddenField("Book ID")
+    book_id = IntegerField("Book ID")
     submit = SubmitField('Submit Review')
-
-
-class BookForm(FlaskForm):
-    book_id = IntegerField("Book id")
-    book_author = StringField("Book author")
-    book_publisher = StringField("Book publisher")
-    book_year = IntegerField("Book release year")
-    book_title = StringField("Book title")
-    book_review = TextAreaField('Review', [
-        DataRequired(),
-        Length(min=4, message='Your comment is too short'),
-        ProfanityFree(message='Your comment must not contain profanity')])
-    submit = SubmitField("Find Books")

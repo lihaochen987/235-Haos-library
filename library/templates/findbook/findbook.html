@@ -6,7 +6,7 @@
 
 
     <div>
-        <form method="POST" action="{{url_for('findbook_bp.find_book')}}">
+        <form method="POST" action="{{ handler_url }}">
             {{book_form.csrf_token}}
             <div>
                 {{book_form.book_id.label}} {{book_form.book_id}}
