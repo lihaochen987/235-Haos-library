@@ -1,6 +1,9 @@
 from better_profanity import profanity
-from flask import Blueprint, render_template, url_for, request, session, redirect
+from flask import Blueprint, render_template, url_for, request, session
 from flask_paginate import Pagination, get_page_parameter
+from flask_wtf import FlaskForm
+from wtforms import IntegerField, SubmitField, StringField, TextAreaField, validators
+from wtforms.validators import DataRequired, Length
 
 import library.adapters.repository as repo
 import library.findbook.services as services
@@ -70,25 +73,15 @@ def view_books():
 @login_required
 def add_review():
     user_name = session['user_name']
-    book_form = BookForm()
     form = ReviewForm()
-    print(form.errors)
-
-    if form.is_submitted():
-        print("submitted")
-
-    if form.validate():
-        print("valid")
-
-    print(form.errors)
-
-    if form.validate_on_submit():
-        book_id = int(form.book_id.data)
-        services.add_review(book_id, 5, form.review.data, user_name, repo.repo_instance)
-        return redirect('/view_books')
-
-    return redirect('/view_books')
-
+    book_id = int(request.values.get("book_id"))
+    books = services.get_book_by_id(book_id, repo.repo_instance)
+    page = request.args.get(get_page_parameter(), type=int, default=1)
+    pagination = Pagination(page=page, total=len(books))
+    services.add_review(book_id, 4, request.values.get("review"), user_name,
+                        repo.repo_instance)
+    return render_template('findbook/displaybooks.html', pagination=pagination,
+                           books=books, form = form)
 
 def check_and_return(field_name, book_form):
     if field_name == 'book_year':

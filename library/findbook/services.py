@@ -51,7 +51,8 @@ def get_book_by_number_of_pages(pages: int, repo: AbstractRepository):
 def add_review(book_id: int, review_rating: int, comment_text: str, user_name: str, repo: AbstractRepository):
     # Check that Book exists.
     books = repo.get_book_by_id(book_id)
-    if len(books) == 0:
+
+    if books == None:
         raise NonExistentBookException
 
     user = repo.get_user(user_name)
