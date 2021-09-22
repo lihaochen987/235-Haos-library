@@ -52,7 +52,6 @@ def view_books():
     print(book_form.errors)
     if request.method == 'POST':
         if book_form.validate_on_submit():
-            print(request.form)
             books = []
             for field in book_form:
                 if (field.data != "" or field.data != None or field.data != True):
@@ -94,56 +93,6 @@ def check_and_return(field_name, book_form):
         return services.get_book_by_release_year(book_form.book_year.data, repo.repo_instance)
     if field_name == "book_title":
         return services.get_book_by_title(book_form.book_title.data, repo.repo_instance)
-
-# @findbook_blueprint.route('/review', methods=['GET', 'POST'])
-# @login_required
-# def add_review():
-#     id_form, author_form, publisher_form, release_form, title_form = initialise_forms()
-#
-#     user_name = session['user_name']
-#     review_form = ReviewForm()
-#
-#     if review_form.validate_on_submit():
-#         # Successful POST, i.e. the comment text has passed data validation.
-#         # Extract the article id, representing the commented article, from the form.
-#         book_id = int(review_form.book_id.data)
-#         print(book_id)
-#
-#         # Use the service layer to store the new comment.
-#         services.add_review(book_id, 5, review_form.review, user_name, repo.repo_instance)
-#
-#         # Retrieve the article in dict form.
-#         book = services.get_book_by_id(book_id, repo.repo_instance)
-#
-#         # Cause the web browser to display the page of all articles that have the same date as the commented article,
-#         # and display all comments, including the new comment.
-#         return redirect(url_for('findbook_bp.find_book_by_id', date=article['date'], view_comments_for=article_id))
-#
-#     if request.method == 'GET':
-#         # Request is a HTTP GET to display the form.
-#         # Extract the article id, representing the article to comment, from a query parameter of the GET request.
-#         article_id = int(request.args.get('article'))
-#
-#         # Store the article id in the form.
-#         form.article_id.data = article_id
-#     else:
-#         # Request is a HTTP POST where form validation has failed.
-#         # Extract the article id of the article being commented from the form.
-#         article_id = int(form.article_id.data)
-#
-#     # For a GET or an unsuccessful POST, retrieve the article to comment in dict form, and return a Web page that allows
-#     # the user to enter a comment. The generated Web page includes a form object.
-#     article = services.get_article(article_id, repo.repo_instance)
-#     return render_template(
-#         'news/comment_on_article.html',
-#         title='Edit article',
-#         article=article,
-#         form=form,
-#         handler_url=url_for('news_bp.comment_on_article'),
-#         selected_articles=utilities.get_selected_articles(),
-#         tag_urls=utilities.get_tags_and_urls()
-#     )
-
 
 class ProfanityFree:
     def __init__(self, message=None):
