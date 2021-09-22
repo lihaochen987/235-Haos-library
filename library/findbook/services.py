@@ -1,4 +1,4 @@
-from typing import List, Iterable
+from typing import Iterable
 
 from library.adapters.repository import AbstractRepository
 from library.domain.model import leave_review, Review, Book, Author
@@ -84,6 +84,25 @@ def author_to_dict(author: Author):
         'full_name': author.full_name
     }
     return author_dict
+
+
+def book_to_dict(book: Book):
+    book_dict = {
+        'book_id': book.book_id,
+        'title': book.title,
+        'image_url': book.image_url,
+        'description': book.description,
+        'publisher': book.publisher,
+        'release_year': book.release_year,
+        'ebook': book.ebook,
+        'num_pages': book.num_pages,
+        'reviews': reviews_to_dict(book.reviews),
+        'authors': authors_to_dict(book.authors)
+    }
+
+
+def books_to_dict(books: Iterable[Book]):
+    return [book_to_dict(book) for book in books]
 
 
 def authors_to_dict(authors: Iterable[Author]):
