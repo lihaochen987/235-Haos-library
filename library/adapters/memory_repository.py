@@ -31,6 +31,9 @@ class MemoryRepository(AbstractRepository):
             self._current += 1
             return self._books[self._current - 1]
 
+    def __len__(self):
+        return len(self._books)
+
     # Function for testing purposes
     def get_books(self):
         return self._books

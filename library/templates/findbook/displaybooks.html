@@ -2,35 +2,37 @@
 
 {% block content %}
 <main>
-
-    {% for book in books %}
-    <div id="wrapper">
-        <article class="post">
-            <header>
-                <div class="title">
-                    <h2><a href="single.html">{{ book.title }}</a></h2>
-                    <p>Authors:
-                        {% for author in book.authors %}
-                        {{ author.full_name + "," }}
-                        {% endfor %}
-                    </p>
-                    <h4 style="font-weight:normal;">{{book.description}}</h4>
-                </div>
-                <div class="meta">
-                    <time class="published" style="text-align:center;">Release year: {{ book.release_year }}</time>
-                    <a href="single.html" class="image featured" style="image-align:center;"><img
-                            src="{{book.image_url}}"
-                            alt=""/></a>
-                </div>
-            </header>
+    {{ pagination.info }}
+    {{ pagination.links }}
+        {% for book in books %}
+        <div id="wrapper">
+            <article class="post">
+                <header>
+                    <div class="title">
+                        <h2><a href="single.html">{{ book.title }}</a></h2>
+                        <p>Authors:
+                            {% for author in book.authors %}
+                            {{ author.full_name + "," }}
+                            {% endfor %}
+                        </p>
+                        <h4 style="font-weight:normal;">{{book.description}}</h4>
+                    </div>
+                    <div class="meta">
+                        <time class="published" style="text-align:center;">Release year: {{ book.release_year }}</time>
+                        <a href="single.html" class="image featured" style="image-align:center;"><img
+                                src="{{book.image_url}}"
+                                alt=""/></a>
+                    </div>
+                </header>
             <h1>Book Reviews:</h1>
             {% for review in book.reviews %}
             <p>{{ review }}</p>
             {% endfor %}
-            
+
         </article>
     </div>
-    {% endfor %}
+        {% endfor %}
+        {{ pagination.links }}
 </main>
 
 

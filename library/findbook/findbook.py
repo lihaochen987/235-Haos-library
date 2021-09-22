@@ -1,5 +1,6 @@
 from better_profanity import profanity
 from flask import Blueprint, render_template, url_for, request
+from flask_paginate import Pagination, get_page_parameter
 from flask_wtf import FlaskForm
 from wtforms import IntegerField, SubmitField, StringField, TextAreaField, HiddenField
 from wtforms.validators import DataRequired, Length
@@ -11,12 +12,17 @@ findbook_blueprint = Blueprint(
     'findbook_bp', __name__
 )
 
+
 @findbook_blueprint.route('/list')
 def list_books():
+    page = request.args.get(get_page_parameter(), type=int, default=1)
+    books = repo.repo_instance
+    pagination = Pagination(page=page, total=len(books))
     return render_template(
         'findbook/displaybooks.html',
         find_book_url=url_for('findbook_bp.find_book'),
         books=repo.repo_instance,
+        pagination=pagination
     )
     pass
 
@@ -36,7 +42,9 @@ def find_book():
                     for book in temp_books:
                         books.append(book)
         books = list(set(books))
-        return render_template('findbook/displaybooks.html', books=books)
+        page = request.args.get(get_page_parameter(), type=int, default=1)
+        pagination = Pagination(page=page, total=len(books))
+        return render_template('findbook/displaybooks.html', books=books, pagination=pagination)
 
 
 def check_and_return(field_name, book_form):
