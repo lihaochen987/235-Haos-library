@@ -31,16 +31,6 @@ def view_books():
     book_form = BookForm()
     form = ReviewForm()
 
-    print(book_form.errors)
-
-    if book_form.is_submitted():
-        print("submitted")
-
-    if book_form.validate():
-        print("valid")
-
-    print(book_form.errors)
-
     if request.method == 'POST':
         if book_form.validate_on_submit():
             books = []
