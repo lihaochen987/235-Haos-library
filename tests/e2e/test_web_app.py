@@ -64,3 +64,7 @@ def test_index(client):
     response = client.get('/')
     assert response.status_code == 200
     assert b"Hao's library" in response.data
+
+def test_login_required_to_review(client):
+    response = client.post('/add_review')
+    assert response.headers['Location'] == 'http://localhost/authentication/login'
