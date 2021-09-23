@@ -37,6 +37,10 @@
                         {{ form.book_id(value=book.book_id, style = 'display:none;w') }}
                         <!-- Need to include this hidden field as it tracks the article being reviewed. -->
                         {{ form.csrf_token }} <!-- Need to include this token - Flask WTForms requires it. -->
+
+                        {{ form.review_rating.label }}
+                        {{ form.review_rating(type = 'range', min = '1', max = '5') }}
+
                         <br>
                         <div class="form-field">{{form.review.label}} </br>{{form.review(size = 100, placeholder="type
                             your review", class="textarea", cols="50", rows="6", wrap="hard")}}

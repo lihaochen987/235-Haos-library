@@ -3,7 +3,7 @@ from flask import Blueprint, render_template, url_for, request, session
 from flask_paginate import Pagination, get_page_parameter
 from flask_wtf import FlaskForm
 from wtforms import IntegerField, SubmitField, StringField, TextAreaField, validators
-from wtforms.validators import DataRequired, Length
+from wtforms.validators import DataRequired, Length, ValidationError
 
 import library.adapters.repository as repo
 import library.findbook.services as services
@@ -71,13 +71,14 @@ def view_books():
 @findbook_blueprint.route('/add_review', methods=['GET', 'POST'])
 @login_required
 def add_review():
+    print(request.values)
     user_name = session['user_name']
     form = ReviewForm()
     book_id = int(request.values.get("book_id"))
     books = services.get_book_by_id(book_id, repo.repo_instance)
     page = request.args.get(get_page_parameter(), type=int, default=1)
     pagination = Pagination(page=page, total=len(books))
-    services.add_review(book_id, 4, request.values.get("review"), user_name,
+    services.add_review(book_id, int(request.values.get("review_rating")), request.values.get("review"), user_name,
                         repo.repo_instance)
     return render_template('findbook/displaybooks.html', pagination=pagination,
                            books=books, form = form)
@@ -119,5 +120,6 @@ class ReviewForm(BookForm):
         DataRequired(),
         Length(min=4, message='Your comment is too short'),
         ProfanityFree(message='Your comment must not contain profanity')])
+    review_rating = IntegerField("Review Rating")
     book_id = IntegerField("Book ID")
     submit = SubmitField('Submit Review')
