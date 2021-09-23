@@ -8,13 +8,14 @@ from wtforms.validators import DataRequired, Length, ValidationError
 import library.adapters.repository as repo
 import library.findbook.services as services
 from library.authentication.authentication import login_required
+from library.authentication.services import get_user_reviews
 
 findbook_blueprint = Blueprint(
     'findbook_bp', __name__
 )
 
 
-@findbook_blueprint.route('/list', methods=['GET', 'POST'])
+@findbook_blueprint.route('/list', methods=['GET'])
 def list_books():
     return redirect(url_for('findbook_bp.view_books'))
 
@@ -55,7 +56,6 @@ def view_books():
 @findbook_blueprint.route('/add_review', methods=['GET', 'POST'])
 @login_required
 def add_review():
-    print(request.values)
     user_name = session['user_name']
     form = ReviewForm()
     book_id = int(request.values.get("book_id"))
@@ -78,6 +78,14 @@ def check_and_return(field_name, book_form):
         return services.get_book_by_release_year(book_form.book_year.data, repo.repo_instance)
     if field_name == "book_title":
         return services.get_book_by_title(book_form.book_title.data, repo.repo_instance)
+
+@findbook_blueprint.route('/view_recommendations', methods = ['GET'])
+@login_required
+def get_recommendations():
+    user_name = session['user_name']
+    for review in get_user_reviews(user_name, repo.repo_instance):
+        print(review)
+    return 'hello'
 
 class ProfanityFree:
     def __init__(self, message=None):
@@ -104,6 +112,6 @@ class ReviewForm(BookForm):
         DataRequired(),
         Length(min=4, message='Your comment is too short'),
         ProfanityFree(message='Your comment must not contain profanity')])
-    review_rating = IntegerField("Review Rating")
+    review_rating = IntegerField("Review Rating", [DataRequired()])
     book_id = IntegerField("Book ID")
     submit = SubmitField('Submit Review')
