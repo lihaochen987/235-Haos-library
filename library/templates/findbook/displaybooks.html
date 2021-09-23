@@ -4,18 +4,18 @@
 <main>
     {{ pagination.info }}
     {{ pagination.links }}
-        {% for book in books %}
-        <div id="wrapper">
-            <article class="post">
-                <header>
-                    <div class="title">
-                        <h2><a href="single.html">{{ book.title }}</a></h2>
-                        <p>Authors:
-                            {% for author in book.authors %}
-                            {{ author.full_name + "," }}
-                            {% endfor %}
-                        </p>
-                        <h4 style="font-weight:normal;">{{book.description}}</h4>
+    {% for book in books %}
+    <div id="wrapper">
+        <article class="post">
+            <header>
+                <div class="title">
+                    <h2><a href="single.html">{{ book.title }}</a></h2>
+                    <p>Authors:
+                        {% for author in book.authors %}
+                        {{ author.full_name + "," }}
+                        {% endfor %}
+                    </p>
+                    <h4 style="font-weight:normal;">{{book.description}}</h4>
                     </div>
                     <div class="meta">
                         <time class="published" style="text-align:center;">Release year: {{ book.release_year }}</time>

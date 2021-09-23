@@ -34,6 +34,9 @@ class MemoryRepository(AbstractRepository):
     def __len__(self):
         return len(self._books)
 
+    def __getitem__(self, item):
+        return self._books[item]
+
     # Function for testing purposes
     def get_books(self):
         return self._books

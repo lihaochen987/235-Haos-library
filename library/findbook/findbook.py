@@ -1,6 +1,6 @@
 from better_profanity import profanity
-from flask import Blueprint, render_template, url_for, request, session
-from flask_paginate import Pagination, get_page_parameter
+from flask import Blueprint, render_template, url_for, request, session, redirect
+from flask_paginate import Pagination, get_page_parameter, get_page_args
 from flask_wtf import FlaskForm
 from wtforms import IntegerField, SubmitField, StringField, TextAreaField, validators
 from wtforms.validators import DataRequired, Length, ValidationError
@@ -14,20 +14,9 @@ findbook_blueprint = Blueprint(
 )
 
 
-@findbook_blueprint.route('/list')
+@findbook_blueprint.route('/list', methods=['GET', 'POST'])
 def list_books():
-    form = ReviewForm()
-    page = request.args.get(get_page_parameter(), type=int, default=1)
-    books = repo.repo_instance
-    pagination = Pagination(page=page, total=len(books))
-    return render_template(
-        'findbook/displaybooks.html',
-        find_book_url=url_for('findbook_bp.find_book'),
-        books=repo.repo_instance,
-        pagination=pagination,
-        form=form
-    )
-    pass
+    return redirect(url_for('findbook_bp.view_books'))
 
 
 @findbook_blueprint.route('/find_book', methods=['GET'])
@@ -38,9 +27,10 @@ def find_book():
 
 @findbook_blueprint.route('/view_books', methods=['GET', 'POST'])
 def view_books():
-    book_repo = repo.repo_instance
+    page, per_page, offset = get_page_args()
     book_form = BookForm()
     form = ReviewForm()
+
     print(book_form.errors)
 
     if book_form.is_submitted():
@@ -50,6 +40,7 @@ def view_books():
         print("valid")
 
     print(book_form.errors)
+
     if request.method == 'POST':
         if book_form.validate_on_submit():
             books = []
@@ -62,11 +53,14 @@ def view_books():
                         for book in temp_books:
                             books.append(book)
             books = list(set(books))
-            page = request.args.get(get_page_parameter(), type=int, default=1)
             pagination = Pagination(page=page, total=len(books))
             return render_template('findbook/displaybooks.html', books=books, pagination=pagination,
                                    book_form=book_form, form=form, handler_url=url_for('findbook_bp.add_review'))
 
+    if request.method == 'GET':
+        pagination = Pagination(page=page, total=len(repo.repo_instance))
+        return render_template('findbook/displaybooks.html', books=repo.repo_instance, pagination=pagination,
+                               book_form=book_form, form=form, handler_url=url_for('findbook_bp.add_review'))
 
 @findbook_blueprint.route('/add_review', methods=['GET', 'POST'])
 @login_required
