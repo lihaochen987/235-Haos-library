@@ -16,7 +16,7 @@ def test_can_add_review(in_memory_repo):
     # Call the service layer to add the comment
     find_book_services.add_review(book_id, review_rating, review_text, user_name, in_memory_repo)
 
-    # Retrieve the comments for the book from the repository
+    # Retrieve the reviews for the book from the repository
     reviews_as_dict = find_book_services.get_reviews_for_book(book_id, in_memory_repo)
 
     # Check that reviews include a review with the new review text
@@ -99,3 +99,21 @@ def test_authentication_with_invalid_credentials(in_memory_repo):
 
     with pytest.raises(auth_services.AuthenticationException):
         auth_services.authenticate_user(new_user_name, '0987654321', in_memory_repo)
+
+def test_can_get_user_reviews(in_memory_repo):
+    new_user_name = 'pmccartney'
+    new_password = 'abcd1A23'
+
+    auth_services.add_user(new_user_name, new_password, in_memory_repo)
+
+    book_id = 27036538
+    review_rating = 5
+    review_text = "Fantastic book, I was at the edge of my seat!"
+    user_name = "pmccartney"
+
+    # Call the service layer to add the comment
+    find_book_services.add_review(book_id, review_rating, review_text, user_name, in_memory_repo)
+
+    # Retrieve the reviews for the book from the repository
+    user = auth_services.get_user('pmccartney', in_memory_repo)
+    assert str(user['reviews'][0].book) == '<Book Crossed + One Hundred, Volume 2 (Crossed +100 #2), book id = 27036538>'

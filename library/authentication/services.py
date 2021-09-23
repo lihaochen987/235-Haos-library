@@ -38,6 +38,14 @@ def get_user(user_name: str, repo: AbstractRepository):
     return user_to_dict(user)
 
 
+def get_user_reviews(user_name: str, repo: AbstractRepository):
+    user = repo.get_user(user_name)
+    if user is None:
+        raise UnknownUserException
+
+    return user.reviews
+
+
 def authenticate_user(user_name: str, password: str, repo: AbstractRepository):
     authenticated = False
 
@@ -55,6 +63,7 @@ def authenticate_user(user_name: str, password: str, repo: AbstractRepository):
 def user_to_dict(user: User):
     user_dict = {
         'user_name': user.user_name,
-        'password': user.password
+        'password': user.password,
+        'reviews': user.reviews
     }
     return user_dict
