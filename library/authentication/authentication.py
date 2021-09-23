@@ -97,6 +97,7 @@ def login_required(view):
     @wraps(view)
     def wrapped_view(**kwargs):
         if 'user_name' not in session:
+            flash('You must be logged in to do that')
             return redirect(url_for('authentication_bp.login'))
         return view(**kwargs)
     return wrapped_view
