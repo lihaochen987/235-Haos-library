@@ -3,10 +3,14 @@
     <nav class="links">
         <ul>
             <li><a href="{{ url_for('findbook_bp.find_book') }}">Find book</a></li>
-            <li><a href = "{{ url_for('findbook_bp.list_books')}}">Browse all books</a></li>
+            <li><a href="{{ url_for('findbook_bp.list_books')}}">Browse all books</a></li>
             <li><a href="{{ url_for('authentication_bp.register') }}">Register</a></li>
-            <li><a href="{{ url_for('authentication_bp.login')}}">Login</a></li>
+            {% if session['user_name'] %}
             <li><a href="{{ url_for('authentication_bp.logout') }}">Logout</a></li>
+            {% else %}
+            <li><a href="{{ url_for('authentication_bp.login')}}">Login</a></li>
+            {% endif %}
+
         </ul>
     </nav>
 
