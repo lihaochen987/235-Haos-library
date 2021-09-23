@@ -27,8 +27,7 @@
                 <h1>Book Reviews:</h1>
                 {% for review in book.reviews %}
                 <p>{{ review.timestamp }}</p>
-                <h2>{{ review.user.user_name }}:</h2>
-                <p>{{ review.review_rating }} </p>
+                <h2>{{ review.user.user_name }}: Rating {{ review.rating }}/5 </h2>
                 <p>{{ review.review_text }}</p>
                 {% endfor %}
 
