@@ -55,6 +55,11 @@ class BooksJSONReader:
             else:
                 book_instance.image_url = "https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png"
 
+            # extract similar book ids:
+            list_of_similar_book_ids = book_json['similar_books']
+            for book_id in list_of_similar_book_ids:
+                book_instance.similar_books = book_id
+
             # extract the author ids:
             list_of_authors_ids = book_json['authors']
             for author_id in list_of_authors_ids:

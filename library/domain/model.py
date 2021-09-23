@@ -123,6 +123,7 @@ class Book:
         self.__ebook = None
         self.__num_pages = None
         self.__reviews = []
+        self.__similar_books = []
 
     @property
     def book_id(self) -> int:
@@ -171,6 +172,14 @@ class Book:
     def image_url(self, image_url:str):
         if isinstance(image_url, str):
             self.__image_url = image_url.strip()
+
+    @property
+    def similar_books(self) -> List[int]:
+        return self.__similar_books
+
+    @similar_books.setter
+    def similar_books(self, id: int):
+        self.__similar_books.append(id)
 
     @property
     def publisher(self) -> Publisher:

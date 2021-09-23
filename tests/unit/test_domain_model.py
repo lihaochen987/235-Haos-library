@@ -479,6 +479,11 @@ class TestBooksJSONReader:
         assert dataset_of_books[1].image_url == "https://images.gr-assets.com/books/1462644346m/30128855.jpg"
         assert dataset_of_books[17].image_url == "https://images.gr-assets.com/books/1382506435m/18711343.jpg"
 
+    def test_get_similar_books(self, read_books_and_authors):
+        dataset_of_books = read_books_and_authors
+        assert dataset_of_books[1].similar_books == []
+        assert dataset_of_books[15].similar_books == ['11459073', '16300600', '10796571', '18749589', '10552284', '1322907', '7326846', '18126581', '15817454', '22327374']
+
 class TestBooksInventory:
 
     def test_construction_and_find(self):
