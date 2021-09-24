@@ -23,7 +23,7 @@ ul.pagination li
             <article class="post">
                 <header>
                     <div class="title">
-                        <h2><a href="single.html">{{ book.title }}</a></h2>
+                        <h2>{{ book.title }}</h2>
                         <p>Authors:
                             {% for author in book.authors %}
                             {{ author.full_name + "," }}
@@ -33,7 +33,7 @@ ul.pagination li
                         </div>
                         <div class="meta">
                             <time class="published" style="text-align:center;">Release year: {{ book.release_year }}</time>
-                            <a href="single.html" class="image featured" style="image-align:center;"><img
+                            <a class="image featured" style="image-align:center;"><img
                                     src="{{book.image_url}}"
                                     alt=""/></a>
                         </div>

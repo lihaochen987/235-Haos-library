@@ -4,8 +4,8 @@
 
 <main>
 
-
-    <div>
+    <article class="post">
+        <h1>Search our books</h1>
         <form method="POST" action="{{ handler_url }}">
             {{book_form.csrf_token}}
             <div>
@@ -23,9 +23,11 @@
             <div>
                 {{book_form.book_author.label}} {{book_form.book_author}}
             </div>
-            {{book_form.submit}}
+            <div class = "buttonHolder">
+                {{book_form.submit}}
+            </div>
         </form>
-    </div>
+    </article>
 
 
 </main>
