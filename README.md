@@ -60,3 +60,10 @@ We would like to acknowledge the authors of these papers for collecting the data
 *Mengting Wan, Julian McAuley, "Item Recommendation on Monotonic Behavior Chains", in RecSys'18.*
 
 *Mengting Wan, Rishabh Misra, Ndapa Nakashole, Julian McAuley, "Fine-Grained Spoiler Detection from Large-Scale Review Corpora", in ACL'19.*
+
+## Styling
+
+Due to the lack of time, css and general styling was generously taken from https://html5up.net/
+
+A huge thanks to @ajlkn for making my website more visually appealing.
+

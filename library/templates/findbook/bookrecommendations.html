@@ -3,11 +3,13 @@
 {% block content %}
 
 {% if recommendations == [] %}
-<h1>You currently have no recommendations, rate more so we can find out what you like!</h1>
+<article class = "post" style = "text-align:center;">
+    <h1>You currently have no recommendations, rate more so we can find out what you like!</h1>
+</article>
 
 {% else %}
 
-<div>
+<article class = "post">
     {% for recommendation in recommendations %}
     <h1>Since you gave {{ recommendation.book.title}} a rating of {{recommendation.review_rating}}, we think you'll
         enjoy: </h1>
@@ -28,7 +30,7 @@
 
     {% endfor %}
     {% endfor %}
-</div>
+</article>
 {% endif %}
 
 {% endblock %}
