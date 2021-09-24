@@ -27,8 +27,6 @@ def create_app(test_config = None):
         app.register_blueprint(home.home_blueprint)
         from .findbook import findbook
         app.register_blueprint(findbook.findbook_blueprint)
-        from .book import book
-        app.register_blueprint(book.book_blueprint)
         from .authentication import authentication
         app.register_blueprint(authentication.authentication_blueprint)
 

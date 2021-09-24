@@ -2,7 +2,6 @@ from datetime import date
 
 import pytest
 
-from library.book import services as book_services
 from library.findbook import services as find_book_services
 from library.authentication import services as auth_services
 
