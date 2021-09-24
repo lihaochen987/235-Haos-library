@@ -19,24 +19,39 @@ findbook_blueprint = Blueprint(
 
 @findbook_blueprint.route('/list', methods=['GET'])
 def list_books():
-    return redirect(url_for('findbook_bp.view_books'))
+    return redirect(url_for('findbook_bp.view_books', reset = True))
 
 
 @findbook_blueprint.route('/find_book', methods=['GET'])
 def find_book():
     book_form = BookForm()
-    return render_template('findbook/findbook.html', book_form=book_form, handler_url=url_for('findbook_bp.view_books'))
-
+    return render_template('findbook/findbook.html', book_form=book_form, handler_url=url_for('findbook_bp.view_books', book_form = book_form))
 
 @findbook_blueprint.route('/view_books', methods=['GET', 'POST'])
 def view_books():
+    print(request.values)
     page = int(request.args.get('page', 1))
     per_page = 5
     offset = (page - 1) * per_page
 
+    book_form = BookForm()
+    form = ReviewForm()
+
+    books = []
+    for field in book_form:
+        if (field.data != "" or field.data != None or field.data != True):
+            temp_books = check_and_return(field.name, book_form)
+            if temp_books == None:
+                pass
+            else:
+                for book in temp_books:
+                    books.append(book)
+
+    if request.values.get('reset') == 'True':
+        print("yep!")
+        books = repo.repo_instance
+
     if request.method == 'POST':
-        book_form = BookForm()
-        form = ReviewForm()
         if book_form.validate_on_submit():
             books = []
             for field in book_form:
@@ -48,20 +63,22 @@ def view_books():
                         for book in temp_books:
                             books.append(book)
             books = list(set(books))
-            pagination = Pagination(page=page, total=len(books))
-            return render_template('findbook/displaybooks.html', books=books, pagination=pagination,
-                                   book_form=book_form, form=form, handler_url=url_for('findbook_bp.add_review'))
+            total = len(books)
+            books_temp = get_books(offset=offset, per_page=per_page, books=books)
+            pagination = Pagination(page=page, total=total, per_page=per_page, css_framework='bootstrap4')
+            return render_template('findbook/displaybooks.html', page=page, per_page=per_page, books=books_temp,
+                                   pagination=pagination, form=form,
+                                   handler_url=url_for('findbook_bp.add_review', books = books))
 
     if request.method == 'GET':
         form = ReviewForm(request.form, meta = {'csrf': False})
-        total = len(repo.repo_instance)
-        books = get_books(offset=offset, per_page=per_page)
+        total = len(books)
+        books = get_books(offset=offset, per_page=per_page, books=books)
         pagination = Pagination(page=page, total=total, per_page = per_page, css_framework = 'bootstrap4' )
         return render_template('findbook/displaybooks.html', page = page, per_page = per_page, books=books, pagination=pagination, form=form,
                                handler_url=url_for('findbook_bp.add_review'))
 
-def get_books(offset = 0, per_page = 5):
-    books = repo.repo_instance
+def get_books(offset = 0, per_page = 5, books =[]):
     return books[offset: offset + per_page]
 
 
