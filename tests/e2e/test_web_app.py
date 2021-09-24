@@ -24,6 +24,7 @@ def test_register(client):
             a lower case letter and a digit'),
         ('fmercury', 'Test#6^0', b'Your user name is already taken - please supply another'),
 ))
+
 def test_register_with_invalid_input(client, user_name, password, message):
     # Check that attempting to register with invalid combinations of user name and password generate appropriate error
     # messages.
