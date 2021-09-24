@@ -1,7 +1,7 @@
 from collections import namedtuple
 
 from better_profanity import profanity
-from flask import Blueprint, render_template, url_for, request, session, redirect
+from flask import Blueprint, render_template, url_for, request, session, redirect, flash
 from flask_paginate import Pagination, get_page_parameter, get_page_args
 from flask_wtf import FlaskForm
 from wtforms import IntegerField, SubmitField, StringField, TextAreaField, validators
@@ -29,7 +29,7 @@ def find_book():
 
 @findbook_blueprint.route('/view_books', methods=['GET', 'POST'])
 def view_books():
-    print(request.values)
+    # Initialise variables for pagination
     page = int(request.args.get('page', 1))
     per_page = 5
     offset = (page - 1) * per_page
@@ -48,7 +48,6 @@ def view_books():
                     books.append(book)
 
     if request.values.get('reset') == 'True':
-        print("yep!")
         books = repo.repo_instance
 
     if request.method == 'POST':
@@ -62,6 +61,9 @@ def view_books():
                     else:
                         for book in temp_books:
                             books.append(book)
+            if books == []:
+                flash("No books found")
+                return redirect(url_for('findbook_bp.find_book'))
             books = list(set(books))
             total = len(books)
             books_temp = get_books(offset=offset, per_page=per_page, books=books)
