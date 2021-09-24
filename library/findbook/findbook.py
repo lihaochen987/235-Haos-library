@@ -125,6 +125,7 @@ def get_recommendations():
                                               similar_books=book[0].similar_books)
         recommendation_list.append(recommendation)
 
+    print(recommendation_list)
     recommendation_list.sort(reverse=True)
 
     return render_template('findbook/bookrecommendations.html', recommendations=recommendation_list, services = services, repo = repo)
