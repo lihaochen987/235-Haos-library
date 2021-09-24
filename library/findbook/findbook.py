@@ -31,19 +31,18 @@ def find_book():
 @findbook_blueprint.route('/view_books', methods=['GET', 'POST'])
 def view_books():
     page = request.args.get(get_page_parameter(), type=int, default=1)
-    print(request.form)
 
     if request.method == 'POST':
         book_form = BookForm()
         form = ReviewForm()
-        print(book_form.errors)
-
-        if book_form.is_submitted():
-            print("submitted")
-        if book_form.validate():
-            print("valid")
-
-        print(book_form.errors)
+        # print(book_form.errors)
+        #
+        # if book_form.is_submitted():
+        #     print("submitted")
+        # if book_form.validate():
+        #     print("valid")
+        #
+        # print(book_form.errors)
         if book_form.validate_on_submit():
             books = []
             for field in book_form:
@@ -62,14 +61,14 @@ def view_books():
     if request.method == 'GET':
         form = ReviewForm(request.form, meta = {'csrf': False})
         books = repo.repo_instance
-        print(form.errors)
-
-        if form.is_submitted():
-            print("submitted")
-        if form.validate():
-            print("valid")
-
-        print(form.errors)
+        # print(form.errors)
+        #
+        # if form.is_submitted():
+        #     print("submitted")
+        # if form.validate():
+        #     print("valid")
+        #
+        # print(form.errors)
         pagination = Pagination(page=page, total=len(repo.repo_instance))
         return render_template('findbook/displaybooks.html', books=books, pagination=pagination, form=form,
                                handler_url=url_for('findbook_bp.add_review'))
@@ -116,7 +115,7 @@ def get_recommendations():
                                               similar_books=book[0].similar_books)
         recommendation_list.append(recommendation)
 
-    recommendation_list.sort()
+    recommendation_list.sort(reverse=True)
 
     return render_template('findbook/bookrecommendations.html', recommendations=recommendation_list, services = services, repo = repo)
 

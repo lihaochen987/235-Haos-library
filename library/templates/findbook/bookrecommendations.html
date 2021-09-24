@@ -7,27 +7,28 @@
 
 {% else %}
 
-{% for recommendation in recommendations %}
-<h1>Since you gave {{ recommendation.book.title}} a rating of {{recommendation.review_rating}}, we think you'll
-    enjoy: </h1>
+<div>
+    {% for recommendation in recommendations %}
+    <h1>Since you gave {{ recommendation.book.title}} a rating of {{recommendation.review_rating}}, we think you'll
+        enjoy: </h1>
 
-{% for book in recommendation.similar_books %}
-{% set book_id = book | int %}
-{{ book_id }}
-{% set temp = services.get_book_by_id(book_id , repo.repo_instance) %}
-{{ temp }}
-<article class="mini-post">
-    <header>
-        <h3><a href="single.html">{{temp.title}}</a></h3>
-        <time class="published" datetime="2015-10-20">{{book.release_year}}</time>
-        <a href="#" class="author"><img src="images/avatar.jpg" alt=""/></a>
-    </header>
-    <a href="single.html" class="image"><img src="images/pic04.jpg" alt=""/></a>
-</article>
+    {% for book in recommendation.similar_books %}
+    {% set book_id = book | int %}
+    {{ book_id }}
+    {% set temp = services.get_book_by_id(book_id , repo.repo_instance) %}
+    {{ temp }}
+    <article class="mini-post">
+        <header>
+            <h3><a href="single.html">{{temp.title}}</a></h3>
+            <time class="published" datetime="2015-10-20">{{book.release_year}}</time>
+            <a href="#" class="author"><img src="images/avatar.jpg" alt=""/></a>
+        </header>
+        <a href="single.html" class="image"><img src="images/pic04.jpg" alt=""/></a>
+    </article>
 
-{% endfor %}
-{% endfor %}
-
+    {% endfor %}
+    {% endfor %}
+</div>
 {% endif %}
 
 {% endblock %}
