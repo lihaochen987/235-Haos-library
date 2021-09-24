@@ -8,7 +8,13 @@
 {% else %}
 
 {% for recommendation in recommendations %}
-{{ recommendation }}}
+<h1>Since you gave {{ recommendation.book.title}} a rating of {{recommendation.review_rating}}, we think you'll enjoy: </h1>
+{% for book in recommendation.similar_books %}
+<div>
+    {{book}}
+</div>
+
+{% endfor %}
 {% endfor %}
 
 {% endif %}
