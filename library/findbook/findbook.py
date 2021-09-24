@@ -1,3 +1,5 @@
+from collections import namedtuple
+
 from better_profanity import profanity
 from flask import Blueprint, render_template, url_for, request, session, redirect
 from flask_paginate import Pagination, get_page_parameter, get_page_args
@@ -79,13 +81,37 @@ def check_and_return(field_name, book_form):
     if field_name == "book_title":
         return services.get_book_by_title(book_form.book_title.data, repo.repo_instance)
 
-@findbook_blueprint.route('/view_recommendations', methods = ['GET'])
+
+@findbook_blueprint.route('/view_recommendations', methods=['GET'])
 @login_required
 def get_recommendations():
     user_name = session['user_name']
-    for review in get_user_reviews(user_name, repo.repo_instance):
-        print(review)
-    return 'hello'
+    reviews = get_user_reviews(user_name, repo.repo_instance)
+    recommendation_tuple = namedtuple("Review", ["review_rating", "book_id", "similar_books"])
+    recommendation_list = []
+
+    for review in reviews:
+        book = services.get_book_by_id(review.book.book_id, repo.repo_instance)
+        recommendation = recommendation_tuple(book_id=book[0].book_id, review_rating=review.rating,
+                                              similar_books=book[0].similar_books)
+        recommendation_list.append(recommendation)
+
+    recommendation_list.sort()
+
+    return render_template('findbook/bookrecommendations.html', recommendations=recommendation_list)
+
+
+def Sort_Tuple(tup):
+    tup.sort(key=lambda x: x[1])
+    return tup
+
+
+# Driver Code
+tup = [('rishav', 10), ('akash', 5), ('ram', 20), ('gaurav', 15)]
+
+# printing the sorted list of tuples
+print(Sort_Tuple(tup))
+
 
 class ProfanityFree:
     def __init__(self, message=None):

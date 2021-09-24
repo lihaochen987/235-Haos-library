@@ -1,0 +1,16 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+{% if recommendations == {} %}
+<h1>You currently have no recommendations, rate more so we can find out what you like!</h1>
+
+{% else %}
+
+{% for recommendation in recommendations %}
+{{ recommendation }}}
+{% endfor %}
+
+{% endif %}
+
+{% endblock %}

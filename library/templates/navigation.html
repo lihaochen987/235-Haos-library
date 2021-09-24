@@ -7,6 +7,7 @@
             <li><a href="{{ url_for('authentication_bp.register') }}">Register</a></li>
             {% if session['user_name'] %}
             <li><a href="{{ url_for('authentication_bp.logout') }}">Logout</a></li>
+            <li><a href="{{ url_for('findbook_bp.get_recommendations') }}">View Book Recommendations</a></li>
             {% else %}
             <li><a href="{{ url_for('authentication_bp.login')}}">Login</a></li>
             {% endif %}
