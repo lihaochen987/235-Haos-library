@@ -30,11 +30,20 @@ def find_book():
 
 @findbook_blueprint.route('/view_books', methods=['GET', 'POST'])
 def view_books():
-    page, per_page, offset = get_page_args()
-    book_form = BookForm()
-    form = ReviewForm()
+    page = request.args.get(get_page_parameter(), type=int, default=1)
+    print(request.form)
 
     if request.method == 'POST':
+        book_form = BookForm()
+        form = ReviewForm()
+        print(book_form.errors)
+
+        if book_form.is_submitted():
+            print("submitted")
+        if book_form.validate():
+            print("valid")
+
+        print(book_form.errors)
         if book_form.validate_on_submit():
             books = []
             for field in book_form:
@@ -51,11 +60,22 @@ def view_books():
                                    book_form=book_form, form=form, handler_url=url_for('findbook_bp.add_review'))
 
     if request.method == 'GET':
-        pagination = Pagination(page=page, total=len(repo.repo_instance))
-        return render_template('findbook/displaybooks.html', books=repo.repo_instance, pagination=pagination,
-                               book_form=book_form, form=form, handler_url=url_for('findbook_bp.add_review'))
+        form = ReviewForm(request.form, meta = {'csrf': False})
+        books = repo.repo_instance
+        print(form.errors)
 
-@findbook_blueprint.route('/add_review', methods=['GET', 'POST'])
+        if form.is_submitted():
+            print("submitted")
+        if form.validate():
+            print("valid")
+
+        print(form.errors)
+        pagination = Pagination(page=page, total=len(repo.repo_instance))
+        return render_template('findbook/displaybooks.html', books=books, pagination=pagination, form=form,
+                               handler_url=url_for('findbook_bp.add_review'))
+
+
+@findbook_blueprint.route('/add_review', methods=['POST'])
 @login_required
 def add_review():
     user_name = session['user_name']
@@ -98,7 +118,7 @@ def get_recommendations():
 
     recommendation_list.sort()
 
-    return render_template('findbook/bookrecommendations.html', recommendations=recommendation_list)
+    return render_template('findbook/bookrecommendations.html', recommendations=recommendation_list, services = services, repo = repo)
 
 class ProfanityFree:
     def __init__(self, message=None):
@@ -122,9 +142,7 @@ class BookForm(FlaskForm):
 
 class ReviewForm(BookForm):
     review = TextAreaField('Review', [
-        DataRequired(),
-        Length(min=4, message='Your comment is too short'),
         ProfanityFree(message='Your comment must not contain profanity')])
-    review_rating = IntegerField("Review Rating", [DataRequired()])
+    review_rating = IntegerField("Review Rating")
     book_id = IntegerField("Book ID")
     submit = SubmitField('Submit Review')

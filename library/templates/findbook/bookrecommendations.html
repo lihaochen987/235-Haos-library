@@ -13,6 +13,7 @@
 
 {% for book in recommendation.similar_books %}
 {% set book_id = book | int %}
+{{ book_id }}
 {% set temp = services.get_book_by_id(book_id , repo.repo_instance) %}
 {{ temp }}
 <article class="mini-post">
