@@ -68,3 +68,7 @@ def test_index(client):
 def test_login_required_to_review(client):
     response = client.post('/add_review')
     assert response.headers['Location'] == 'http://localhost/authentication/login'
+
+def test_login_required_to_view_recommendations(client):
+    response = client.get('/view_recommendations')
+    assert response.headers['Location'] == 'http://localhost/authentication/login'
