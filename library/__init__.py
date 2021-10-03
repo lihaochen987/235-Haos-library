@@ -1,9 +1,12 @@
 """Initialize Flask app."""
 
-from flask import Flask, render_template
 from pathlib import Path
+
+from flask import Flask
+
 import library.adapters.repository as repo
 from library.adapters.memory_repository import MemoryRepository, populate
+
 
 def create_app(test_config = None):
     app = Flask(__name__)
