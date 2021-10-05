@@ -87,7 +87,7 @@ def insert_users(empty_session, values):
 
 
 def make_user():
-    user = User("Andrew", "111")
+    user = User("Andrew", "11123456676575575")
     return user
 
 
@@ -110,16 +110,16 @@ def test_loading_of_users(empty_session):
     assert empty_session.query(User).all() == expected
 
 
-#
-# def test_saving_of_users(empty_session):
-#     user = make_user()
-#     empty_session.add(user)
-#     empty_session.commit()
-#
-#     rows = list(empty_session.execute('SELECT user_name, password FROM users'))
-#     assert rows == [("Andrew", "111")]
-#
-#
+
+def test_saving_of_users(empty_session):
+    user = make_user()
+    empty_session.add(user)
+    empty_session.commit()
+
+    rows = list(empty_session.execute('SELECT user_name, password FROM users'))
+    assert rows == [("andrew", "11123456676575575")]
+
+
 # def test_saving_of_users_with_common_user_name(empty_session):
 #     insert_user(empty_session, ("Andrew", "1234"))
 #     empty_session.commit()
