@@ -1,4 +1,6 @@
 import datetime
+import pytest
+from sqlalchemy.exc import IntegrityError
 
 from library.domain.model import User
 
@@ -120,14 +122,14 @@ def test_saving_of_users(empty_session):
     assert rows == [("andrew", "11123456676575575")]
 
 
-# def test_saving_of_users_with_common_user_name(empty_session):
-#     insert_user(empty_session, ("Andrew", "1234"))
-#     empty_session.commit()
-#
-#     with pytest.raises(IntegrityError):
-#         user = User("Andrew", "111")
-#         empty_session.add(user)
-#         empty_session.commit()
+def test_saving_of_users_with_common_user_name(empty_session):
+    insert_user(empty_session, ("Andrew", "1234"))
+    empty_session.commit()
+
+    with pytest.raises(IntegrityError):
+        user = User("Andrew", "111")
+        empty_session.add(user)
+        empty_session.commit()
 
 
 # def test_loading_of_article(empty_session):
