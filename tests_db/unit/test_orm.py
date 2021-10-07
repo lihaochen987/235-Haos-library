@@ -2,7 +2,7 @@ import datetime
 import pytest
 from sqlalchemy.exc import IntegrityError
 
-from library.domain.model import User, Publisher, Book
+from library.domain.model import User, Publisher, Book, leave_review
 
 # article_date = datetime.date(2020, 2, 28)
 
@@ -176,27 +176,27 @@ def test_loading_of_reviewed_book(empty_session):
         assert review.book is book
 
 #
-# def test_saving_of_comment(empty_session):
-#     article_key = insert_article(empty_session)
-#     user_key = insert_user(empty_session, ("Andrew", "1234"))
-#
-#     rows = empty_session.query(Article).all()
-#     article = rows[0]
-#     user = empty_session.query(User).filter(User._User__user_name == "Andrew").one()
-#
-#     # Create a new Comment that is bidirectionally linked with the User and Article.
-#     comment_text = "Some comment text."
-#     comment = make_comment(comment_text, user, article)
-#
-#     # Note: if the bidirectional links between the new Comment and the User and
-#     # Article objects hadn't been established in memory, they would exist following
-#     # committing the addition of the Comment to the database.
-#     empty_session.add(comment)
-#     empty_session.commit()
-#
-#     rows = list(empty_session.execute('SELECT user_id, article_id, comment FROM comments'))
-#
-#     assert rows == [(user_key, article_key, comment_text)]
+def test_saving_of_review(empty_session):
+    book_key = insert_book(empty_session)
+    user_key = insert_user(empty_session, ("Andrew", "1234"))
+
+    rows = empty_session.query(Book).all()
+    book = rows[0]
+    user = empty_session.query(User).filter(User._User__user_name == "Andrew").one()
+
+    # Create a new Review that is bidirectionally linked with the User and Book.
+    review_text = "Some review text."
+    review = leave_review(review_text, 5, user, book)
+
+    # Note: if the bidirectional links between the new Review and the User and
+    # Book objects hadn't been established in memory, they would exist following
+    # committing the addition of the Review to the database.
+    empty_session.add(review)
+    empty_session.commit()
+
+    rows = list(empty_session.execute('SELECT user_id, book_id, review_text FROM reviews'))
+
+    assert rows == [(user_key, book_key, review_text)]
 
 
 # def test_saving_of_article(empty_session):
