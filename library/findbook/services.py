@@ -39,9 +39,9 @@ def get_book_by_release_year(year: int, repo: AbstractRepository):
     return books
 
 
-def get_book_by_ebook_status(e_book_status: bool, repo: AbstractRepository):
-    books = repo.get_book_by_ebook_status(e_book_status)
-    return books
+# def get_book_by_ebook_status(e_book_status: bool, repo: AbstractRepository):
+#     books = repo.get_book_by_ebook_status(e_book_status)
+#     return books
 
 
 def get_book_by_number_of_pages(pages: int, repo: AbstractRepository):

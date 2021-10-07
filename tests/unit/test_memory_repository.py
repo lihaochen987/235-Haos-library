@@ -135,56 +135,56 @@ def test_repository_does_not_retrieve_a_non_existent_release_year(in_memory_repo
     assert book is None
 
 
-def test_repository_can_get_book_by_e_book_status(in_memory_repo, book):
-    in_memory_repo.add_book(book)
-
-    assert in_memory_repo.get_book_by_ebook_status(True)[-1] is book
-
-
-def test_repository_can_get_multiple_books_by_e_book_status(in_memory_repo, book):
-    in_memory_repo.add_book(book)
-    assert in_memory_repo.get_book_by_ebook_status(True)[-1] is book
-
-    another_book = Book(23, "The Reptile Room")
-    another_book.ebook = True
-    in_memory_repo.add_book(another_book)
-
-    assert in_memory_repo.get_book_by_ebook_status(True)[-1] is another_book
-
-    some_book = Book(32, "Harry Potter and the Philosopher's Stone")
-    some_book.ebook = False
-    in_memory_repo.add_book(some_book)
-
-    assert in_memory_repo.get_book_by_ebook_status(False)[-1] is some_book
-
-
-def test_repository_can_get_book_by_number_of_pages(in_memory_repo, book):
-    in_memory_repo.add_book(book)
-
-    assert in_memory_repo.get_book_by_number_of_pages(500)[0] is book
+# def test_repository_can_get_book_by_e_book_status(in_memory_repo, book):
+#     in_memory_repo.add_book(book)
+#
+#     assert in_memory_repo.get_book_by_ebook_status(True)[-1] is book
+#
+#
+# def test_repository_can_get_multiple_books_by_e_book_status(in_memory_repo, book):
+#     in_memory_repo.add_book(book)
+#     assert in_memory_repo.get_book_by_ebook_status(True)[-1] is book
+#
+#     another_book = Book(23, "The Reptile Room")
+#     another_book.ebook = True
+#     in_memory_repo.add_book(another_book)
+#
+#     assert in_memory_repo.get_book_by_ebook_status(True)[-1] is another_book
+#
+#     some_book = Book(32, "Harry Potter and the Philosopher's Stone")
+#     some_book.ebook = False
+#     in_memory_repo.add_book(some_book)
+#
+#     assert in_memory_repo.get_book_by_ebook_status(False)[-1] is some_book
 
 
-def test_repository_can_get_multiple_books_by_number_of_pages(in_memory_repo, book):
-    in_memory_repo.add_book(book)
-
-    another_book = Book(23, "The Reptile Room")
-    another_book.num_pages = 500
-    in_memory_repo.add_book(another_book)
-
-    some_book = Book(32, "Harry Potter and the Philosopher's Stone")
-    some_book.num_pages = 350
-    in_memory_repo.add_book(some_book)
-
-    assert in_memory_repo.get_book_by_number_of_pages(500)[0] is book
-    assert in_memory_repo.get_book_by_number_of_pages(500)[1] is another_book
-    assert in_memory_repo.get_book_by_number_of_pages(350)[0] is some_book
-    assert len(in_memory_repo.get_book_by_number_of_pages(500)) == 2
-    assert len(in_memory_repo.get_book_by_number_of_pages(350)) == 1
+# def test_repository_can_get_book_by_number_of_pages(in_memory_repo, book):
+#     in_memory_repo.add_book(book)
+#
+#     assert in_memory_repo.get_book_by_number_of_pages(500)[0] is book
 
 
-def test_repository_does_not_retrieve_a_non_existent_number_of_pages(in_memory_repo):
-    book = in_memory_repo.get_book_by_number_of_pages(28937498723984)
-    assert book is None
+# def test_repository_can_get_multiple_books_by_number_of_pages(in_memory_repo, book):
+#     in_memory_repo.add_book(book)
+#
+#     another_book = Book(23, "The Reptile Room")
+#     another_book.num_pages = 500
+#     in_memory_repo.add_book(another_book)
+#
+#     some_book = Book(32, "Harry Potter and the Philosopher's Stone")
+#     some_book.num_pages = 350
+#     in_memory_repo.add_book(some_book)
+#
+#     assert in_memory_repo.get_book_by_number_of_pages(500)[0] is book
+#     assert in_memory_repo.get_book_by_number_of_pages(500)[1] is another_book
+#     assert in_memory_repo.get_book_by_number_of_pages(350)[0] is some_book
+#     assert len(in_memory_repo.get_book_by_number_of_pages(500)) == 2
+#     assert len(in_memory_repo.get_book_by_number_of_pages(350)) == 1
+#
+#
+# def test_repository_does_not_retrieve_a_non_existent_number_of_pages(in_memory_repo):
+#     book = in_memory_repo.get_book_by_number_of_pages(28937498723984)
+#     assert book is None
 
 
 # Testing for the User class

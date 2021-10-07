@@ -48,14 +48,14 @@ def test_can_get_book_by_release_year(in_memory_repo):
                                                       in_memory_repo)) == '[<Book Sherlock Holmes: Year One, book id = 11827783>, <Book 續．星守犬, book id = 18711343>]'
 
 
-def test_can_get_book_by_ebook_status(in_memory_repo):
-    assert str(find_book_services.get_book_by_ebook_status(True,
-                                                      in_memory_repo)) == '[<Book The Switchblade Mamma, book id = 25742454>, <Book Bounty Hunter 4/3: My Life in Combat from Marine Scout Sniper to MARSOC, book id = 35452242>, <Book She Wolf #1, book id = 30735315>, <Book D.Gray-man, Vol. 16: Blood & Chains, book id = 18955715>]'
+# def test_can_get_book_by_ebook_status(in_memory_repo):
+#     assert str(find_book_services.get_book_by_ebook_status(True,
+#                                                       in_memory_repo)) == '[<Book The Switchblade Mamma, book id = 25742454>, <Book Bounty Hunter 4/3: My Life in Combat from Marine Scout Sniper to MARSOC, book id = 35452242>, <Book She Wolf #1, book id = 30735315>, <Book D.Gray-man, Vol. 16: Blood & Chains, book id = 18955715>]'
 
 
-def test_can_get_book_by_number_of_pages(in_memory_repo):
-    assert str(find_book_services.get_book_by_number_of_pages(144, in_memory_repo)) == '[<Book War Stories, Volume 4, book id = 27036539>, <Book Sherlock Holmes: Year One, book id = 11827783>]'
-    assert str(find_book_services.get_book_by_number_of_pages(27836478236, in_memory_repo)) == 'None'
+# def test_can_get_book_by_number_of_pages(in_memory_repo):
+#     assert str(find_book_services.get_book_by_number_of_pages(144, in_memory_repo)) == '[<Book War Stories, Volume 4, book id = 27036539>, <Book Sherlock Holmes: Year One, book id = 11827783>]'
+#     assert str(find_book_services.get_book_by_number_of_pages(27836478236, in_memory_repo)) == 'None'
 
 def test_can_add_user(in_memory_repo):
     new_user_name = 'jz'

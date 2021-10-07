@@ -415,6 +415,8 @@ class BooksInventory:
                 return self.__books[book_id]
         return None
 
+class ModelException(Exception):
+    pass
 
 # Association functions
 def leave_review(review_text: str, review_rating: int, user: User, book: Book):

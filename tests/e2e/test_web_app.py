@@ -8,7 +8,7 @@ def test_register(client):
     response_code = client.get('/authentication/register').status_code
     assert response_code == 200
 
-    # Check that we can register a user successfully, supplying a valid user name and password.
+    # # Check that we can register a user successfully, supplying a valid user name and password.
     response = client.post(
         '/authentication/register',
         data={'user_name': 'gmichael', 'password': 'CarelessWhisper1984'}

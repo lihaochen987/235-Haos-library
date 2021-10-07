@@ -20,16 +20,16 @@ class MemoryRepository(AbstractRepository):
         self.__users = list()
         self.__reviews = list()
 
-    def __iter__(self):
-        self._current = 0
-        return self
-
-    def __next__(self):
-        if self._current >= len(self._books):
-            raise StopIteration
-        else:
-            self._current += 1
-            return self._books[self._current - 1]
+    # def __iter__(self):
+    #     self._current = 0
+    #     return self
+    #
+    # def __next__(self):
+    #     if self._current >= len(self._books):
+    #         raise StopIteration
+    #     else:
+    #         self._current += 1
+    #         return self._books[self._current - 1]
 
     def __len__(self):
         return len(self._books)
@@ -79,17 +79,17 @@ class MemoryRepository(AbstractRepository):
             return None
         return books_list
 
-    def get_book_by_ebook_status(self, e_book_status: bool):
-        books_list = [book for book in self._books if book.ebook == e_book_status]
-        if books_list == []:
-            return None
-        return books_list
+    # def get_book_by_ebook_status(self, e_book_status: bool):
+    #     books_list = [book for book in self._books if book.ebook == e_book_status]
+    #     if books_list == []:
+    #         return None
+    #     return books_list
 
-    def get_book_by_number_of_pages(self, pages: int):
-        books_list = [book for book in self._books if book.num_pages == pages]
-        if books_list == []:
-            return None
-        return books_list
+    # def get_book_by_number_of_pages(self, pages: int):
+    #     books_list = [book for book in self._books if book.num_pages == pages]
+    #     if books_list == []:
+    #         return None
+    #     return books_list
 
     # User functions
     def add_user(self, user: User):
@@ -104,44 +104,3 @@ class MemoryRepository(AbstractRepository):
     def add_review(self, review: Review):
         super().add_review(review)
         self.__reviews.append(review)
-
-
-# Populate repo
-def read_csv_file(filename: str):
-    with open(filename, encoding='utf-8-sig') as infile:
-        reader = csv.reader(infile)
-
-        # Read first line of the the CSV file.
-        headers = next(reader)
-
-        # Read remaining rows from the CSV file.
-        for row in reader:
-            # Strip any leading/trailing white space from data read.
-            row = [item.strip() for item in row]
-            yield row
-
-def load_books(data_path: Path, repo: MemoryRepository):
-    books_filename = str(Path(data_path) / "comic_books_excerpt.json")
-    authors_filename = str(Path(data_path) / "book_authors_excerpt.json")
-    reader = BooksJSONReader(books_filename, authors_filename)
-    reader.read_json_files()
-    for book in reader.dataset_of_books:
-        repo.add_book(book)
-
-
-def load_users(data_path:Path, repo:MemoryRepository):
-    users = dict()
-
-    users_filename = str(Path(data_path) / "users.csv")
-    for data_row in read_csv_file(users_filename):
-        user = User(
-            user_name=data_row[1],
-            password=generate_password_hash(data_row[2])
-        )
-        repo.add_user(user)
-        users[data_row[0]] = user
-    return users
-
-def populate(data_path: Path, repo: MemoryRepository):
-    load_books(data_path, repo)
-    users = load_users(data_path, repo)

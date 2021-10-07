@@ -6,6 +6,8 @@ from sqlalchemy.orm.exc import NoResultFound
 from library.adapters.repository import AbstractRepository
 from library.domain.model import User, Book, Review
 
+from flask import _app_ctx_stack
+
 
 class SessionContextManager:
     def __init__(self, session_factory):
@@ -114,23 +116,16 @@ class SqlAlchemyRepository(AbstractRepository):
 
         return books_list
 
-    # def get_book_by_release_year(self, year: int):
-    #     books_list = [book for book in self._books if book.release_year == year]
-    #     if books_list == []:
-    #         return None
-    #     return books_list
-    #
-    # def get_book_by_ebook_status(self, e_book_status: bool):
-    #     books_list = [book for book in self._books if book.ebook == e_book_status]
-    #     if books_list == []:
-    #         return None
-    #     return books_list
-    #
-    # def get_book_by_number_of_pages(self, pages: int):
-    #     books_list = [book for book in self._books if book.num_pages == pages]
-    #     if books_list == []:
-    #         return None
-    #     return books_list
+    def get_book_by_release_year(self, year: int):
+        books_list = []
+        try:
+            books_list = self._session_cm.session.query(Book).filter(Book.release_year == year).all()
+        except NoResultFound:
+            # Ignore any exception and return None.
+            pass
+
+        return books_list
+
 
     def get_reviews(self):
         reviews = self._session_cm.session.query(Review).all()
