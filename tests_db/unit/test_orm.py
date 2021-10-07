@@ -2,7 +2,7 @@ import datetime
 import pytest
 from sqlalchemy.exc import IntegrityError
 
-from library.domain.model import User
+from library.domain.model import User, Publisher, Book
 
 article_date = datetime.date(2020, 2, 28)
 
@@ -31,17 +31,27 @@ def insert_users(empty_session, values):
     return keys
 
 
-# def insert_article(empty_session):
-#     empty_session.execute(
-#         'INSERT INTO articles (date, title, first_paragraph, hyperlink, image_hyperlink) VALUES '
-#         '(:date, "Coronavirus: First case of virus in New Zealand", '
-#         '"The first case of coronavirus has been confirmed in New Zealand  and authorities are now scrambling to track down people who may have come into contact with the patient.", '
-#         '"https://www.stuff.co.nz/national/health/119899280/ministry-of-health-gives-latest-update-on-novel-coronavirus", '
-#         '"https://resources.stuff.co.nz/content/dam/images/1/z/e/3/w/n/image.related.StuffLandscapeSixteenByNine.1240x700.1zduvk.png/1583369866749.jpg")',
-#         {'date': article_date.isoformat()}
-#     )
-#     row = empty_session.execute('SELECT id from articles').fetchone()
-#     return row[0]
+def insert_book(empty_session):
+    publisher_id = 987654321
+    # empty_session.execute('INSERT INTO publishers (id, publisher_name) VALUES (:id, "Houghton Mifflin Harcourt")', {'publisher_id':publisher_id})
+    id = 123456789
+    release_year = 2005
+    num_pages = 1216
+
+    empty_session.execute(
+        'INSERT INTO books (id, title, description, image_url, publisher, release_year, ebook, num_pages) VALUES '
+        '(:id, '
+        '"The Lord of the Rings", '
+        '"In ancient times the Rings of Power were crafted by the Elven-smiths, and Sauron, the Dark Lord, forged the One Ring, filling it with his own power so that he could rule all others.", '
+        '"https://images.unsplash.com/photo-1541963463532-d68292c34b19?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=688&q=80", '
+        ':publisher,'
+        ':release_year,'
+        '"True",'
+        ':num_pages)',
+        {'id': id, 'publisher': publisher_id, 'release_year': release_year, 'num_pages': num_pages}
+    )
+    row = empty_session.execute('SELECT id from books').fetchone()
+    return row[0]
 #
 #
 # def insert_tags(empty_session):
@@ -77,15 +87,16 @@ def insert_users(empty_session, values):
 #     return row[0]
 #
 #
-# def make_article():
-#     article = Article(
-#         article_date,
-#         "Coronavirus: First case of virus in New Zealand",
-#         "The first case of coronavirus has been confirmed in New Zealand  and authorities are now scrambling to track down people who may have come into contact with the patient.",
-#         "https://www.stuff.co.nz/national/health/119899280/ministry-of-health-gives-latest-update-on-novel-coronavirus",
-#         "https://resources.stuff.co.nz/content/dam/images/1/z/e/3/w/n/image.related.StuffLandscapeSixteenByNine.1240x700.1zduvk.png/1583369866749.jpg"
-#     )
-#     return article
+def make_book():
+    book = Book(123456789, 'The Lord of the Rings')
+    book.description = "In ancient times the Rings of Power were crafted by the Elven-smiths, and Sauron, the Dark Lord, forged the One Ring, filling it with his own power so that he could rule all others."
+    book.image_url = "https://images.unsplash.com/photo-1541963463532-d68292c34b19?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=688&q=80"
+    book.publisher = Publisher('Houghton Mifflin Harcourt')
+    book.release_year = 2005
+    book.ebook = True
+    book.num_pages = 1216
+    book.similar_books = [56789, 12345]
+    return book
 
 
 def make_user():
@@ -132,13 +143,13 @@ def test_saving_of_users_with_common_user_name(empty_session):
         empty_session.commit()
 
 
-# def test_loading_of_article(empty_session):
-#     article_key = insert_article(empty_session)
-#     expected_article = make_article()
-#     fetched_article = empty_session.query(Article).one()
-#
-#     assert expected_article == fetched_article
-#     assert article_key == fetched_article.id
+def test_loading_of_book(empty_session):
+    book_key = insert_book(empty_session)
+    expected_book = make_book()
+    fetched_book = empty_session.query(Book).one()
+
+    assert expected_book == fetched_book
+    assert book_key == fetched_book.book_id
 
 
 # def test_loading_of_tagged_article(empty_session):

@@ -112,8 +112,16 @@ class Book:
 
         self.__book_id = book_id
 
-        # use the attribute setter
-        self.title = book_title
+        if isinstance(book_title, str):
+            book_title = book_title.strip()
+            if book_title != "":
+                self.__title = book_title
+            else:
+                raise ValueError
+        else:
+            raise ValueError
+
+        self.__title = book_title
 
         self.__image_url = None
         self.__description = None
@@ -242,7 +250,7 @@ class Book:
             self.__num_pages = num_pages
 
     def __repr__(self):
-        return f'<Book {self.title}, book id = {self.book_id}>'
+        return f'<Book {self.__title}, book id = {self.__book_id}>'
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
