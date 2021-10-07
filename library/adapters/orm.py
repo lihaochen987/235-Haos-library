@@ -1,5 +1,5 @@
 from sqlalchemy import (
-    Table, MetaData, Column, Integer, String, DateTime,
+    Table, MetaData, Column, Integer, String, DateTime, Boolean,
     ForeignKey
 )
 from sqlalchemy.orm import mapper, relationship
@@ -24,7 +24,7 @@ books_table = Table(
     Column('image_url', String(1024), nullable=False),
     Column('publisher', ForeignKey('publishers.id')),
     Column('release_year', Integer, nullable=True),
-    Column('ebook', String(1024), nullable=False),
+    Column('ebook', Boolean, nullable=False),
     Column('num_pages', Integer, nullable=True),
     # Column('similar_books', ForeignKey('books.id'))
 )
@@ -84,6 +84,7 @@ def map_model_to_tables():
         '_Book__release_year': books_table.c.release_year,
         '_Book__description': books_table.c.description,
         '_Book__image_url': books_table.c.image_url,
+        '_Book__ebook': books_table.c.ebook,
         '_Book__reviews': relationship(model.Review, backref='_Review__book'),
         '_Book__authors': relationship(model.Author, secondary=books_authors_table,
                                        back_populates='_Author__books')

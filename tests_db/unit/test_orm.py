@@ -1,8 +1,10 @@
 import datetime
+
 import pytest
 from sqlalchemy.exc import IntegrityError
 
 from library.domain.model import User, Publisher, Book, leave_review
+
 
 # article_date = datetime.date(2020, 2, 28)
 
@@ -37,6 +39,7 @@ def insert_book(empty_session):
     id = 123456789
     release_year = 2005
     num_pages = 1216
+    ebook = True
 
     empty_session.execute(
         'INSERT INTO books (id, title, description, image_url, publisher, release_year, ebook, num_pages) VALUES '
@@ -46,9 +49,9 @@ def insert_book(empty_session):
         '"https://images.unsplash.com/photo-1541963463532-d68292c34b19?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=688&q=80", '
         ':publisher,'
         ':release_year,'
-        '"True",'
+        ':ebook,'
         ':num_pages)',
-        {'id': id, 'publisher': publisher_id, 'release_year': release_year, 'num_pages': num_pages}
+        {'id': id, 'publisher': publisher_id, 'release_year': release_year, 'num_pages': num_pages, 'ebook': ebook}
     )
     row = empty_session.execute('SELECT id from books').fetchone()
     return row[0]
@@ -199,19 +202,17 @@ def test_saving_of_review(empty_session):
     assert rows == [(user_key, book_key, review_text)]
 
 
-# def test_saving_of_article(empty_session):
-#     article = make_article()
-#     empty_session.add(article)
-#     empty_session.commit()
-#
-#     rows = list(empty_session.execute('SELECT date, title, first_paragraph, hyperlink, image_hyperlink FROM articles'))
-#     date = article_date.isoformat()
-#     assert rows == [(date,
-#                      "Coronavirus: First case of virus in New Zealand",
-#                      "The first case of coronavirus has been confirmed in New Zealand  and authorities are now scrambling to track down people who may have come into contact with the patient.",
-#                      "https://www.stuff.co.nz/national/health/119899280/ministry-of-health-gives-latest-update-on-novel-coronavirus",
-#                      "https://resources.stuff.co.nz/content/dam/images/1/z/e/3/w/n/image.related.StuffLandscapeSixteenByNine.1240x700.1zduvk.png/1583369866749.jpg"
-#                      )]
+def test_saving_of_book(empty_session):
+    book = make_book()
+    empty_session.add(book)
+    empty_session.commit()
+
+    rows = list(empty_session.execute(
+        'SELECT id, title, description, image_url, publisher, release_year, ebook, num_pages FROM books'))
+    assert rows == [(123456789, 'The Lord of the Rings',
+                     'In ancient times the Rings of Power were crafted by the Elven-smiths, and Sauron, the Dark Lord, forged the One Ring, filling it with his own power so that he could rule all others.',
+                     'https://images.unsplash.com/photo-1541963463532-d68292c34b19?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=688&q=80',
+                     None, 2005, 1, None)]
 
 
 # def test_saving_tagged_article(empty_session):
