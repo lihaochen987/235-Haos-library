@@ -20,7 +20,7 @@ books_table = Table(
     'books', metadata,
     Column('id', Integer, primary_key=True, autoincrement=True),
     Column('title', String(1024), nullable=False),
-    Column('description', String(1024), nullable=False),
+    Column('description', String(1024), nullable=True),
     Column('image_url', String(1024), nullable=False),
     Column('publisher', ForeignKey('publishers.id')),
     Column('release_year', Integer, nullable=True),

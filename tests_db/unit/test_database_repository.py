@@ -4,7 +4,7 @@ import pytest
 
 import library.adapters.repository as repo
 from library.adapters.database_repository import SqlAlchemyRepository
-from library.domain.model import User, Book, Author, Review, leave_review
+from library.domain.model import User, Book, Author, Review, leave_review, Publisher
 from library.adapters.repository import RepositoryException
 
 def test_repository_can_add_a_user(session_factory):
@@ -38,26 +38,24 @@ def test_repository_can_retrieve_book_count(session_factory):
 
     # Check that the query returned 45 Articles.
     assert number_of_books == 45
-#
-# def test_repository_can_add_article(session_factory):
-#     repo = SqlAlchemyRepository(session_factory)
-#
-#     number_of_articles = repo.get_number_of_articles()
-#
-#     new_article_id = number_of_articles + 1
-#
-#     article = Article(
-#         date.fromisoformat('2020-03-09'),
-#         'Second US coronavirus cruise tests negative amid delays and cancellations',
-#         'It was revealed ...',
-#         'https://www.nzherald.co.nz/travel/news/article.cfm?c_id=7&objectid=12315024',
-#         'https://www.nzherald.co.nz/resizer/ix7hy3lzkMWUkD8hE6kdZ-8oaOM=/620x349/smart/filters:quality(70)/arc-anglerfish-syd-prod-nzme.s3.amazonaws.com/public/7VFOBLCBCNDHLICBY3CTPFR2L4.jpg',
-#         new_article_id
-#     )
-#     repo.add_article(article)
-#
-#     assert repo.get_article(new_article_id) == article
-#
+
+def test_repository_can_add_book(session_factory):
+    repo = SqlAlchemyRepository(session_factory)
+
+    number_of_books = repo.get_number_of_books()
+
+    new_book_id = number_of_books + 1
+    book = Book(
+        new_book_id,
+        'Testing Book'
+    )
+    book.image_url = 'https://images.unsplash.com/photo-1624644128945-920c0da6931b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80'
+    book.ebook = False
+
+    repo.add_book(book)
+
+    assert repo.get_book_by_id(new_book_id)[0] == book
+
 # def test_repository_can_retrieve_article(session_factory):
 #     repo = SqlAlchemyRepository(session_factory)
 #
