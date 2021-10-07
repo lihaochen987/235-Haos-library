@@ -34,8 +34,8 @@ reviews_table = Table(
     Column('id', Integer, primary_key=True, autoincrement=True),
     Column('user_id', ForeignKey('users.id')),
     Column('book_id', ForeignKey('books.id')),
-    Column('rating', Integer, nullable=False),
     Column('review_text', String(1024), nullable=False),
+    Column('rating', Integer, nullable=False),
     Column('timestamp', DateTime, nullable=False)
 )
 
@@ -66,12 +66,13 @@ def map_model_to_tables():
     mapper(model.User, users_table, properties={
         '_User__user_name': users_table.c.user_name,
         '_User__password': users_table.c.password,
-        '_User__reviews': relationship(model.Review, backref='_Review__user')
     })
     mapper(model.Review, reviews_table, properties={
         '_Review__rating': reviews_table.c.rating,
         '_Review__review_text': reviews_table.c.review_text,
         '_Review__timestamp': reviews_table.c.timestamp,
+        '_Review__user': relationship(model.User, backref='_User__reviews'),
+        '_Review__book': relationship(model.Book, backref='_Book__reviews')
     })
     mapper(model.Author, authors_table, properties={
         '_Author__full_name': authors_table.c.full_name,
@@ -83,7 +84,7 @@ def map_model_to_tables():
         '_Book__release_year': books_table.c.release_year,
         '_Book__description': books_table.c.description,
         '_Book__image_url': books_table.c.image_url,
-        '_Book__reviews': relationship(model.Review, backref='_Review__book'),
+        # '_Book__reviews': relationship(model.Review, backref='_Review__book'),
         '_Book__authors': relationship(model.Author, secondary=books_authors_table,
                                        back_populates='_Author__books')
     })

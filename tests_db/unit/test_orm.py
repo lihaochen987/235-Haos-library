@@ -4,7 +4,7 @@ from sqlalchemy.exc import IntegrityError
 
 from library.domain.model import User, Publisher, Book
 
-article_date = datetime.date(2020, 2, 28)
+# article_date = datetime.date(2020, 2, 28)
 
 
 def insert_user(empty_session, values=None):
@@ -69,22 +69,23 @@ def insert_book(empty_session):
 #         empty_session.execute(stmt, {'article_id': article_key, 'tag_id': tag_key})
 #
 #
-# def insert_commented_article(empty_session):
-#     article_key = insert_article(empty_session)
-#     user_key = insert_user(empty_session)
-#
-#     timestamp_1 = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-#     timestamp_2 = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-#
-#     empty_session.execute(
-#         'INSERT INTO comments (user_id, article_id, comment, timestamp) VALUES '
-#         '(:user_id, :article_id, "Comment 1", :timestamp_1),'
-#         '(:user_id, :article_id, "Comment 2", :timestamp_2)',
-#         {'user_id': user_key, 'article_id': article_key, 'timestamp_1': timestamp_1, 'timestamp_2': timestamp_2}
-#     )
-#
-#     row = empty_session.execute('SELECT id from articles').fetchone()
-#     return row[0]
+def insert_reviewed_book(empty_session):
+    book_key = insert_book(empty_session)
+    user_key = insert_user(empty_session)
+    rating = 4
+
+    timestamp_1 = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    timestamp_2 = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+    empty_session.execute(
+        'INSERT INTO reviews (user_id, book_id, review_text, rating, timestamp) VALUES '
+        '(:user_id, :book_id, "Review_text 1", :rating, :timestamp_1),'
+        '(:user_id, :book_id, "Review_text 2", :rating, :timestamp_2)',
+        {'user_id': user_key, 'book_id': book_key, 'rating':rating, 'timestamp_1': timestamp_1, 'timestamp_2': timestamp_2}
+    )
+
+    row = empty_session.execute('SELECT id from books').fetchone()
+    return row[0]
 #
 #
 def make_book():
@@ -165,14 +166,14 @@ def test_loading_of_book(empty_session):
 #         assert tag.is_applied_to(article)
 
 
-# def test_loading_of_commented_article(empty_session):
-#     insert_commented_article(empty_session)
-#
-#     rows = empty_session.query(Article).all()
-#     article = rows[0]
-#
-#     for comment in article.comments:
-#         assert comment.article is article
+def test_loading_of_reviewed_book(empty_session):
+    insert_reviewed_book(empty_session)
+
+    rows = empty_session.query(Book).all()
+    book = rows[0]
+
+    for review in book.reviews:
+        assert review.book is book
 
 #
 # def test_saving_of_comment(empty_session):

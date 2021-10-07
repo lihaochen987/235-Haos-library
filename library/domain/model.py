@@ -121,8 +121,6 @@ class Book:
         else:
             raise ValueError
 
-        self.__title = book_title
-
         self.__image_url = None
         self.__description = None
         self.__publisher = None
