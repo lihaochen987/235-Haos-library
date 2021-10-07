@@ -246,28 +246,28 @@ def test_saving_of_book(empty_session):
 #     assert tag_key == tag_foreign_key
 
 
-# def test_save_commented_article(empty_session):
-#     # Create Article User objects.
-#     article = make_article()
-#     user = make_user()
-#
-#     # Create a new Comment that is bidirectionally linked with the User and Article.
-#     comment_text = "Some comment text."
-#     comment = make_comment(comment_text, user, article)
-#
-#     # Save the new Article.
-#     empty_session.add(article)
-#     empty_session.commit()
-#
-#     # Test test_saving_of_article() checks for insertion into the articles table.
-#     rows = list(empty_session.execute('SELECT id FROM articles'))
-#     article_key = rows[0][0]
-#
-#     # Test test_saving_of_users() checks for insertion into the users table.
-#     rows = list(empty_session.execute('SELECT id FROM users'))
-#     user_key = rows[0][0]
-#
-#     # Check that the comments table has a new record that links to the articles and users
-#     # tables.
-#     rows = list(empty_session.execute('SELECT user_id, article_id, comment FROM comments'))
-#     assert rows == [(user_key, article_key, comment_text)]
+def test_save_review_book(empty_session):
+    # Create Book User objects.
+    book = make_book()
+    user = make_user()
+
+    # Create a new Comment that is bidirectionally linked with the User and Book.
+    review_text = "Some review text."
+    review = leave_review(review_text, 3, user, book)
+
+    # Save the new Book.
+    empty_session.add(book)
+    empty_session.commit()
+
+    # Test test_saving_of_book() checks for insertion into the books table.
+    rows = list(empty_session.execute('SELECT id FROM books'))
+    book_key = rows[0][0]
+
+    # Test test_saving_of_users() checks for insertion into the users table.
+    rows = list(empty_session.execute('SELECT id FROM users'))
+    user_key = rows[0][0]
+
+    # Check that the reviews table has a new record that links to the books and users
+    # tables.
+    rows = list(empty_session.execute('SELECT user_id, book_id, review_text FROM reviews'))
+    assert rows == [(user_key, book_key, review_text)]
