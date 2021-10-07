@@ -67,8 +67,13 @@ class SqlAlchemyRepository(AbstractRepository):
 
         return user
 
+    # Testing purposes
     def get_books(self):
         return self._books
+
+    def get_number_of_books(self):
+        number_of_books = self._session_cm.session.query(Book).count()
+        return number_of_books
 
     # Book functions
     def add_book(self, book: Book):

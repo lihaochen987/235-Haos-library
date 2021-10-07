@@ -37,6 +37,13 @@ class AbstractRepository(abc.ABC):
         """
         raise NotImplementedError
 
+    @abc.abstractmethod
+    def get_number_of_books(self) -> int:
+        """
+        Gets number of books in the repository
+        """
+        raise NotImplementedError
+
     # Book methods
     @abc.abstractmethod
     def add_book(self, book: Book):

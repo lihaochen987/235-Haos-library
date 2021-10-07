@@ -18,26 +18,26 @@ def test_repository_can_add_a_user(session_factory):
     user2 = repo.get_user('dave')
 
     assert user2 == user and user2 is user
-#
-# def test_repository_can_retrieve_a_user(session_factory):
-#     repo = SqlAlchemyRepository(session_factory)
-#
-#     user = repo.get_user('fmercury')
-#     assert user == User('fmercury', '8734gfe2058v')
-#
-# def test_repository_does_not_retrieve_a_non_existent_user(session_factory):
-#     repo = SqlAlchemyRepository(session_factory)
-#
-#     user = repo.get_user('prince')
-#     assert user is None
-#
-# def test_repository_can_retrieve_article_count(session_factory):
-#     repo = SqlAlchemyRepository(session_factory)
-#
-#     number_of_articles = repo.get_number_of_articles()
-#
-#     # Check that the query returned 177 Articles.
-#     assert number_of_articles == 177
+
+def test_repository_can_retrieve_a_user(session_factory):
+    repo = SqlAlchemyRepository(session_factory)
+
+    user = repo.get_user('fmercury')
+    assert user == User('fmercury', '8734gfe2058v')
+
+def test_repository_does_not_retrieve_a_non_existent_user(session_factory):
+    repo = SqlAlchemyRepository(session_factory)
+
+    user = repo.get_user('prince')
+    assert user is None
+
+def test_repository_can_retrieve_book_count(session_factory):
+    repo = SqlAlchemyRepository(session_factory)
+
+    number_of_books = repo.get_number_of_books()
+
+    # Check that the query returned 45 Articles.
+    assert number_of_books == 45
 #
 # def test_repository_can_add_article(session_factory):
 #     repo = SqlAlchemyRepository(session_factory)

@@ -41,6 +41,9 @@ class MemoryRepository(AbstractRepository):
     def get_books(self):
         return self._books
 
+    def get_number_of_books(self):
+        return len(self._books)
+
     # Book functions
     def add_book(self, book: Book):
         self._books.append(book)
