@@ -42,23 +42,23 @@ def test_database_populate_select_all_users(database_engine):
 
         assert all_users == ['thorke', 'fmercury', 'mjackson']
 
-# def test_database_populate_select_all_comments(database_engine):
-#
-#     # Get table information
-#     inspector = inspect(database_engine)
-#     name_of_comments_table = inspector.get_table_names()[2]
-#
-#     with database_engine.connect() as connection:
-#         # query for records in table comments
-#         select_statement = select([metadata.tables[name_of_comments_table]])
-#         result = connection.execute(select_statement)
-#
-#         all_comments = []
-#         for row in result:
-#             all_comments.append((row['id'], row['user_id'], row['article_id'], row['comment']))
-#
-#         assert all_comments == [(1, 2, 1, 'Oh no, COVID-19 has hit New Zealand'),
-#                                 (2, 1, 1, 'Yeah Freddie, bad news')]
+def test_database_populate_select_all_reviews(database_engine):
+
+    # Get table information
+    inspector = inspect(database_engine)
+    name_of_reviews_table = inspector.get_table_names()[4]
+
+    with database_engine.connect() as connection:
+        # query for records in table comments
+        select_statement = select([metadata.tables[name_of_reviews_table]])
+        result = connection.execute(select_statement)
+
+        all_reviews = []
+        for row in result:
+            print(row)
+            all_reviews.append((row['id'], row['user_id'], row['book_id'], row['review_text']))
+
+        assert all_reviews == [(1, 2, 707611, 'I loved reading this book!'), (2, 1, 12349665, "Didn't really like this one")]
 #
 # def test_database_populate_select_all_articles(database_engine):
 #

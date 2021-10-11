@@ -31,7 +31,6 @@ def load_books(data_path: Path, repo: AbstractRepository):
     for book in reader.dataset_of_books:
         repo.add_book(book)
 
-
 def load_users(data_path:Path, repo:AbstractRepository):
     users = dict()
 
@@ -44,6 +43,17 @@ def load_users(data_path:Path, repo:AbstractRepository):
         repo.add_user(user)
         users[data_row[0]] = user
     return users
+
+def load_reviews(data_path: Path, repo: AbstractRepository, users):
+    reviews_filename = str(Path(data_path) / "reviews.csv")
+    for data_row in read_csv_file(reviews_filename):
+        review = leave_review(
+            review_text = data_row[0],
+            user=users[data_row[2]],
+            book = repo.get_book_by_id(int(data_row[3]))[0],
+            review_rating = int(data_row[1]),
+        )
+        repo.add_review(review)
 
 def populate(data_path: Path, repo: AbstractRepository):
     load_books(data_path, repo)
