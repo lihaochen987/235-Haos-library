@@ -82,18 +82,36 @@ def test_repository_does_not_retrieve_a_non_existent_book(session_factory):
     book = repo.get_book_by_id(3984573987459)
     assert book == []
 
-def test_repository_can_retrieve_articles_by_id(session_factory):
+def test_repository_can_retrieve_books_by_id(session_factory):
     repo = SqlAlchemyRepository(session_factory)
 
     books = repo.get_book_by_id(11827783)
 
     # Check that the query returned 1 Book.
     assert len(books) == 1
+    assert books[0].book_id ==  11827783
 
     books = repo.get_book_by_id(17405342)
+    assert books[0].book_id ==  17405342
 
     # Check that the query returned 1 Book.
     assert len(books) == 1
+
+def test_repository_can_retrieve_books_by_title(session_factory):
+    repo = SqlAlchemyRepository(session_factory)
+
+    books = repo.get_book_by_title("The Switchblade Mamma")
+    print(books)
+
+    # Check that the query returned 1 Book.
+    assert len(books) == 1
+    assert books[0].title == "The Switchblade Mamma"
+
+    books = repo.get_book_by_title("D.Gray-man, Vol. 16: Blood & Chains")
+
+    # Check that the query returned 1 Book.
+    assert len(books) == 1
+    assert books[0].title == "D.Gray-man, Vol. 16: Blood & Chains"
 
 # def test_repository_does_not_retrieve_an_article_when_there_are_no_articles_for_a_given_date(session_factory):
 #     repo = SqlAlchemyRepository(session_factory)
