@@ -112,7 +112,7 @@ def make_user():
 #     tag = Tag("News")
 #     return tag
 
-#
+
 def test_loading_of_users(empty_session):
     users = list()
     users.append(("andrew", "1234"))

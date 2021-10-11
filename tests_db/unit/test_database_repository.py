@@ -56,31 +56,31 @@ def test_repository_can_add_book(session_factory):
 
     assert repo.get_book_by_id(new_book_id)[0] == book
 
-# def test_repository_can_retrieve_article(session_factory):
-#     repo = SqlAlchemyRepository(session_factory)
+def test_repository_can_retrieve_book(session_factory):
+    repo = SqlAlchemyRepository(session_factory)
+
+    book = repo.get_book_by_id(27036537)
+
+    # Check that the Book has the expected title.
+    assert book[0].title == 'Crossed, Volume 15'
+
+    # # Check that the Article is commented as expected.
+    # comment_one = [comment for comment in article.comments if comment.comment == 'Oh no, COVID-19 has hit New Zealand'][
+    #     0]
+    # comment_two = [comment for comment in article.comments if comment.comment == 'Yeah Freddie, bad news'][0]
+    #
+    # assert comment_one.user.user_name == 'fmercury'
+    # assert comment_two.user.user_name == "thorke"
+    #
+    # # Check that the Article is tagged as expected.
+    # assert article.is_tagged_by(Tag('Health'))
+    # assert article.is_tagged_by(Tag('New Zealand'))
 #
-#     article = repo.get_article(1)
-#
-#     # Check that the Article has the expected title.
-#     assert article.title == 'Coronavirus: First case of virus in New Zealand'
-#
-#     # Check that the Article is commented as expected.
-#     comment_one = [comment for comment in article.comments if comment.comment == 'Oh no, COVID-19 has hit New Zealand'][
-#         0]
-#     comment_two = [comment for comment in article.comments if comment.comment == 'Yeah Freddie, bad news'][0]
-#
-#     assert comment_one.user.user_name == 'fmercury'
-#     assert comment_two.user.user_name == "thorke"
-#
-#     # Check that the Article is tagged as expected.
-#     assert article.is_tagged_by(Tag('Health'))
-#     assert article.is_tagged_by(Tag('New Zealand'))
-#
-# def test_repository_does_not_retrieve_a_non_existent_article(session_factory):
-#     repo = SqlAlchemyRepository(session_factory)
-#
-#     article = repo.get_article(201)
-#     assert article is None
+def test_repository_does_not_retrieve_a_non_existent_book(session_factory):
+    repo = SqlAlchemyRepository(session_factory)
+
+    book = repo.get_book_by_id(3984573987459)
+    assert book == []
 #
 # def test_repository_can_retrieve_articles_by_date(session_factory):
 #     repo = SqlAlchemyRepository(session_factory)
