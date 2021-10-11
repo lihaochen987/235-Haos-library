@@ -2,12 +2,12 @@ from sqlalchemy import select, inspect
 
 from library.adapters.orm import metadata
 
-# def test_database_populate_inspect_table_names(database_engine):
-#
-#     # Get table information
-#     inspector = inspect(database_engine)
-#     assert inspector.get_table_names() == ['article_tags', 'articles', 'comments', 'tags', 'users']
-#
+def test_database_populate_inspect_table_names(database_engine):
+
+    # Get table information
+    inspector = inspect(database_engine)
+    assert inspector.get_table_names() == ['authors', 'books', 'books_authors', 'publishers', 'reviews', 'users']
+
 # def test_database_populate_select_all_tags(database_engine):
 #
 #     # Get table information
