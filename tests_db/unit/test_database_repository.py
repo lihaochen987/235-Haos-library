@@ -113,11 +113,11 @@ def test_repository_can_retrieve_books_by_title(session_factory):
     assert len(books) == 1
     assert books[0].title == "D.Gray-man, Vol. 16: Blood & Chains"
 
-# def test_repository_does_not_retrieve_an_article_when_there_are_no_articles_for_a_given_date(session_factory):
-#     repo = SqlAlchemyRepository(session_factory)
-#
-#     articles = repo.get_articles_by_date(date(2020, 3, 8))
-#     assert len(articles) == 0
+def test_repository_does_not_retrieve_a_book_when_there_are_no_books_for_a_given_title(session_factory):
+    repo = SqlAlchemyRepository(session_factory)
+
+    books = repo.get_book_by_title("This title doesn't exist!")
+    assert len(books) == 0
 #
 # def test_repository_can_retrieve_tags(session_factory):
 #     repo = SqlAlchemyRepository(session_factory)
