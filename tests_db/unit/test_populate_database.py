@@ -55,29 +55,28 @@ def test_database_populate_select_all_reviews(database_engine):
 
         all_reviews = []
         for row in result:
-            print(row)
             all_reviews.append((row['id'], row['user_id'], row['book_id'], row['review_text']))
 
         assert all_reviews == [(1, 2, 707611, 'I loved reading this book!'), (2, 1, 12349665, "Didn't really like this one")]
-#
-# def test_database_populate_select_all_articles(database_engine):
-#
-#     # Get table information
-#     inspector = inspect(database_engine)
-#     name_of_articles_table = inspector.get_table_names()[1]
-#
-#     with database_engine.connect() as connection:
-#         # query for records in table articles
-#         select_statement = select([metadata.tables[name_of_articles_table]])
-#         result = connection.execute(select_statement)
-#
-#         all_articles = []
-#         for row in result:
-#             all_articles.append((row['id'], row['title']))
-#
-#         nr_articles = len(all_articles)
-#         assert nr_articles == 6
-#
-#         assert all_articles[0] == (1, 'Coronavirus: First case of virus in New Zealand')
-#
-#
+
+def test_database_populate_select_all_books(database_engine):
+
+    # Get table information
+    inspector = inspect(database_engine)
+    name_of_books_table = inspector.get_table_names()[1]
+
+    with database_engine.connect() as connection:
+        # query for records in table articles
+        select_statement = select([metadata.tables[name_of_books_table]])
+        result = connection.execute(select_statement)
+
+        all_books = []
+        for row in result:
+            all_books.append((row['id'], row['title']))
+
+        nr_books = len(all_books)
+        assert nr_books == 20
+
+        assert all_books[0] == (707611, 'Superman Archives, Vol. 2')
+
+
