@@ -12,7 +12,7 @@ TEST_DATA_PATH_DATABASE_FULL = get_project_root() / "library" / "adapters" / "da
 TEST_DATA_PATH_DATABASE_LIMITED = get_project_root() / "tests" / "data"
 
 TEST_DATABASE_URI_IN_MEMORY = 'sqlite://'
-TEST_DATABASE_URI_FILE = 'sqlite:///covid-19-test.db'
+TEST_DATABASE_URI_FILE = 'sqlite:///Haoslibrary-test.db'
 
 @pytest.fixture
 def database_engine():

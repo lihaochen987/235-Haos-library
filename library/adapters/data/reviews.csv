@@ -1,0 +1,3 @@
+review_text, review_rating, user-id, book-id, timestamp
+"I loved reading this book!", 5, 2, 707611 ,2020-02-28 14:31:26
+"Didn't really like this one", 2, 1, 12349665, 2020-02-28 14:39:51

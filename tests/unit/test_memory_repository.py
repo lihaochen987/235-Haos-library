@@ -220,7 +220,7 @@ def test_repository_can_add_and_retrieve_reviews(in_memory_repo, user, book):
     in_memory_repo.add_review(review)
 
     assert review in in_memory_repo.get_reviews()
-    assert len(in_memory_repo.get_reviews()) == 1
+    assert len(in_memory_repo.get_reviews()) == 3
 
 
 def test_repository_can_populate(in_memory_repo):

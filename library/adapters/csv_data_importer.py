@@ -6,7 +6,7 @@ from werkzeug.security import generate_password_hash
 
 from library.adapters.repository import AbstractRepository
 from library.adapters.jsondatareader import BooksJSONReader
-from library.domain.model import Book, Author, Review, User, leave_review, ModelException
+from library.domain.model import Book, Author, Review, User, leave_review, ModelException, Publisher
 
 
 # Populate repo
@@ -54,7 +54,3 @@ def load_reviews(data_path: Path, repo: AbstractRepository, users):
             review_rating = int(data_row[1]),
         )
         repo.add_review(review)
-
-def populate(data_path: Path, repo: AbstractRepository):
-    load_books(data_path, repo)
-    users = load_users(data_path, repo)

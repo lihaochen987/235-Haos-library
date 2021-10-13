@@ -41,6 +41,7 @@ def test_repository_can_retrieve_book_count(session_factory):
 
 def test_repository_can_add_book(session_factory):
     repo = SqlAlchemyRepository(session_factory)
+    publisher = Publisher("Testing")
 
     number_of_books = repo.get_number_of_books()
 
@@ -51,6 +52,7 @@ def test_repository_can_add_book(session_factory):
     )
     book.image_url = 'https://images.unsplash.com/photo-1624644128945-920c0da6931b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80'
     book.ebook = False
+    book.publisher = publisher
 
     repo.add_book(book)
 
@@ -59,22 +61,21 @@ def test_repository_can_add_book(session_factory):
 def test_repository_can_retrieve_book(session_factory):
     repo = SqlAlchemyRepository(session_factory)
 
-    book = repo.get_book_by_id(27036537)
+    book = repo.get_book_by_id(12349665)
 
-    # Check that the Book has the expected title.
-    assert book[0].title == 'Crossed, Volume 15'
+    # Check that the Book has the expected title attributes
+    assert book[0].title == "Naoki Urasawa's 20th Century Boys, Volume 20 (20th Century Boys, #20)"
+    assert book[0].release_year == 2012
 
-    # # Check that the Article is commented as expected.
-    # comment_one = [comment for comment in article.comments if comment.comment == 'Oh no, COVID-19 has hit New Zealand'][
-    #     0]
-    # comment_two = [comment for comment in article.comments if comment.comment == 'Yeah Freddie, bad news'][0]
-    #
-    # assert comment_one.user.user_name == 'fmercury'
-    # assert comment_two.user.user_name == "thorke"
-    #
-    # # Check that the Article is tagged as expected.
-    # assert article.is_tagged_by(Tag('Health'))
-    # assert article.is_tagged_by(Tag('New Zealand'))
+    # assert book[0].authors == []
+    # assert book[0].publisher == 'N/A'
+
+    # Check that the Book is reviewed as expected.
+    review_one = book[0].reviews[0]
+
+    assert review_one.user.user_name == 'thorke'
+    assert review_one.rating == 2
+
 #
 def test_repository_does_not_retrieve_a_non_existent_book(session_factory):
     repo = SqlAlchemyRepository(session_factory)
@@ -101,7 +102,6 @@ def test_repository_can_retrieve_books_by_title(session_factory):
     repo = SqlAlchemyRepository(session_factory)
 
     books = repo.get_book_by_title("The Switchblade Mamma")
-    print(books)
 
     # Check that the query returned 1 Book.
     assert len(books) == 1
@@ -118,7 +118,43 @@ def test_repository_does_not_retrieve_a_book_when_there_are_no_books_for_a_given
 
     books = repo.get_book_by_title("This title doesn't exist!")
     assert len(books) == 0
+
+# def test_repository_can_retrieve_books_by_publisher(session_factory):
+#     repo = SqlAlchemyRepository(session_factory)
 #
+#     books = repo.get_book_by_publisher("Avatar Press")
+#
+#     # Check that the query returned 1 Book.
+#     assert len(books) == 1
+#     assert books[0].title == "The Switchblade Mamma"
+#
+#     books = repo.get_book_by_title("D.Gray-man, Vol. 16: Blood & Chains")
+#
+#     # Check that the query returned 1 Book.
+#     assert len(books) == 1
+#     assert books[0].title == "D.Gray-man, Vol. 16: Blood & Chains"
+
+# def test_repository_does_not_retrieve_a_book_when_there_are_no_books_for_a_given_publisher(session_factory):
+#     repo = SqlAlchemyRepository(session_factory)
+#
+#     books = repo.get_book_by_title("This title doesn't exist!")
+#     assert len(books) == 0
+
+# def test_repository_can_retrieve_books_by_author(session_factory):
+#     repo = SqlAlchemyRepository(session_factory)
+#
+#     books = repo.get_book_by_author("Lindsey Schussman")
+
+    # # Check that the query returned 1 Book.
+    # assert len(books) == 1
+    # assert books[0].title == "The Switchblade Mamma"
+    #
+    # books = repo.get_book_by_title("D.Gray-man, Vol. 16: Blood & Chains")
+    #
+    # # Check that the query returned 1 Book.
+    # assert len(books) == 1
+    # assert books[0].title == "D.Gray-man, Vol. 16: Blood & Chains"
+
 # def test_repository_can_retrieve_tags(session_factory):
 #     repo = SqlAlchemyRepository(session_factory)
 #
