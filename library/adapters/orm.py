@@ -72,7 +72,7 @@ def map_model_to_tables():
     })
     mapper(model.Review, reviews_table, properties={
         '_Review__user': relationship(model.User, back_populates='_User__reviews'),
-        # '_Review__book'
+        '_Review__book': relationship(model.Book, back_populates='_Book__reviews'),
         '_Review__review_text': reviews_table.c.review_text,
         '_Review__rating': reviews_table.c.rating,
         '_Review__timestamp': reviews_table.c.timestamp,
@@ -94,7 +94,7 @@ def map_model_to_tables():
         '_Book__release_year': books_table.c.release_year,
         '_Book__ebook': books_table.c.ebook,
         '_Book__num_pages': books_table.c.num_pages,
-        '_Book__reviews': relationship(model.Review, backref='_Review__book')
+        '_Book__reviews': relationship(model.Review, back_populates='_Review__book')
     #     _Book__similar_books
 
     })

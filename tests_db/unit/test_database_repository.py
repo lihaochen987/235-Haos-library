@@ -36,8 +36,8 @@ def test_repository_can_retrieve_book_count(session_factory):
 
     number_of_books = repo.get_number_of_books()
 
-    # Check that the query returned 45 Articles.
-    assert number_of_books == 45
+    # Check that the query returned 46 Books.
+    assert number_of_books == 46
 
 def test_repository_can_add_book(session_factory):
     repo = SqlAlchemyRepository(session_factory)
@@ -140,20 +140,21 @@ def test_repository_does_not_retrieve_a_book_when_there_are_no_books_for_a_given
 #     books = repo.get_book_by_title("This title doesn't exist!")
 #     assert len(books) == 0
 
-# def test_repository_can_retrieve_books_by_author(session_factory):
-#     repo = SqlAlchemyRepository(session_factory)
-#
-#     books = repo.get_book_by_author("Lindsey Schussman")
+def test_repository_can_retrieve_books_by_author(session_factory):
+    repo = SqlAlchemyRepository(session_factory)
 
-    # # Check that the query returned 1 Book.
-    # assert len(books) == 1
-    # assert books[0].title == "The Switchblade Mamma"
-    #
-    # books = repo.get_book_by_title("D.Gray-man, Vol. 16: Blood & Chains")
-    #
-    # # Check that the query returned 1 Book.
-    # assert len(books) == 1
-    # assert books[0].title == "D.Gray-man, Vol. 16: Blood & Chains"
+    books = repo.get_book_by_author("Lindsey Schussman")
+
+    # Check that the query returned 1 Book.
+    assert len(books) == 1
+    assert books[0].title == "The Switchblade Mamma"
+
+    books = repo.get_book_by_author("Rachel Roberts")
+
+    # Check that the query returned 1 Book.
+    assert len(books) == 2
+    assert books[0].title == "All's Fairy in Love and War (Avalon: Web of Magic, #Tester!)"
+    assert books[1].title == "All's Fairy in Love and War (Avalon: Web of Magic, #8)"
 
 # def test_repository_can_retrieve_tags(session_factory):
 #     repo = SqlAlchemyRepository(session_factory)
