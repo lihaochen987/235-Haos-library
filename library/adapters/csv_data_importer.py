@@ -34,6 +34,11 @@ def load_books_authors_and_publishers(data_path: Path, repo: AbstractRepository,
     for book in reader.dataset_of_books:
         repo.add_book(book)
 
+    for author in reader.dataset_of_authors.keys():
+        if database_mode is True:
+            repo.add_author(author)
+
+
     # # Create books and add to repository
     # for book in reader.dataset_of_books:
     #     for author in book.authors:

@@ -82,18 +82,6 @@ class MemoryRepository(AbstractRepository):
             return None
         return books_list
 
-    # def get_book_by_ebook_status(self, e_book_status: bool):
-    #     books_list = [book for book in self._books if book.ebook == e_book_status]
-    #     if books_list == []:
-    #         return None
-    #     return books_list
-
-    # def get_book_by_number_of_pages(self, pages: int):
-    #     books_list = [book for book in self._books if book.num_pages == pages]
-    #     if books_list == []:
-    #         return None
-    #     return books_list
-
     # User functions
     def add_user(self, user: User):
         self.__users.append(user)
