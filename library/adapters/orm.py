@@ -43,7 +43,6 @@ authors_table = Table(
     'authors', metadata,
     Column('id', Integer, primary_key=True, autoincrement=True),
     Column('full_name', String(1024), nullable=False),
-    Column('authors_this_one_has_worked_with', ForeignKey('authors.id'))
 )
 
 publisher_table = Table(
@@ -78,7 +77,7 @@ def map_model_to_tables():
         '_Review__timestamp': reviews_table.c.timestamp,
     })
     mapper(model.Author, authors_table, properties={
-        # '_Author__unique_id': authors_table.c.id,
+        '_Author__unique_id': authors_table.c.id,
         '_Author__full_name': authors_table.c.full_name,
         '_Author__books': relationship(model.Book, secondary=books_authors_table, back_populates='_Book__authors')
     #     '_Author__authors_this_one_has_worked_with

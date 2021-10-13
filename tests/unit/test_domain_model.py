@@ -438,6 +438,12 @@ def read_books_and_authors():
     path_to_authors_file = str(root_folder / data_folder / authors_file_name)
     reader = BooksJSONReader(path_to_books_file, path_to_authors_file)
     reader.read_json_files()
+
+    for book in reader.dataset_of_books:
+        for author, book_ids in reader.dataset_of_authors.items():
+            if book.book_id in book_ids:
+                book.add_author(author)
+
     return reader.dataset_of_books
 
 
@@ -451,6 +457,7 @@ class TestBooksJSONReader:
 
     def test_read_books_from_file_and_check_authors(self, read_books_and_authors):
         dataset_of_books = read_books_and_authors
+        print(dataset_of_books[0].authors)
         assert str(dataset_of_books[0].authors[0]) == "<Author Lindsey Schussman, author id = 8551671>"
         assert str(dataset_of_books[15].authors[0]) == "<Author Maki Minami, author id = 791996>"
         assert len(dataset_of_books[3].authors) == 2

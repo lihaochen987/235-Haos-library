@@ -38,15 +38,11 @@ def get_book_by_release_year(year: int, repo: AbstractRepository):
     books = repo.get_book_by_release_year(year)
     return books
 
-
-# def get_book_by_ebook_status(e_book_status: bool, repo: AbstractRepository):
-#     books = repo.get_book_by_ebook_status(e_book_status)
-#     return books
-
-
-def get_book_by_number_of_pages(pages: int, repo: AbstractRepository):
-    books = repo.get_book_by_number_of_pages(pages)
-    return books
+def add_author(author:Author):
+    books = repo.get_book_by_author(author.full_name)
+    for book in books:
+        book.add_author(author)
+    repo.add_author(author)
 
 def add_review(book_id: int, review_rating: int, comment_text: str, user_name: str, repo: AbstractRepository):
     # Check that Book exists.

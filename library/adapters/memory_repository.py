@@ -1,10 +1,7 @@
-import csv
-from library.adapters.repository import AbstractRepository
-from library.adapters.jsondatareader import BooksJSONReader
 from typing import List
+
+from library.adapters.repository import AbstractRepository
 from library.domain.model import Book, User, Review, Author
-from pathlib import Path
-from werkzeug.security import generate_password_hash
 
 
 class MemoryRepository(AbstractRepository):
@@ -96,6 +93,10 @@ class MemoryRepository(AbstractRepository):
         super().add_review(review)
         self.__reviews.append(review)
 
+    # def add_author(self, author: Author):
+    #     super().add_author(author)
+    #     self._authors.append(author)
+
     def add_author(self, author:Author):
-        super().add_author(author)
+        super()
         self._authors.append(author)

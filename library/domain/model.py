@@ -426,7 +426,6 @@ def leave_review(review_text: str, review_rating: int, user: User, book: Book):
 
 # Association functions
 def make_author_association(book:Book, author:Author):
-    if author in book.authors:
-        raise ModelException(f'Author {author.full_name} already applied to Book "{book.title}"')
-
-    book.add_author(author)
+    for author in book.authors:
+        if author not in book.authors:
+            book.add_author(author)

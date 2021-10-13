@@ -92,22 +92,6 @@ class AbstractRepository(abc.ABC):
         """
         raise NotImplementedError
 
-    # @abc.abstractmethod
-    # def get_book_by_ebook_status(self, e_book_status: bool):
-    #     """
-    #     Gets book/s by specified e_book status (NOT UNIQUE)
-    #     If there is no Book with the given e_book status, this method returns None.
-    #     """
-    #     raise NotImplementedError
-
-    # @abc.abstractmethod
-    # def get_book_by_number_of_pages(self, pages: int):
-    #     """
-    #     Gets book/s by specified number of pages (NOT UNIQUE)
-    #     If there is no Book with the given number of pages, this method returns None.
-    #     """
-    #     raise NotImplementedError
-
     # User methods
     @abc.abstractmethod
     def add_user(self, user: User):
@@ -147,4 +131,7 @@ class AbstractRepository(abc.ABC):
 
     @abc.abstractmethod
     def add_author(self, author:Author):
+        """
+        Adds an author to the repository
+        """
         raise NotImplementedError

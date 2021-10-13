@@ -84,7 +84,6 @@ class BooksJSONReader:
                         author_name = author_json['name']
 
                 author_object = Author(numerical_id, author_name)
-                book_instance.add_author(author_object)
 
                 if author_object not in self.__dataset_of_authors.keys():
                     self.__dataset_of_authors[author_object] = list()
