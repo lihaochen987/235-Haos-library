@@ -4,7 +4,7 @@ from sqlalchemy.orm import scoped_session
 from sqlalchemy.orm.exc import NoResultFound
 
 from library.adapters.repository import AbstractRepository
-from library.domain.model import User, Book, Review
+from library.domain.model import User, Book, Review, Author
 
 from flask import _app_ctx_stack
 
@@ -74,6 +74,11 @@ class SqlAlchemyRepository(AbstractRepository):
     def get_number_of_books(self):
         number_of_books = self._session_cm.session.query(Book).count()
         return number_of_books
+
+    def add_author(self, author:Author):
+        with self._session_cm as scm:
+            scm.session.add(author)
+            scm.commit()
 
     # Book functions
     def add_book(self, book: Book):

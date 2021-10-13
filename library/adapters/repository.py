@@ -2,7 +2,7 @@ import abc
 from typing import List
 from datetime import date
 
-from library.domain.model import Book, User, Review
+from library.domain.model import Book, User, Review, Author
 
 repo_instance = None
 
@@ -144,3 +144,7 @@ class AbstractRepository(abc.ABC):
             raise RepositoryException('Review not correctly attached to a User')
         if review.book is None or review not in review.book.reviews:
             raise RepositoryException('Review not correctly attached to a Book')
+
+    @abc.abstractmethod
+    def add_author(self, author:Author):
+        raise NotImplementedError

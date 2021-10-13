@@ -418,9 +418,15 @@ class BooksInventory:
 class ModelException(Exception):
     pass
 
-# Association functions
 def leave_review(review_text: str, review_rating: int, user: User, book: Book):
     review = Review(user, book, review_text, review_rating)
     user.add_review(review)
     book.add_review(review)
     return review
+
+# Association functions
+def make_author_association(book:Book, author:Author):
+    if author in book.authors:
+        raise ModelException(f'Author {author.full_name} already applied to Book "{book.title}"')
+
+    book.add_author(author)

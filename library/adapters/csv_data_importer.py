@@ -6,7 +6,7 @@ from werkzeug.security import generate_password_hash
 
 from library.adapters.repository import AbstractRepository
 from library.adapters.jsondatareader import BooksJSONReader
-from library.domain.model import Book, Author, Review, User, leave_review, ModelException, Publisher
+from library.domain.model import Book, Author, Review, User, leave_review, ModelException, Publisher, make_author_association
 
 
 # Populate repo
@@ -23,13 +23,37 @@ def read_csv_file(filename: str):
             row = [item.strip() for item in row]
             yield row
 
-def load_books(data_path: Path, repo: AbstractRepository):
+def load_books_authors_and_publishers(data_path: Path, repo: AbstractRepository, database_mode:bool):
+    authors = dict()
+
     books_filename = str(Path(data_path) / "comic_books_excerpt.json")
     authors_filename = str(Path(data_path) / "book_authors_excerpt.json")
     reader = BooksJSONReader(books_filename, authors_filename)
     reader.read_json_files()
+
     for book in reader.dataset_of_books:
         repo.add_book(book)
+
+    # # Create books and add to repository
+    # for book in reader.dataset_of_books:
+    #     for author in book.authors:
+    #         if author not in authors.keys():
+    #             authors[author] = list()
+    #         authors[author].append(book.book_id)
+    #
+    #     repo.add_book(book)
+    #
+    # # Create authors and add to repository
+    # for author in authors.keys():
+    #     for book_id in authors[author]:
+    #         book = repo.get_book_by_id(book_id)[0]
+    #         if database_mode is True:
+    #             book.add_author(author)
+    #         else:
+    #             make_author_association(book, author)
+    #     repo.add_author(author)
+
+
 
 def load_users(data_path:Path, repo:AbstractRepository):
     users = dict()

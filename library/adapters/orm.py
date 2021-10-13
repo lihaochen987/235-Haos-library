@@ -66,26 +66,35 @@ def map_model_to_tables():
     mapper(model.User, users_table, properties={
         '_User__user_name': users_table.c.user_name,
         '_User__password': users_table.c.password,
-        '_User__reviews': relationship(model.Review, backref='_Review__user')
+        # '_User__read_books'
+        '_User__reviews': relationship(model.Review, back_populates='_Review__user')
+        # '_User__pages_read'
     })
     mapper(model.Review, reviews_table, properties={
-        '_Review__rating': reviews_table.c.rating,
+        '_Review__user': relationship(model.User, back_populates='_User__reviews'),
+        # '_Review__book'
         '_Review__review_text': reviews_table.c.review_text,
+        '_Review__rating': reviews_table.c.rating,
         '_Review__timestamp': reviews_table.c.timestamp,
-        # '_Review__user': relationship(model.User, backref='_User__reviews'),
     })
     mapper(model.Author, authors_table, properties={
+        # '_Author__unique_id': authors_table.c.id,
         '_Author__full_name': authors_table.c.full_name,
         '_Author__books': relationship(model.Book, secondary=books_authors_table, back_populates='_Book__authors')
+    #     '_Author__authors_this_one_has_worked_with
     })
     mapper(model.Book, books_table, properties={
         '_Book__book_id': books_table.c.id,
         '_Book__title': books_table.c.title,
-        '_Book__release_year': books_table.c.release_year,
-        '_Book__description': books_table.c.description,
         '_Book__image_url': books_table.c.image_url,
-        '_Book__ebook': books_table.c.ebook,
-        '_Book__reviews': relationship(model.Review, backref='_Review__book'),
+        '_Book__description': books_table.c.description,
+        # _Book__publisher
         '_Book__authors': relationship(model.Author, secondary=books_authors_table,
-                                       back_populates='_Author__books')
+                                       back_populates='_Author__books'),
+        '_Book__release_year': books_table.c.release_year,
+        '_Book__ebook': books_table.c.ebook,
+        '_Book__num_pages': books_table.c.num_pages,
+        '_Book__reviews': relationship(model.Review, backref='_Review__book')
+    #     _Book__similar_books
+
     })

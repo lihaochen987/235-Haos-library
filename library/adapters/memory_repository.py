@@ -107,3 +107,7 @@ class MemoryRepository(AbstractRepository):
     def add_review(self, review: Review):
         super().add_review(review)
         self.__reviews.append(review)
+
+    def add_author(self, author:Author):
+        super().add_author(author)
+        self._authors.append(author)

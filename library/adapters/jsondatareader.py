@@ -10,6 +10,7 @@ class BooksJSONReader:
         self.__books_file_name = books_file_name
         self.__authors_file_name = authors_file_name
         self.__dataset_of_books = []
+        self.__dataset_of_authors = {}
 
     @property
     def dataset_of_books(self) -> List[Book]:
