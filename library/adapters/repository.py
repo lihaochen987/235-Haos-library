@@ -2,7 +2,7 @@ import abc
 from typing import List
 from datetime import date
 
-from library.domain.model import Book, User, Review, Author
+from library.domain.model import Book, User, Review, Author, Publisher
 
 repo_instance = None
 
@@ -133,5 +133,12 @@ class AbstractRepository(abc.ABC):
     def add_author(self, author:Author):
         """
         Adds an author to the repository
+        """
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def add_publisher(self, publisher:Publisher):
+        """
+        Adds a publisher to the repository
         """
         raise NotImplementedError

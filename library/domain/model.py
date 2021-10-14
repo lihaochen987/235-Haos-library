@@ -429,3 +429,6 @@ def make_author_association(book:Book, author:Author):
     for author in book.authors:
         if author not in book.authors:
             book.add_author(author)
+
+def make_publisher_association(book:Book, publisher:Publisher):
+    book.publisher = publisher

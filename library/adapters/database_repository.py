@@ -4,7 +4,7 @@ from sqlalchemy.orm import scoped_session
 from sqlalchemy.orm.exc import NoResultFound
 
 from library.adapters.repository import AbstractRepository
-from library.domain.model import User, Book, Review, Author
+from library.domain.model import User, Book, Review, Author, Publisher
 
 from flask import _app_ctx_stack
 
@@ -78,6 +78,11 @@ class SqlAlchemyRepository(AbstractRepository):
     def add_author(self, author:Author):
         with self._session_cm as scm:
             scm.session.add(author)
+            scm.commit()
+
+    def add_publisher(self, publisher:Publisher):
+        with self._session_cm as scm:
+            scm.session.add(publisher)
             scm.commit()
 
     # Book functions

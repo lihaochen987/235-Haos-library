@@ -6,7 +6,7 @@ from werkzeug.security import generate_password_hash
 
 from library.adapters.repository import AbstractRepository
 from library.adapters.jsondatareader import BooksJSONReader
-from library.domain.model import Book, Author, Review, User, leave_review, ModelException, Publisher, make_author_association
+from library.domain.model import Book, Author, Review, User, leave_review, ModelException, Publisher, make_author_association, make_publisher_association
 
 
 # Populate repo
@@ -47,6 +47,15 @@ def load_books_authors_and_publishers(data_path: Path, repo: AbstractRepository,
             else:
                 make_author_association(book, author)
         repo.add_author(author)
+
+    for publisher in reader.dataset_of_publishers.keys():
+        for book_id in reader.dataset_of_publishers[publisher]:
+            book = repo.get_book_by_id(book_id)[0]
+            if database_mode is True:
+                book.publisher = publisher
+            else:
+                make_publisher_association(book,publisher)
+        repo.add_publisher(publisher)
 
 def load_users(data_path:Path, repo:AbstractRepository):
     users = dict()

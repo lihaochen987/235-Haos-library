@@ -1,13 +1,14 @@
 from typing import List
 
 from library.adapters.repository import AbstractRepository
-from library.domain.model import Book, User, Review, Author
+from library.domain.model import Book, User, Review, Author, Publisher
 
 
 class MemoryRepository(AbstractRepository):
     def __init__(self, *args):
         self._books: List[Book] = list()
         self._authors: List[Author] = list()
+        self._publishers: List[Publisher] = list()
 
         for book in args:
             self._books.append(book)
@@ -93,10 +94,10 @@ class MemoryRepository(AbstractRepository):
         super().add_review(review)
         self.__reviews.append(review)
 
-    # def add_author(self, author: Author):
-    #     super().add_author(author)
-    #     self._authors.append(author)
-
     def add_author(self, author:Author):
         super()
         self._authors.append(author)
+
+    def add_publisher(self, publisher:Publisher):
+        super()
+        self._publishers.append(publisher)

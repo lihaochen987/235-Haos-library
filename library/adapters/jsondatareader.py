@@ -11,6 +11,7 @@ class BooksJSONReader:
         self.__authors_file_name = authors_file_name
         self.__dataset_of_books = []
         self.__dataset_of_authors = dict()
+        self.__dataset_of_publishers = dict()
 
     @property
     def dataset_of_books(self) -> List[Book]:
@@ -19,6 +20,10 @@ class BooksJSONReader:
     @property
     def dataset_of_authors(self):
         return self.__dataset_of_authors
+
+    @property
+    def dataset_of_publishers(self):
+        return self.__dataset_of_publishers
 
 
     def read_books_file(self) -> list:
@@ -46,7 +51,13 @@ class BooksJSONReader:
         for book_json in books_json:
 
             book_instance = Book(int(book_json['book_id']), book_json['title'])
-            book_instance.publisher = Publisher(book_json['publisher'])
+
+            publisher_object = Publisher(book_json['publisher'])
+            book_instance.publisher = publisher_object
+
+            if publisher_object not in self.__dataset_of_publishers.keys():
+                self.__dataset_of_publishers[publisher_object] = list()
+            self.__dataset_of_publishers[publisher_object].append(book_instance.book_id)
 
             if book_json['publication_year'] != "":
                 book_instance.release_year = int(book_json['publication_year'])
