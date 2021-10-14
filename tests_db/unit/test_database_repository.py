@@ -156,6 +156,12 @@ def test_repository_can_retrieve_books_by_author(session_factory):
     assert books[0].title == "All's Fairy in Love and War (Avalon: Web of Magic, #Tester!)"
     assert books[1].title == "All's Fairy in Love and War (Avalon: Web of Magic, #8)"
 
+def test_repository_does_not_retrieve_a_book_when_there_are_no_books_for_a_given_author(session_factory):
+    repo = SqlAlchemyRepository(session_factory)
+
+    books = repo.get_book_by_author("This title doesn't exist!")
+    assert len(books) == 0
+
 # def test_repository_can_retrieve_tags(session_factory):
 #     repo = SqlAlchemyRepository(session_factory)
 #
