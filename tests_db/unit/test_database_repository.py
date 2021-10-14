@@ -162,6 +162,21 @@ def test_repository_does_not_retrieve_a_book_when_there_are_no_books_for_a_given
     books = repo.get_book_by_author("This title doesn't exist!")
     assert len(books) == 0
 
+def test_repository_can_retrieve_books_by_release_year(session_factory):
+    repo = SqlAlchemyRepository(session_factory)
+
+    books = repo.get_book_by_release_year(2011)
+
+    # Check that the query returned 1 Book.
+    assert len(books) == 2
+    assert books[0].title == "Sherlock Holmes: Year One"
+
+def test_repository_does_not_retrieve_a_book_when_there_are_no_books_for_a_given_release_year(session_factory):
+    repo = SqlAlchemyRepository(session_factory)
+
+    books = repo.get_book_by_release_year(72364782364782)
+    assert len(books) == 0
+
 # def test_repository_can_retrieve_tags(session_factory):
 #     repo = SqlAlchemyRepository(session_factory)
 #

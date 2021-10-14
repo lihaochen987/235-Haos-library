@@ -136,7 +136,7 @@ class SqlAlchemyRepository(AbstractRepository):
     def get_book_by_release_year(self, year: int):
         books_list = []
         try:
-            books_list = self._session_cm.session.query(Book).filter(Book.release_year == year).all()
+            books_list = self._session_cm.session.query(Book).filter(Book._Book__release_year == year).all()
         except NoResultFound:
             # Ignore any exception and return None.
             pass
