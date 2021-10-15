@@ -473,9 +473,6 @@ class TestBooksJSONReader:
         assert isinstance(dataset_of_books[4].authors[0], Author)
         assert dataset_of_books[4].ebook is False
         assert dataset_of_books[0].ebook is True
-        assert dataset_of_books[0].num_pages is None
-        assert dataset_of_books[2].num_pages == 146
-        assert dataset_of_books[5].num_pages == 206
 
     def test_read_books_from_file_special_characters(self, read_books_and_authors):
         dataset_of_books = read_books_and_authors

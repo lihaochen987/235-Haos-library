@@ -12,6 +12,7 @@ class BooksJSONReader:
         self.__dataset_of_books = []
         self.__dataset_of_authors = dict()
         self.__dataset_of_publishers = dict()
+        self.__dataset_of_similar_books = dict()
 
     @property
     def dataset_of_books(self) -> List[Book]:
@@ -52,6 +53,7 @@ class BooksJSONReader:
 
             book_instance = Book(int(book_json['book_id']), book_json['title'])
 
+            # Creating publishers
             publisher_object = Publisher(book_json['publisher'])
             book_instance.publisher = publisher_object
 
@@ -67,9 +69,6 @@ class BooksJSONReader:
                 if book_json['is_ebook'].lower() == 'true':
                     book_instance.ebook = True
             book_instance.description = book_json['description']
-
-            if book_json['num_pages'] != "":
-                book_instance.num_pages = int(book_json['num_pages'])
 
             if book_json['image_url'] != "":
                 book_instance.image_url = book_json['image_url']

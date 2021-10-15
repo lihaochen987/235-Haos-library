@@ -14,7 +14,6 @@ users_table = Table(
     Column('id', Integer, primary_key=True, autoincrement=True),
     Column('user_name', String(255), unique=True, nullable=False),
     Column('password', String(255), nullable=False),
-    Column('pages_read', Integer, default = 0)
 )
 
 books_table = Table(
@@ -68,7 +67,7 @@ def map_model_to_tables():
         '_User__password': users_table.c.password,
         # '_User__read_books'
         '_User__reviews': relationship(model.Review, back_populates='_Review__user'),
-        '_User__pages_read' : users_table.c.pages_read
+        # '_User__pages_read' : users_table.c.pages_read
     })
     mapper(model.Review, reviews_table, properties={
         '_Review__user': relationship(model.User, back_populates='_User__reviews'),
@@ -81,7 +80,6 @@ def map_model_to_tables():
         '_Author__unique_id': authors_table.c.id,
         '_Author__full_name': authors_table.c.full_name,
         '_Author__books': relationship(model.Book, secondary=books_authors_table, back_populates='_Book__authors')
-    #     '_Author__authors_this_one_has_worked_with
     })
     mapper(model.Publisher, publishers_table, properties = {
         '_Publisher__name': publishers_table.c.publisher_name
@@ -98,6 +96,5 @@ def map_model_to_tables():
         '_Book__ebook': books_table.c.ebook,
         '_Book__num_pages': books_table.c.num_pages,
         '_Book__reviews': relationship(model.Review, back_populates='_Review__book')
-    #     _Book__similar_books
 
     })
