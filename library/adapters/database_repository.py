@@ -46,6 +46,24 @@ class SqlAlchemyRepository(AbstractRepository):
     def __init__(self, session_factory):
         self._session_cm = SessionContextManager(session_factory)
 
+    def __len__(self):
+        number_of_books = self._session_cm.session.query(Book).count()
+        return number_of_books
+
+    def __iter__(self):
+        self._current = 0
+        return self
+
+    def __next__(self):
+        if self._current >= self._session_cm.session.query(Book).count():
+            raise StopIteration
+        else:
+            self._current += 1
+            return self._session_cm.session.query(Book).slice(0, self._current - 1)
+
+    def offset(self, offset, per_page):
+        return self._session_cm.session.query(Book).slice(offset, offset + per_page)
+
     def close_session(self):
         self._session_cm.close_current_session()
 
@@ -69,7 +87,7 @@ class SqlAlchemyRepository(AbstractRepository):
 
     # Testing purposes
     def get_books(self):
-        return self._books
+        return self._session_cm.session.query(Book).all()
 
     def get_number_of_books(self):
         number_of_books = self._session_cm.session.query(Book).count()

@@ -2,7 +2,7 @@ from sqlalchemy import (
     Table, MetaData, Column, Integer, String, DateTime, Boolean,
     ForeignKey
 )
-from sqlalchemy.orm import mapper, relationship
+from sqlalchemy.orm import mapper, relationship, synonym
 
 from library.domain import model
 

@@ -81,7 +81,11 @@ def view_books():
                                handler_url=url_for('findbook_bp.add_review'))
 
 def get_books(offset = 0, per_page = 5, books =[]):
-    return books[offset: offset + per_page]
+    try:
+        return books[offset: offset + per_page]
+    except:
+        # Database mode on
+        return books.offset(offset,per_page)
 
 
 @findbook_blueprint.route('/add_review', methods=['POST'])
