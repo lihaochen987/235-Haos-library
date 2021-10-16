@@ -48,7 +48,7 @@ authors_table = Table(
 publishers_table = Table(
     'publishers', metadata,
     Column('id', Integer, primary_key=True, autoincrement=True),
-    Column('name', String(1024), nullable=False),
+    Column('name', String(1024), nullable=True)
 )
 
 # Relational mappers for many to many relationships
@@ -60,13 +60,20 @@ books_authors_table = Table(
     Column('author_id', ForeignKey('authors.id'))
 )
 
+# books_publishers_table = Table(
+#     'books_publishers', metadata,
+#     Column('id', Integer, primary_key=True, autoincrement=True),
+#     Column('book_id', ForeignKey('books.id')),
+#     Column('publisher_id', ForeignKey('publishers.id'))
+# )
+
 
 def map_model_to_tables():
     mapper(model.User, users_table, properties={
         '_User__user_name': users_table.c.user_name,
         '_User__password': users_table.c.password,
         # '_User__read_books'
-        '_User__reviews': relationship(model.Review, back_populates='_Review__user'),
+        '_User__reviews': relationship(model.Review, back_populates='_Review__user')
         # '_User__pages_read' : users_table.c.pages_read
     })
     mapper(model.Review, reviews_table, properties={
@@ -74,7 +81,7 @@ def map_model_to_tables():
         '_Review__book': relationship(model.Book, back_populates='_Book__reviews'),
         '_Review__review_text': reviews_table.c.review_text,
         '_Review__rating': reviews_table.c.rating,
-        '_Review__timestamp': reviews_table.c.timestamp,
+        '_Review__timestamp': reviews_table.c.timestamp
     })
     mapper(model.Author, authors_table, properties={
         '_Author__unique_id': authors_table.c.id,
@@ -82,14 +89,17 @@ def map_model_to_tables():
         '_Author__books': relationship(model.Book, secondary=books_authors_table, back_populates='_Book__authors')
     })
     mapper(model.Publisher, publishers_table, properties = {
-        '_Publisher__name': publishers_table.c.name
+        '_Publisher__id': publishers_table.c.id,
+        '_Publisher__name':publishers_table.c.name
+        # '_Publisher__name': publishers_table.c.name
+        # '_Publisher__name': relationship(model.Book, secondary=books_publishers_table, back_populates = '_Book__publisher')
     })
     mapper(model.Book, books_table, properties={
         '_Book__book_id': books_table.c.id,
         '_Book__title': books_table.c.title,
         '_Book__image_url': books_table.c.image_url,
         '_Book__description': books_table.c.description,
-        # _Book__publisher
+        # '_Book__publisher': relationship(model.Publisher, secondary=books_publishers_table, back_populates = '_Publisher__name'),
         '_Book__authors': relationship(model.Author, secondary=books_authors_table,
                                        back_populates='_Author__books'),
         '_Book__release_year': books_table.c.release_year,

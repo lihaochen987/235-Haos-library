@@ -8,22 +8,22 @@ def test_database_populate_inspect_table_names(database_engine):
     inspector = inspect(database_engine)
     assert inspector.get_table_names() == ['authors', 'books', 'books_authors', 'publishers', 'reviews', 'users']
 
-# def test_database_populate_select_all_tags(database_engine):
-#
-#     # Get table information
-#     inspector = inspect(database_engine)
-#     name_of_tags_table = inspector.get_table_names()[3]
-#
-#     with database_engine.connect() as connection:
-#         # query for records in table tags
-#         select_statement = select([metadata.tables[name_of_tags_table]])
-#         result = connection.execute(select_statement)
-#
-#         all_tag_names = []
-#         for row in result:
-#             all_tag_names.append(row['tag_name'])
-#
-#         assert all_tag_names == ['New Zealand', 'Health', 'World', 'Politics']
+def test_database_populate_select_all_publishers(database_engine):
+
+    # Get table information
+    inspector = inspect(database_engine)
+    name_of_publishers_table = inspector.get_table_names()[3]
+
+    with database_engine.connect() as connection:
+        # query for records in table articles
+        select_statement = select([metadata.tables[name_of_publishers_table]])
+        result = connection.execute(select_statement)
+
+        all_publishers = []
+        for row in result:
+            all_publishers.append((row['id'], row['name']))
+
+        assert all_publishers == [(1, 'N/A'), (2, 'Dargaud'), (3, 'Hachette Partworks Ltd.'), (4, 'DC Comics'), (5, 'Go! Comi'), (6, 'Avatar Press'), (7, 'Dynamite Entertainment'), (8, 'VIZ Media'), (9, 'Hakusensha'), (10, 'Planeta DeAgostini'), (11, 'Shi Bao Wen Hua Chu Ban Qi Ye Gu Fen You Xian Gong Si'), (12, 'Marvel')]
 
 def test_database_populate_select_all_users(database_engine):
 

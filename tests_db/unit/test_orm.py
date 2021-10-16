@@ -55,6 +55,13 @@ def insert_book(empty_session):
     )
     row = empty_session.execute('SELECT id from books').fetchone()
     return row[0]
+
+def insert_publisher(empty_session):
+    empty_session.execute(
+        'INSERT INTO publishers (name) VALUES '
+        '("Test")'
+    )
+    row = empty_session.execute ('SELECT name from publishers').fetchone()
 #
 #
 # def insert_tags(empty_session):
@@ -101,6 +108,10 @@ def make_book():
     book.num_pages = 1216
     book.similar_books = [56789, 12345]
     return book
+
+def make_publisher():
+    publisher = Publisher("Test")
+    return publisher
 
 
 def make_user():
@@ -155,6 +166,12 @@ def test_loading_of_book(empty_session):
     assert expected_book == fetched_book
     assert book_key == fetched_book.book_id
 
+def test_loading_of_publisher(empty_session):
+    publisher_key = insert_publisher(empty_session)
+    expected_publisher = make_publisher()
+    fetched_publisher = empty_session.query(Publisher).one()
+
+    assert expected_publisher == fetched_publisher
 
 # def test_loading_of_tagged_article(empty_session):
 #     article_key = insert_article(empty_session)
