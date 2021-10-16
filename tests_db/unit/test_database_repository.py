@@ -293,16 +293,16 @@ def test_repository_does_not_retrieve_a_book_when_there_are_no_books_for_a_given
 #     assert tag in repo.get_tags()
 #
 #
-# def test_repository_can_add_a_comment(session_factory):
-#     repo = SqlAlchemyRepository(session_factory)
-#
-#     user = repo.get_user('thorke')
-#     article = repo.get_article(2)
-#     comment = make_comment("Trump's onto it!", user, article)
-#
-#     repo.add_comment(comment)
-#
-#     assert comment in repo.get_comments()
+def test_repository_can_add_a_review(session_factory):
+    repo = SqlAlchemyRepository(session_factory)
+
+    user = repo.get_user('thorke')
+    book = repo.get_book_by_id(28575155)[0]
+    review = leave_review("Testing Book!", 5, user, book)
+
+    repo.add_review(review)
+
+    assert review in repo.get_reviews()
 #
 #
 # def test_repository_does_not_add_a_comment_without_a_user(session_factory):
