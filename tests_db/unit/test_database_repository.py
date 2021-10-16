@@ -134,11 +134,11 @@ def test_repository_can_retrieve_books_by_publisher(session_factory):
     assert len(books) == 14
     assert books[0].title == "The Te Of Piglet"
 
-# def test_repository_does_not_retrieve_a_book_when_there_are_no_books_for_a_given_publisher(session_factory):
-#     repo = SqlAlchemyRepository(session_factory)
-#
-#     books = repo.get_book_by_title("This title doesn't exist!")
-#     assert len(books) == 0
+def test_repository_does_not_retrieve_a_book_when_there_are_no_books_for_a_given_publisher(session_factory):
+    repo = SqlAlchemyRepository(session_factory)
+
+    books = repo.get_book_by_publisher("This publisher doesn't exist!")
+    assert len(books) == 0
 
 def test_repository_can_retrieve_books_by_author(session_factory):
     repo = SqlAlchemyRepository(session_factory)
