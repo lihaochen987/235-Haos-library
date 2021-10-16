@@ -35,6 +35,9 @@ def load_books_authors_and_publishers(data_path: Path, repo: AbstractRepository,
         for author, book_ids in reader.dataset_of_authors.items():
             if book.book_id in book_ids:
                 book.add_author(author)
+        for publisher, book_ids in reader.dataset_of_publishers.items():
+            if book.book_id in book_ids:
+                book.add_publisher(publisher)
 
     for book in reader.dataset_of_books:
         repo.add_book(book)

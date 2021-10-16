@@ -144,7 +144,8 @@ class SqlAlchemyRepository(AbstractRepository):
     def get_book_by_publisher(self, publisher_name: str):
         books_list = []
         try:
-            books_list = self._session_cm.session.query(Book)
+            books_list = self._session_cm.session.query(Book).join(Publisher, Book._Book__publisher.has(Publisher._Publisher__name == publisher_name)).all()
+            # books_list = self._session_cm.session.query(Book)
         except NoResultFound:
             # Ignore any exception and return None.
             pass
