@@ -303,17 +303,17 @@ def test_repository_can_add_a_review(session_factory):
     repo.add_review(review)
 
     assert review in repo.get_reviews()
-#
-#
-# def test_repository_does_not_add_a_comment_without_a_user(session_factory):
-#     repo = SqlAlchemyRepository(session_factory)
-#
-#     article = repo.get_article(2)
-#     comment = Comment(None, article, "Trump's onto it!", datetime.today())
-#
-#     with pytest.raises(RepositoryException):
-#         repo.add_comment(comment)
-#
+
+
+def test_repository_does_not_add_a_review_without_a_user(session_factory):
+    repo = SqlAlchemyRepository(session_factory)
+
+    book = repo.get_book_by_id(28575155)[0]
+    review = Review(None, book, "Testing Book!", 5)
+
+    with pytest.raises(RepositoryException):
+        repo.add_review(review)
+
 #
 # def test_repository_can_retrieve_comments(session_factory):
 #     repo = SqlAlchemyRepository(session_factory)
