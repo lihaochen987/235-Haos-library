@@ -331,19 +331,20 @@ def test_repository_can_retrieve_reviews(session_factory):
 #     )
 #     return article
 #
-# def test_can_retrieve_an_article_and_add_a_comment_to_it(session_factory):
-#     repo = SqlAlchemyRepository(session_factory)
-#
-#     # Fetch Article and User.
-#     article = repo.get_article(5)
-#     author = repo.get_user('thorke')
-#
-#     # Create a new Comment, connecting it to the Article and User.
-#     comment = make_comment('First death in Australia', author, article)
-#
-#     article_fetched = repo.get_article(5)
-#     author_fetched = repo.get_user('thorke')
-#
-#     assert comment in article_fetched.comments
-#     assert comment in author_fetched.comments
-#
+def test_can_retrieve_a_book_and_add_a_review_to_it(session_factory):
+    repo = SqlAlchemyRepository(session_factory)
+
+    # Fetch Article and User.
+
+    book = repo.get_book_by_id(28575155)[0]
+    user = repo.get_user('thorke')
+
+    # Create a new Comment, connecting it to the Article and User.
+    review = leave_review("Don't like this one", 2, user, book)
+
+    book_fetched = repo.get_book_by_id(28575155)[0]
+    user_fetched = repo.get_user('thorke')
+
+    assert review in book_fetched.reviews
+    assert review in user_fetched.reviews
+
