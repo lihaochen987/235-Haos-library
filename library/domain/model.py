@@ -6,6 +6,8 @@ from typing import List
 class Review():
     pass
 
+class Book():
+    pass
 
 class Publisher:
 
@@ -16,6 +18,7 @@ class Publisher:
             publisher_name = publisher_name.strip()
             if publisher_name != "":
                 self.__name = publisher_name
+        self.__books: List[Book] = list()
 
     @property
     def name(self) -> str:
@@ -29,6 +32,18 @@ class Publisher:
             publisher_name = publisher_name.strip()
             if publisher_name != "":
                 self.__name = publisher_name
+
+    @property
+    def books(self):
+        return self.__books
+
+    @books.setter
+    def books(self, books_list):
+        for book in books_list:
+            if isinstance(book, Book):
+                self.__books.append(book)
+            else:
+                pass
 
     def __repr__(self):
         return f'<Publisher {self.__name}>'

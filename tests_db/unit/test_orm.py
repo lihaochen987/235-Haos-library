@@ -42,7 +42,7 @@ def insert_book(empty_session):
     ebook = True
 
     empty_session.execute(
-        'INSERT INTO books (id, title, description, image_url, publisher, release_year, ebook, num_pages) VALUES '
+        'INSERT INTO books (id, title, description, image_url, publisher_id, release_year, ebook, num_pages) VALUES '
         '(:id, '
         '"The Lord of the Rings", '
         '"In ancient times the Rings of Power were crafted by the Elven-smiths, and Sauron, the Dark Lord, forged the One Ring, filling it with his own power so that he could rule all others.", '
@@ -225,10 +225,9 @@ def test_saving_of_book(empty_session):
     empty_session.commit()
 
     rows = list(empty_session.execute(
-        'SELECT id, title, description, image_url, publisher, release_year, ebook, num_pages FROM books'))
+        'SELECT id, title, description, image_url, publisher_id, release_year, ebook, num_pages FROM books'))
 
-    assert rows == [(123456789, 'The Lord of the Rings', 'In ancient times the Rings of Power were crafted by the Elven-smiths, and Sauron, the Dark Lord, forged the One Ring, filling it with his own power so that he could rule all others.', 'https://images.unsplash.com/photo-1541963463532-d68292c34b19?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=688&q=80', None, 2005, 1, 1216)] != None
-
+    assert rows == [(123456789, 'The Lord of the Rings', 'In ancient times the Rings of Power were crafted by the Elven-smiths, and Sauron, the Dark Lord, forged the One Ring, filling it with his own power so that he could rule all others.', 'https://images.unsplash.com/photo-1541963463532-d68292c34b19?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=688&q=80', 1, 2005, 1, 1216)]
 
 # def test_saving_tagged_article(empty_session):
 #     article = make_article()
