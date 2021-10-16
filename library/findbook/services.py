@@ -1,7 +1,7 @@
 from typing import Iterable
 
 from library.adapters.repository import AbstractRepository
-from library.domain.model import leave_review, Review, Book, Author
+from library.domain.model import leave_review, Review, Book, Author, Publisher
 
 
 class NonExistentBookException(Exception):
@@ -43,6 +43,12 @@ def add_author(author:Author):
     for book in books:
         book.add_author(author)
     repo.add_author(author)
+
+def add_publisher(publisher:Publisher):
+    books = repo.get_book_by_publisher(publisher.name)
+    for book in books:
+        book.add_publisher(publisher)
+    repo.add_publisher(publisher)
 
 def add_review(book_id: int, review_rating: int, comment_text: str, user_name: str, repo: AbstractRepository):
     # Check that Book exists.

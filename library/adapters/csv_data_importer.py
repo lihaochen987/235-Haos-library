@@ -52,7 +52,7 @@ def load_books_authors_and_publishers(data_path: Path, repo: AbstractRepository,
         for book_id in reader.dataset_of_publishers[publisher]:
             book = repo.get_book_by_id(book_id)[0]
             if database_mode is True:
-                book.publisher = publisher
+                book.add_publisher(publisher)
             else:
                 make_publisher_association(book,publisher)
         repo.add_publisher(publisher)

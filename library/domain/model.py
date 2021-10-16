@@ -10,8 +10,12 @@ class Review():
 class Publisher:
 
     def __init__(self, publisher_name: str):
-        # This makes sure the setter is called here in the initializer/constructor as well.
-        self.name = publisher_name
+        self.__name = "N/A"
+        if isinstance(publisher_name, str):
+            # Make sure leading and trailing whitespace is removed.
+            publisher_name = publisher_name.strip()
+            if publisher_name != "":
+                self.__name = publisher_name
 
     @property
     def name(self) -> str:
@@ -27,18 +31,18 @@ class Publisher:
                 self.__name = publisher_name
 
     def __repr__(self):
-        return f'<Publisher {self.name}>'
+        return f'<Publisher {self.__name}>'
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
             return False
-        return other.name == self.name
+        return other.__name == self.__name
 
     def __lt__(self, other):
-        return self.name < other.name
+        return self.__name < other.__name
 
     def __hash__(self):
-        return hash(self.name)
+        return hash(self.__name)
 
 
 class Author:
@@ -211,6 +215,15 @@ class Book:
 
         self.__authors.append(author)
 
+    def add_publisher(self, publisher:Publisher):
+        if not isinstance(publisher, Publisher):
+            return
+
+        if publisher == self.__publisher:
+            return
+
+        self.__publisher = publisher
+
     def remove_author(self, author: Author):
         if not isinstance(author, Author):
             return
@@ -246,6 +259,7 @@ class Book:
     def num_pages(self, num_pages: int):
         if isinstance(num_pages, int) and num_pages >= 0:
             self.__num_pages = num_pages
+
 
     def __repr__(self):
         return f'<Book {self.__title}, book id = {self.__book_id}>'
