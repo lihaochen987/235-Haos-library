@@ -3,7 +3,7 @@ import datetime
 import pytest
 from sqlalchemy.exc import IntegrityError
 
-from library.domain.model import User, Publisher, Book, leave_review
+from library.domain.model import User, Publisher, Book, leave_review, Author
 
 
 # article_date = datetime.date(2020, 2, 28)
@@ -62,6 +62,16 @@ def insert_publisher(empty_session):
         '("Test")'
     )
     row = empty_session.execute ('SELECT name from publishers').fetchone()
+
+def insert_author(empty_session):
+    id = 4561238
+    empty_session.execute(
+        'INSERT INTO authors (id, full_name) VALUES'
+        '(:id,'
+        '"Joey Jojo")',
+        {'id':id}
+    )
+    row = empty_session.execute('SELECT full_name from authors').fetchone()
 #
 #
 # def insert_tags(empty_session):
@@ -113,6 +123,9 @@ def make_publisher():
     publisher = Publisher("Test")
     return publisher
 
+def make_author():
+    author = Author(4561238, "Joey Jojo")
+    return author
 
 def make_user():
     user = User("Andrew", "11123456676575575")
@@ -172,6 +185,13 @@ def test_loading_of_publisher(empty_session):
     fetched_publisher = empty_session.query(Publisher).one()
 
     assert expected_publisher == fetched_publisher
+
+def test_loading_of_author(empty_session):
+    author_key = insert_author(empty_session)
+    expected_author = make_author()
+    fetched_author = empty_session.query(Author).one()
+
+    assert expected_author == fetched_author
 
 # def test_loading_of_tagged_article(empty_session):
 #     article_key = insert_article(empty_session)
