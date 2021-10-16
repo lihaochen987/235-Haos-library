@@ -314,12 +314,12 @@ def test_repository_does_not_add_a_review_without_a_user(session_factory):
     with pytest.raises(RepositoryException):
         repo.add_review(review)
 
-#
-# def test_repository_can_retrieve_comments(session_factory):
-#     repo = SqlAlchemyRepository(session_factory)
-#
-#     assert len(repo.get_comments()) == 3
-#
+
+def test_repository_can_retrieve_reviews(session_factory):
+    repo = SqlAlchemyRepository(session_factory)
+
+    assert len(repo.get_reviews()) == 2
+
 #
 # def make_article(new_article_date):
 #     article = Article(
