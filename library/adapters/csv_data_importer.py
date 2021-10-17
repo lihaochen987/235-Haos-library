@@ -40,6 +40,7 @@ def load_books_authors_and_publishers(data_path: Path, repo: AbstractRepository,
                 book.add_publisher(publisher)
 
     for book in reader.dataset_of_books:
+        print(book.similar_books)
         repo.add_book(book)
 
     for author in reader.dataset_of_authors.keys():
@@ -59,6 +60,11 @@ def load_books_authors_and_publishers(data_path: Path, repo: AbstractRepository,
             else:
                 make_publisher_association(book,publisher)
         repo.add_publisher(publisher)
+
+    for book in reader.dataset_of_similar_books.keys():
+        book_object = repo.get_book_by_id(book.book_id)[0]
+        for book_id in reader.dataset_of_similar_books[book]:
+            repo.add_similar_book(book_object, book_id)
 
 def load_users(data_path:Path, repo:AbstractRepository):
     users = dict()

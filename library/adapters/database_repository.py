@@ -103,6 +103,13 @@ class SqlAlchemyRepository(AbstractRepository):
             scm.session.add(publisher)
             scm.commit()
 
+    def add_similar_book(self, book:Book, book_id:int):
+        books_list = self._session_cm.session.query(Book).filter(Book._Book__book_id == book.book_id).all()
+        for book in books_list:
+            if book_id in book.similar_books:
+                print('True')
+                print(book_id)
+
     # Book functions
     def add_book(self, book: Book):
         with self._session_cm as scm:
@@ -132,7 +139,6 @@ class SqlAlchemyRepository(AbstractRepository):
     def get_book_by_author(self, author_name: str):
         books_list = []
         try:
-            # books_list = self._session_cm.session.query(Book).filter_by(Book._Book__authors).all()
             books_list = self._session_cm.session.query(Book).join(Author, Book._Book__authors.any(Author._Author__full_name == author_name)).all()
 
         except NoResultFound:
@@ -145,7 +151,6 @@ class SqlAlchemyRepository(AbstractRepository):
         books_list = []
         try:
             books_list = self._session_cm.session.query(Book).join(Publisher, Book._Book__publisher.has(Publisher._Publisher__name == publisher_name)).all()
-            # books_list = self._session_cm.session.query(Book)
         except NoResultFound:
             # Ignore any exception and return None.
             pass

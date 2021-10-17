@@ -142,3 +142,10 @@ class AbstractRepository(abc.ABC):
         Adds a publisher to the repository
         """
         raise NotImplementedError
+
+    @abc.abstractmethod
+    def add_similar_book(self, book:Book, book_id:int):
+        """
+        Adds a similar book to an existing book
+        """
+        raise NotImplementedError

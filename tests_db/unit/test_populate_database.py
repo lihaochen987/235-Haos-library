@@ -25,7 +25,52 @@ def test_database_populate_select_all_publishers(database_engine):
         for row in result:
             all_publishers.append((row['id'], row['name']))
 
-        assert all_publishers == [(1, 'N/A'),(2, 'Dargaud'),(3, 'Hachette Partworks Ltd.'),(4, 'N/A'),(5, 'DC Comics'),(6, 'Go! Comi'),(7, 'Avatar Press'),(8, 'Avatar Press'),(9, 'Avatar Press'),(10, 'Avatar Press'),(11, 'N/A'),(12, 'Dynamite Entertainment'),(13, 'VIZ Media'),(14, 'Planeta DeAgostini'),(15, 'VIZ Media'),(16, 'N/A'),(17, 'Hakusensha'),(18, 'Shi Bao Wen Hua Chu Ban Qi Ye Gu Fen You Xian Gong Si'),(19, 'Marvel'),(20, 'N/A')]
+        assert all_publishers == [(1, 'N/A'),
+ (2, 'Dargaud'),
+ (3, 'Hachette Partworks Ltd.'),
+ (4, 'N/A'),
+ (5, 'DC Comics'),
+ (6, 'Go! Comi'),
+ (7, 'Avatar Press'),
+ (8, 'Avatar Press'),
+ (9, 'Avatar Press'),
+ (10, 'Avatar Press'),
+ (11, 'N/A'),
+ (12, 'Dynamite Entertainment'),
+ (13, 'VIZ Media'),
+ (14, 'Planeta DeAgostini'),
+ (15, 'VIZ Media'),
+ (16, 'N/A'),
+ (17, 'Hakusensha'),
+ (18, 'Shi Bao Wen Hua Chu Ban Qi Ye Gu Fen You Xian Gong Si'),
+ (19, 'Marvel'),
+ (20, 'N/A'),
+ (21, "St. Martin's Press"),
+ (22, 'Simon & Schuster Audio'),
+ (23, 'Nelson Doubleday, Inc.'),
+ (24, 'Atria Books'),
+ (25, 'N/A'),
+ (26, "Yesterday's Classics"),
+ (27, 'Berkley Publishing Group'),
+ (28, 'Seven Seas'),
+ (29, 'Seven Seas'),
+ (30, 'Gone Writing Publishing'),
+ (31, 'Feral House'),
+ (32, 'Simon & Schuster UK'),
+ (33, 'N/A'),
+ (34, 'N/A'),
+ (35, 'Baumhaus Verlag GmbH'),
+ (36, 'N/A'),
+ (37, 'N/A'),
+ (38, 'N/A'),
+ (39, 'Random House Books for Young Readers'),
+ (40, 'Blue Sky Press'),
+ (41, 'Covenant Communications'),
+ (42, 'N/A'),
+ (43, 'Quinteto'),
+ (44, 'N/A'),
+ (45, 'Penguin Audio'),
+ (46, 'N/A')]
 
 def test_database_populate_select_all_users(database_engine):
 
@@ -81,8 +126,8 @@ def test_database_populate_select_all_books(database_engine):
             all_books.append((row['id'], row['title']))
 
         nr_books = len(all_books)
-        assert nr_books == 20
+        assert nr_books == 46
 
-        assert all_books[0] == (707611, 'Superman Archives, Vol. 2')
+        assert all_books[0] == (89371, 'The Te Of Piglet')
 
 

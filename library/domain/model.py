@@ -230,6 +230,9 @@ class Book:
 
         self.__authors.append(author)
 
+    def add_similar_book(self, book_id:int):
+        self.__similar_books.append(book_id)
+
     def add_publisher(self, publisher:Publisher):
         if not isinstance(publisher, Publisher):
             return

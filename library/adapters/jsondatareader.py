@@ -26,6 +26,9 @@ class BooksJSONReader:
     def dataset_of_publishers(self):
         return self.__dataset_of_publishers
 
+    @property
+    def dataset_of_similar_books(self):
+        return self.__dataset_of_similar_books
 
     def read_books_file(self) -> list:
         books_json = []
@@ -79,6 +82,9 @@ class BooksJSONReader:
             list_of_similar_book_ids = book_json['similar_books']
             for book_id in list_of_similar_book_ids:
                 book_instance.similar_books = book_id
+                if book_instance not in self.__dataset_of_similar_books.keys():
+                    self.__dataset_of_similar_books[book_instance] = list()
+                self.__dataset_of_similar_books[book_instance].append(book_id)
 
             # extract the author ids:
             list_of_authors_ids = book_json['authors']

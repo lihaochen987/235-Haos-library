@@ -171,7 +171,7 @@ def test_repository_can_add_and_retrieve_reviews(in_memory_repo, user, book):
 
 
 def test_repository_can_populate(in_memory_repo):
-    assert len(in_memory_repo.get_books()) == 20
+    assert len(in_memory_repo.get_books()) == 46
 
 def test_repository_populate_books_are_linked_with_authors(in_memory_repo):
     book = in_memory_repo.get_book_by_id(18955715)[0]
