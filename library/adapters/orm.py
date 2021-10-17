@@ -32,7 +32,7 @@ books_table = Table(
     Column('release_year', Integer, nullable=True),
     Column('ebook', Boolean, nullable=False),
     Column('num_pages', Integer, nullable=True),
-    # Column('similar_books', ForeignKey('books.id'))
+    Column('similar_books', ForeignKey('books.id'))
 )
 
 reviews_table = Table(
@@ -58,6 +58,13 @@ books_authors_table = Table(
     Column('id', Integer, primary_key=True, autoincrement=True),
     Column('book_id', ForeignKey('books.id')),
     Column('author_id', ForeignKey('authors.id'))
+)
+
+similar_books_table = Table(
+    'similar_books', metadata,
+    Column('id', Integer, primary_key=True, autoincrement=True),
+    Column('book_id', ForeignKey('books.id')),
+    Column('similar_book_id', ForeignKey('books.id'))
 )
 
 def map_model_to_tables():
@@ -94,6 +101,9 @@ def map_model_to_tables():
         '_Book__release_year': books_table.c.release_year,
         '_Book__ebook': books_table.c.ebook,
         '_Book__num_pages': books_table.c.num_pages,
-        '_Book__reviews': relationship(model.Review, back_populates='_Review__book')
+        '_Book__reviews': relationship(model.Review, back_populates='_Review__book'),
+        '_Book__similar_book': relationship(model.Book, secondary=similar_books_table,
+                                             primaryjoin=books_table.c.id == similar_books_table.c.book_id,
+                                            secondaryjoin=books_table.c.id == similar_books_table.c.similar_book_id)
 
     })
