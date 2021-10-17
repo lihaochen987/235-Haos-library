@@ -177,6 +177,12 @@ def test_repository_does_not_retrieve_a_book_when_there_are_no_books_for_a_given
     books = repo.get_book_by_release_year(72364782364782)
     assert len(books) == 0
 
+# def test_repository_makes_similar_book_association(session_factory):
+#     repo = SqlAlchemyRepository(session_factory)
+#
+#     books = repo.get_book_by_id(25742454)[0]
+#     assert books.similar_books == "None"
+
 # def test_repository_can_retrieve_tags(session_factory):
 #     repo = SqlAlchemyRepository(session_factory)
 #

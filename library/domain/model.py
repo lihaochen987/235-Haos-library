@@ -203,8 +203,8 @@ class Book:
         return self.__similar_books
 
     @similar_books.setter
-    def similar_books(self, id: int):
-        self.__similar_books.append(id)
+    def similar_books(self, book:Book):
+        self.__similar_books.append(book)
 
     @property
     def publisher(self) -> Publisher:
@@ -229,6 +229,12 @@ class Book:
             return
 
         self.__authors.append(author)
+
+    def add_similar_book(self, book_one:Book, book_two:Book):
+        if book_two not in book_one.similar_books:
+            book_one.similar_books = book_two
+        if book_one not in book_two.similar_books:
+            book_two.similar_books = book_one
 
     def add_similar_book(self, book_id:int):
         self.__similar_books.append(book_id)

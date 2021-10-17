@@ -107,8 +107,9 @@ class SqlAlchemyRepository(AbstractRepository):
         books_list = self._session_cm.session.query(Book).filter(Book._Book__book_id == book.book_id).all()
         for book in books_list:
             if book_id in book.similar_books:
-                print('True')
-                print(book_id)
+                pass
+                # print('True')
+                # print(book_id)
 
     # Book functions
     def add_book(self, book: Book):

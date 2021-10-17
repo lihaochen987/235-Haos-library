@@ -1,6 +1,6 @@
 from sqlalchemy import (
     Table, MetaData, Column, Integer, String, DateTime, Boolean,
-    ForeignKey
+    ForeignKey, UniqueConstraint
 )
 from sqlalchemy.orm import mapper, relationship, synonym
 
@@ -62,18 +62,16 @@ books_authors_table = Table(
 
 similar_books_table = Table(
     'similar_books', metadata,
-    Column('id', Integer, primary_key=True, autoincrement=True),
     Column('book_id', ForeignKey('books.id')),
-    Column('similar_book_id', ForeignKey('books.id'))
+    Column('similar_book_id', ForeignKey('books.id')),
+    UniqueConstraint('book_id', 'similar_book_id', name = 'similar_books')
 )
 
 def map_model_to_tables():
     mapper(model.User, users_table, properties={
         '_User__user_name': users_table.c.user_name,
         '_User__password': users_table.c.password,
-        # '_User__read_books'
         '_User__reviews': relationship(model.Review, back_populates='_Review__user')
-        # '_User__pages_read' : users_table.c.pages_read
     })
     mapper(model.Review, reviews_table, properties={
         '_Review__user': relationship(model.User, back_populates='_User__reviews'),
@@ -102,8 +100,6 @@ def map_model_to_tables():
         '_Book__ebook': books_table.c.ebook,
         '_Book__num_pages': books_table.c.num_pages,
         '_Book__reviews': relationship(model.Review, back_populates='_Review__book'),
-        '_Book__similar_book': relationship(model.Book, secondary=similar_books_table,
-                                             primaryjoin=books_table.c.id == similar_books_table.c.book_id,
-                                            secondaryjoin=books_table.c.id == similar_books_table.c.similar_book_id)
+        # '_Book__similar_books': relationship(model.Book, secondary = similar_books_table, primaryjoin=books_table.c.id == similar_books_table.c.book_id, secondaryjoin = books_table.c.id == similar_books_table.c.similar_book_id)
 
     })

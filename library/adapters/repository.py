@@ -144,7 +144,7 @@ class AbstractRepository(abc.ABC):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def add_similar_book(self, book:Book, book_id:int):
+    def add_similar_book(self, book_one:Book, book_two:Book):
         """
         Adds a similar book to an existing book
         """
