@@ -1,5 +1,6 @@
 from sqlalchemy.orm.exc import NoResultFound
 
+from sqlalchemy import update
 from sqlalchemy.orm import scoped_session
 from sqlalchemy.orm.exc import NoResultFound
 
@@ -103,13 +104,25 @@ class SqlAlchemyRepository(AbstractRepository):
             scm.session.add(publisher)
             scm.commit()
 
-    def add_similar_book(self, book:Book, book_id:int):
-        books_list = self._session_cm.session.query(Book).filter(Book._Book__book_id == book.book_id).all()
-        for book in books_list:
-            if book_id in book.similar_books:
-                pass
-                # print('True')
-                # print(book_id)
+    def add_similar_book(self, book_one:Book, book_two:Book):
+        with self._session_cm as scm:
+            # book_one = scm.session.query(Book).filter(Book._Book__book_id == book_one.book_id).all()
+            # book_two = scm.session.query(Book).filter(Book._Book__book_id == book_two.book_id).all()
+            scm.session.query(Book).filter(Book.Book__book_id == book_one.book_id).update({"_Book__similar__books": book_two}, synchronize_session = "fetch")
+            scm.session.query(Book).filter(Book.Book__book_id == book_two.book_id).update({"_Book__similar__books": book_one}, synchronize_session = "fetch")
+            for row in scm:
+                print (row)
+            scm.commit()
+            # print()
+            # print(1)
+            # print(book_one[0])
+            # print()
+            # print()
+            # print(2)
+            # print(book_two[0])
+            # print()
+
+        # self._session_cm.session.query(Book).filter(Book._Book__book_id == book_one.book_id).update({"_Book__similar_books": book_two}, synchronize_session = "fetch")
 
     # Book functions
     def add_book(self, book: Book):

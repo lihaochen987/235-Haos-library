@@ -473,3 +473,9 @@ def make_publisher_association(book:Book, publisher:Publisher):
         if book not in publisher.books:
             publisher.books = book
     book.publisher = publisher
+
+def make_similar_book_association(book_one:Book, book_two:Book):
+    if book_one not in book_two.similar_books:
+        book_two.similar_books = book_one
+    if book_two not in book_one.similar_books:
+        book_one.similar_books = book_two

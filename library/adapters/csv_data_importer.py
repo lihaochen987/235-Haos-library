@@ -6,7 +6,7 @@ from werkzeug.security import generate_password_hash
 
 from library.adapters.repository import AbstractRepository
 from library.adapters.jsondatareader import BooksJSONReader
-from library.domain.model import Book, Author, Review, User, leave_review, ModelException, Publisher, make_author_association, make_publisher_association
+from library.domain.model import Book, Author, Review, User, leave_review, ModelException, Publisher, make_author_association, make_publisher_association, make_similar_book_association
 
 
 # Populate repo
@@ -60,13 +60,34 @@ def load_books_authors_and_publishers(data_path: Path, repo: AbstractRepository,
                 make_publisher_association(book,publisher)
         repo.add_publisher(publisher)
 
-    for book in reader.dataset_of_similar_books.keys():
-        for similar_book_id in reader.dataset_of_similar_books[book]:
+    for book, similar_book_ids in reader.dataset_of_similar_books.items():
+        for similar_id in similar_book_ids:
             try:
-                similar_book_object = repo.get_book_by_id(similar_book_id)[0]
-                print(similar_book_object)
+                similar_book_object = repo.get_book_by_id(similar_id)
+                if database_mode is True:
+                    book.similar_books = similar_book_object
+                else:
+                    make_similar_book_association(book, similar_book_object)
             except:
-                pass
+                similar_book_object = None
+
+        if similar_book_object != None:
+            repo.add_similar_book(book, similar_book_object)
+
+
+    # for book in reader.dataset_of_similar_books.keys():
+    #     for similar_book_id in reader.dataset_of_similar_books[book]:
+    #         similar_book_object = None
+    #         try:
+    #             similar_book_object = repo.get_book_by_id(similar_book_id)[0]
+    #             if database_mode is True:
+    #                 book.similar_books = similar_book_object
+    #             else:
+    #                 make_similar_book_association(book, similar_book_object)
+    #         except:
+    #             pass
+    #
+    #     repo.add_similar_book(book, similar_book_object)
 
 
         # book_object = repo.get_book_by_id(book.book_id)[0]

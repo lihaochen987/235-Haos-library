@@ -109,6 +109,13 @@ def insert_reviewed_book(empty_session):
 #
 #
 def make_book():
+    similar_book_1 = Book(23222, "Similar Book 1")
+    similar_book_1.description = "Similar in all regards"
+    similar_book_1.image_url = "Invalid link here"
+    similar_book_1.publisher = Publisher('Houghton Mifflin Harcourt')
+    similar_book_1.release_year = 2021
+    similar_book_1.ebook = True
+
     book = Book(123456789, 'The Lord of the Rings')
     book.description = "In ancient times the Rings of Power were crafted by the Elven-smiths, and Sauron, the Dark Lord, forged the One Ring, filling it with his own power so that he could rule all others."
     book.image_url = "https://images.unsplash.com/photo-1541963463532-d68292c34b19?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=688&q=80"
@@ -116,7 +123,7 @@ def make_book():
     book.release_year = 2005
     book.ebook = True
     book.num_pages = 1216
-    book.similar_books = [56789, 12345]
+    book.similar_books = similar_book_1
     return book
 
 def make_publisher():
@@ -193,6 +200,13 @@ def test_loading_of_author(empty_session):
 
     assert expected_author == fetched_author
 
+def test_similar_books(empty_session):
+    book_key = insert_book(empty_session)
+    expected_book = make_book()
+    fetched_book = empty_session.query(Book).one()
+
+    assert str(expected_book.similar_books) == '[<Book Similar Book 1, book id = 23222>]'
+
 # def test_loading_of_tagged_article(empty_session):
 #     article_key = insert_article(empty_session)
 #     tag_keys = insert_tags(empty_session)
@@ -245,9 +259,10 @@ def test_saving_of_book(empty_session):
     empty_session.commit()
 
     rows = list(empty_session.execute(
-        'SELECT id, title, description, image_url, publisher_id, release_year, ebook, num_pages FROM books'))
+        'SELECT id, title, description, image_url, publisher_id, release_year, ebook, num_pages, similar_books FROM books'))
 
-    assert rows == [(123456789, 'The Lord of the Rings', 'In ancient times the Rings of Power were crafted by the Elven-smiths, and Sauron, the Dark Lord, forged the One Ring, filling it with his own power so that he could rule all others.', 'https://images.unsplash.com/photo-1541963463532-d68292c34b19?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=688&q=80', 1, 2005, 1, 1216)]
+    assert rows == [(23222, 'Similar Book 1', 'Similar in all regards', 'Invalid link here', 2, 2021, 1, None, None),
+ (123456789, 'The Lord of the Rings', 'In ancient times the Rings of Power were crafted by the Elven-smiths, and Sauron, the Dark Lord, forged the One Ring, filling it with his own power so that he could rule all others.', 'https://images.unsplash.com/photo-1541963463532-d68292c34b19?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=688&q=80', 1, 2005, 1, 1216, None)]
 
 # def test_saving_tagged_article(empty_session):
 #     article = make_article()
@@ -295,7 +310,7 @@ def test_save_review_book(empty_session):
 
     # Test test_saving_of_book() checks for insertion into the books table.
     rows = list(empty_session.execute('SELECT id FROM books'))
-    book_key = rows[0][0]
+    book_key = rows[1][0]
 
     # Test test_saving_of_users() checks for insertion into the users table.
     rows = list(empty_session.execute('SELECT id FROM users'))

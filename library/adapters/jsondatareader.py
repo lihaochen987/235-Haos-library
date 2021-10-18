@@ -81,7 +81,6 @@ class BooksJSONReader:
             # extract similar book ids:
             list_of_similar_book_ids = book_json['similar_books']
             for book_id in list_of_similar_book_ids:
-                book_instance.similar_books = int(book_id)
                 if book_instance not in self.__dataset_of_similar_books.keys():
                     self.__dataset_of_similar_books[book_instance] = list()
                 self.__dataset_of_similar_books[book_instance].append(int(book_id))

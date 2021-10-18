@@ -102,9 +102,14 @@ class MemoryRepository(AbstractRepository):
         super()
         self._publishers.append(publisher)
 
-    def add_similar_book(self, book:Book, book_id:int):
-        if book in self._books:
-            index = self._books.index(book)
-            repo_book = self._books[index]
-            repo_book.similar_books = book_id
+    def add_similar_book(self, book_one: Book, book_two:Book):
+        if book_one and book_two in self._books:
+            index_one = self._books.index(book_one)
+            index_two = self._books.index(book_two)
+
+            book_one = self._books[index_one]
+            book_two = self._books[index_two]
+
+            book_one.similar_books = book_two
+            book_two.similar_books = book_one
 
