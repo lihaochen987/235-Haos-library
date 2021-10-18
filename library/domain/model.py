@@ -230,14 +230,20 @@ class Book:
 
         self.__authors.append(author)
 
-    def add_similar_book(self, book_one:Book, book_two:Book):
-        if book_two not in book_one.similar_books:
-            book_one.similar_books = book_two
-        if book_one not in book_two.similar_books:
-            book_two.similar_books = book_one
+    def add_similar_book(self, book:Book):
+        if book not in self.__similar_books:
+            self.__similar_books.append(book)
 
-    def add_similar_book(self, book_id:int):
-        self.__similar_books.append(book_id)
+        if self not in book.similar_books:
+            book.similar_books = self
+
+        # if book_two not in book_one.similar_books:
+        #     book_one.similar_books = book_two
+        # if book_one not in book_two.similar_books:
+        #     book_two.similar_books = book_one
+
+    # def add_similar_book(self, book_id:int):
+    #     self.__similar_books.append(book_id)
 
     def add_publisher(self, publisher:Publisher):
         if not isinstance(publisher, Publisher):

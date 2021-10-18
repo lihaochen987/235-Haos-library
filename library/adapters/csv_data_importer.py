@@ -42,6 +42,7 @@ def load_books_authors_and_publishers(data_path: Path, repo: AbstractRepository,
     for book in reader.dataset_of_books:
         repo.add_book(book)
 
+    # Add and associate authors in our repository
     for author in reader.dataset_of_authors.keys():
         for book_id in reader.dataset_of_authors[author]:
             book = repo.get_book_by_id(book_id)[0]
@@ -51,6 +52,7 @@ def load_books_authors_and_publishers(data_path: Path, repo: AbstractRepository,
                 make_author_association(book, author)
         repo.add_author(author)
 
+    # Add and associate publishers in our repository
     for publisher in reader.dataset_of_publishers.keys():
         for book_id in reader.dataset_of_publishers[publisher]:
             book = repo.get_book_by_id(book_id)[0]
@@ -60,19 +62,23 @@ def load_books_authors_and_publishers(data_path: Path, repo: AbstractRepository,
                 make_publisher_association(book,publisher)
         repo.add_publisher(publisher)
 
+    # Associate similar books in our repository
     for book, similar_book_ids in reader.dataset_of_similar_books.items():
         for similar_id in similar_book_ids:
-            try:
-                similar_book_object = repo.get_book_by_id(similar_id)
-                if database_mode is True:
-                    book.similar_books = similar_book_object
-                else:
-                    make_similar_book_association(book, similar_book_object)
-            except:
-                similar_book_object = None
+            similar_book_object = repo.get_book_by_id(int(similar_id))
 
-        if similar_book_object != None:
-            repo.add_similar_book(book, similar_book_object)
+            if similar_book_object == [] or similar_book_object == None:
+                pass
+            else:
+                if database_mode is True:
+                    book.similar_books = similar_book_object[0]
+                else:
+                    make_similar_book_association(book, similar_book_object[0])
+
+        if similar_book_object == [] or similar_book_object == None:
+            pass
+        else:
+            repo.add_similar_book(book, similar_book_object[0])
 
 
     # for book in reader.dataset_of_similar_books.keys():

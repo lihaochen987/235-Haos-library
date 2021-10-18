@@ -62,6 +62,7 @@ books_authors_table = Table(
 
 similar_books_table = Table(
     'similar_books', metadata,
+    Column('id', Integer, primary_key=True, autoincrement = True),
     Column('book_id', ForeignKey('books.id')),
     Column('similar_book_id', ForeignKey('books.id')),
     UniqueConstraint('book_id', 'similar_book_id', name = 'similar_books')

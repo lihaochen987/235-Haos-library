@@ -51,7 +51,7 @@ def add_publisher(publisher:Publisher):
     repo.add_publisher(publisher)
 
 def add_similar_book(book_one:Book, book_two:Book):
-    pass
+    repo.add_similar_book(book_one, book_two)
 
 def add_review(book_id: int, review_rating: int, comment_text: str, user_name: str, repo: AbstractRepository):
     # Check that Book exists.
