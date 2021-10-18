@@ -6,9 +6,6 @@ from sqlalchemy.exc import IntegrityError
 from library.domain.model import User, Publisher, Book, leave_review, Author
 
 
-# article_date = datetime.date(2020, 2, 28)
-
-
 def insert_user(empty_session, values=None):
     new_name = "Andrew"
     new_password = "1234"
@@ -72,23 +69,7 @@ def insert_author(empty_session):
         {'id':id}
     )
     row = empty_session.execute('SELECT full_name from authors').fetchone()
-#
-#
-# def insert_tags(empty_session):
-#     empty_session.execute(
-#         'INSERT INTO tags (tag_name) VALUES ("News"), ("New Zealand")'
-#     )
-#     rows = list(empty_session.execute('SELECT id from tags'))
-#     keys = tuple(row[0] for row in rows)
-#     return keys
-#
-#
-# def insert_article_tag_associations(empty_session, article_key, tag_keys):
-#     stmt = 'INSERT INTO article_tags (article_id, tag_id) VALUES (:article_id, :tag_id)'
-#     for tag_key in tag_keys:
-#         empty_session.execute(stmt, {'article_id': article_key, 'tag_id': tag_key})
-#
-#
+
 def insert_reviewed_book(empty_session):
     book_key = insert_book(empty_session)
     user_key = insert_user(empty_session)
@@ -106,8 +87,8 @@ def insert_reviewed_book(empty_session):
 
     row = empty_session.execute('SELECT id from books').fetchone()
     return row[0]
-#
-#
+
+
 def make_book():
     similar_book_1 = Book(23222, "Similar Book 1")
     similar_book_1.description = "Similar in all regards"
@@ -137,12 +118,6 @@ def make_author():
 def make_user():
     user = User("Andrew", "11123456676575575")
     return user
-
-
-# def make_tag():
-#     tag = Tag("News")
-#     return tag
-
 
 def test_loading_of_users(empty_session):
     users = list()
@@ -207,19 +182,6 @@ def test_similar_books(empty_session):
 
     assert str(expected_book.similar_books) == '[<Book Similar Book 1, book id = 23222>]'
 
-# def test_loading_of_tagged_article(empty_session):
-#     article_key = insert_article(empty_session)
-#     tag_keys = insert_tags(empty_session)
-#     insert_article_tag_associations(empty_session, article_key, tag_keys)
-#
-#     article = empty_session.query(Article).get(article_key)
-#     tags = [empty_session.query(Tag).get(key) for key in tag_keys]
-#
-#     for tag in tags:
-#         assert article.is_tagged_by(tag)
-#         assert tag.is_applied_to(article)
-
-
 def test_loading_of_reviewed_book(empty_session):
     insert_reviewed_book(empty_session)
 
@@ -263,36 +225,6 @@ def test_saving_of_book(empty_session):
 
     assert rows == [(23222, 'Similar Book 1', 'Similar in all regards', 'Invalid link here', 2, 2021, 1, None, None),
  (123456789, 'The Lord of the Rings', 'In ancient times the Rings of Power were crafted by the Elven-smiths, and Sauron, the Dark Lord, forged the One Ring, filling it with his own power so that he could rule all others.', 'https://images.unsplash.com/photo-1541963463532-d68292c34b19?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=688&q=80', 1, 2005, 1, 1216, None)]
-
-# def test_saving_tagged_article(empty_session):
-#     article = make_article()
-#     tag = make_tag()
-#
-#     # Establish the bidirectional relationship between the Article and the Tag.
-#     make_tag_association(article, tag)
-#
-#     # Persist the Article (and Tag).
-#     # Note: it doesn't matter whether we add the Tag or the Article. They are connected
-#     # bidirectionally, so persisting either one will persist the other.
-#     empty_session.add(article)
-#     empty_session.commit()
-#
-#     # Test test_saving_of_article() checks for insertion into the articles table.
-#     rows = list(empty_session.execute('SELECT id FROM articles'))
-#     article_key = rows[0][0]
-#
-#     # Check that the tags table has a new record.
-#     rows = list(empty_session.execute('SELECT id, tag_name FROM tags'))
-#     tag_key = rows[0][0]
-#     assert rows[0][1] == "News"
-#
-#     # Check that the article_tags table has a new record.
-#     rows = list(empty_session.execute('SELECT article_id, tag_id from article_tags'))
-#     article_foreign_key = rows[0][0]
-#     tag_foreign_key = rows[0][1]
-#
-#     assert article_key == article_foreign_key
-#     assert tag_key == tag_foreign_key
 
 
 def test_save_review_book(empty_session):

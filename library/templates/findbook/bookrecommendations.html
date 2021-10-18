@@ -17,16 +17,27 @@
     {% endif %}
     {% for book in recommendation.similar_books %}
     {% set book_id = book | int %}
-    {{ book_id }}
-    {% set temp = services.get_book_by_id(book_id , repo.repo_instance) %}
-    {{ temp }}
     <article class="mini-post">
-        <header>
-            <h3><a href="single.html">{{temp.title}}</a></h3>
-            <time class="published" datetime="2015-10-20">{{book.release_year}}</time>
-            <a href="#" class="author"><img src="images/avatar.jpg" alt=""/></a>
-        </header>
-        <a href="single.html" class="image"><img src="images/pic04.jpg" alt=""/></a>
+        <div id="wrapper">
+            <article class="post">
+                <header>
+                    <div class="title">
+                        <h2>{{ book.title }}</h2>
+                        <p>Authors:
+                            {% for author in book.authors %}
+                            {{ author.full_name + "," }}
+                            {% endfor %}
+                        </p>
+                        <h4 style="font-weight:normal;">{{book.description}}</h4>
+                    </div>
+                    <div class="meta">
+                        <time class="published" style="text-align:center;">Release year: {{ book.release_year }}</time>
+                        <a class="image featured" style="image-align:center;"><img
+                                src="{{book.image_url}}"
+                                alt=""/></a>
+                    </div>
+                </header>
+        </div>
     </article>
 
     {% endfor %}

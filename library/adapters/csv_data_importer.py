@@ -80,26 +80,6 @@ def load_books_authors_and_publishers(data_path: Path, repo: AbstractRepository,
         else:
             repo.add_similar_book(book, similar_book_object[0])
 
-
-    # for book in reader.dataset_of_similar_books.keys():
-    #     for similar_book_id in reader.dataset_of_similar_books[book]:
-    #         similar_book_object = None
-    #         try:
-    #             similar_book_object = repo.get_book_by_id(similar_book_id)[0]
-    #             if database_mode is True:
-    #                 book.similar_books = similar_book_object
-    #             else:
-    #                 make_similar_book_association(book, similar_book_object)
-    #         except:
-    #             pass
-    #
-    #     repo.add_similar_book(book, similar_book_object)
-
-
-        # book_object = repo.get_book_by_id(book.book_id)[0]
-        # for book_id in reader.dataset_of_similar_books[book]:
-        #     repo.add_similar_book(book_object, book_id)
-
 def load_users(data_path:Path, repo:AbstractRepository):
     users = dict()
 
